@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>WaveBox.CoreiOS</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>WaveBox.Core-iOS</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="monotouch" />
+    <Reference Include="Cirrious.MvvmCross.Plugins.Sqlite">
+      <HintPath>..\..\WaveBox\WaveBox.Core\lib\Cirrious.MvvmCross.Plugins.Sqlite.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross">
+      <HintPath>..\..\WaveBox\WaveBox.Core\lib\Cirrious.MvvmCross.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\WaveBox\WaveBox.Core\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\..\WaveBox\WaveBox.Core\lib\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows">
+      <HintPath>..\..\WaveBox\WaveBox.Core\lib\System.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="taglib-sharp">
+      <HintPath>..\..\WaveBox\WaveBox.Core\lib\taglib-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="Mono.Security" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="src\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\BaseClasses.cs">
+      <Link>src\BaseClasses.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\SQLiteNet.cs">
+      <Link>src\SQLiteNet.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\DateTimeExtensions.cs">
+      <Link>src\Extensions\DateTimeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Injected\IDatabase.cs">
+      <Link>src\Injected\IDatabase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Injected\IServerSettings.cs">
+      <Link>src\Injected\IServerSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Album.cs">
+      <Link>src\Model\Album.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Art.cs">
+      <Link>src\Model\Art.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\ArtItem.cs">
+      <Link>src\Model\ArtItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Artist.cs">
+      <Link>src\Model\Artist.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\FileType.cs">
+      <Link>src\Model\FileType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Folder.cs">
+      <Link>src\Model\Folder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Genre.cs">
+      <Link>src\Model\Genre.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\IItem.cs">
+      <Link>src\Model\IItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\IMediaItem.cs">
+      <Link>src\Model\IMediaItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Item.cs">
+      <Link>src\Model\Item.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\ItemType.cs">
+      <Link>src\Model\ItemType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\MediaItem.cs">
+      <Link>src\Model\MediaItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Playlist.cs">
+      <Link>src\Model\Playlist.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\PlaylistItem.cs">
+      <Link>src\Model\PlaylistItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\QueryLog.cs">
+      <Link>src\Model\QueryLog.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\ServerSettingsData.cs">
+      <Link>src\Model\ServerSettingsData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Session.cs">
+      <Link>src\Model\Session.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Song.cs">
+      <Link>src\Model\Song.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Stat.cs">
+      <Link>src\Model\Stat.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\User.cs">
+      <Link>src\Model\User.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Video.cs">
+      <Link>src\Model\Video.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\AbstractOperation.cs">
+      <Link>src\OperationQueue\AbstractOperation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\DelayedOperationQueue.cs">
+      <Link>src\OperationQueue\DelayedOperationQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\IDelayedOperation.cs">
+      <Link>src\OperationQueue\IDelayedOperation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Static\Injection.cs">
+      <Link>src\Static\Injection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Static\Utility.cs">
+      <Link>src\Static\Utility.cs</Link>
+    </Compile>
+    <Compile Include="Logger.cs" />
+  </ItemGroup>
+</Project>

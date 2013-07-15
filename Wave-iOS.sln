@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wave-iOS", "Wave-iOS\Wave-iOS.csproj", "{3E96405A-4FCC-4D9E-B86A-50CDB1789D45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaveBox.Core-iOS", "WaveBox.Core-iOS\WaveBox.Core-iOS.csproj", "{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaveBox.Client-iOS", "WaveBox.Client-iOS\WaveBox.Client-iOS.csproj", "{76601533-2890-438A-9FCF-E79191F4F6B2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+		Release|iPhone = Release|iPhone
+		Ad-Hoc|iPhone = Ad-Hoc|iPhone
+		AppStore|iPhone = AppStore|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3E96405A-4FCC-4D9E-B86A-50CDB1789D45}.Ad-Hoc|iPhone.ActiveCfg = Ad-Hoc|iPhone
+		{3E96405A-4FCC-4D9E-B86A-50CDB1789D45}.Ad-Hoc|iPhone.Build.0 = Ad-Hoc|iPhone
+		{3E96405A-4FCC-4D9E-B86A-50CDB1789D45}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
+		{3E96405A-4FCC-4D9E-B86A-50CDB1789D45}.AppStore|iPhone.Build.0 = AppStore|iPhone
+		{3E96405A-4FCC-4D9E-B86A-50CDB1789D45}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{3E96405A-4FCC-4D9E-B86A-50CDB1789D45}.Debug|iPhone.Build.0 = Debug|iPhone
+		{3E96405A-4FCC-4D9E-B86A-50CDB1789D45}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{3E96405A-4FCC-4D9E-B86A-50CDB1789D45}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{3E96405A-4FCC-4D9E-B86A-50CDB1789D45}.Release|iPhone.ActiveCfg = Release|iPhone
+		{3E96405A-4FCC-4D9E-B86A-50CDB1789D45}.Release|iPhone.Build.0 = Release|iPhone
+		{3E96405A-4FCC-4D9E-B86A-50CDB1789D45}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{3E96405A-4FCC-4D9E-B86A-50CDB1789D45}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{76601533-2890-438A-9FCF-E79191F4F6B2}.Ad-Hoc|iPhone.ActiveCfg = Release|Any CPU
+		{76601533-2890-438A-9FCF-E79191F4F6B2}.Ad-Hoc|iPhone.Build.0 = Release|Any CPU
+		{76601533-2890-438A-9FCF-E79191F4F6B2}.AppStore|iPhone.ActiveCfg = Release|Any CPU
+		{76601533-2890-438A-9FCF-E79191F4F6B2}.AppStore|iPhone.Build.0 = Release|Any CPU
+		{76601533-2890-438A-9FCF-E79191F4F6B2}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{76601533-2890-438A-9FCF-E79191F4F6B2}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{76601533-2890-438A-9FCF-E79191F4F6B2}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{76601533-2890-438A-9FCF-E79191F4F6B2}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{76601533-2890-438A-9FCF-E79191F4F6B2}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{76601533-2890-438A-9FCF-E79191F4F6B2}.Release|iPhone.Build.0 = Release|Any CPU
+		{76601533-2890-438A-9FCF-E79191F4F6B2}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{76601533-2890-438A-9FCF-E79191F4F6B2}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}.Ad-Hoc|iPhone.ActiveCfg = Release|Any CPU
+		{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}.Ad-Hoc|iPhone.Build.0 = Release|Any CPU
+		{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}.AppStore|iPhone.ActiveCfg = Release|Any CPU
+		{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}.AppStore|iPhone.Build.0 = Release|Any CPU
+		{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}.Release|iPhone.Build.0 = Release|Any CPU
+		{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Wave-iOS\Wave-iOS.csproj
+	EndGlobalSection
+EndGlobal
