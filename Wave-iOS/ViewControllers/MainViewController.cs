@@ -4,11 +4,19 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using WaveBox.Core;
 using WaveBox.Model;
+using System.IO;
+using WaveBox.Core.Injection;
+using WaveBox.Static;
+using Ninject;
+using WaveBox.Model.Repository;
+using WaveBox.Client.AudioEngine;
 
 namespace WaveiOS
 {
-	public partial class MainViewController : UIViewController
+	public partial class MainViewController : UIViewController, IBassGaplessPlayerDataSource
 	{
+		IDatabase database = Injection.Kernel.Get<IDatabase>();
+
 		static bool UserInterfaceIdiomIsPhone {
 			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
@@ -30,9 +38,21 @@ namespace WaveiOS
 			base.ViewDidLoad ();
 
 			Artist anArtist = new Artist ();
-			Console.WriteLine ("anArtist: " + anArtist);
+			Console.WriteLine("anArtist: " + anArtist);
 
-			
+			if (!File.Exists(database.DatabasePath()))
+			{
+				File.Copy("./wavebox.db", database.DatabasePath());
+			}
+
+			Console.WriteLine("song: " + new Song.Factory().CreateSong(6815).SongName);
+
+			IBassGaplessPlayer player = Injection.Kernel.Get<IBassGaplessPlayer>();
+			player.DataSource = this;
+			player.StartWithOffsetInBytesOrSeconds(0, 0);
+
+			BassPlaylistCurrentIndex = 0;
+
 			// Perform any additional setup after loading the view, typically from a nib.
 		}
 
@@ -48,6 +68,12 @@ namespace WaveiOS
 				return true;
 			}
 		}
+
+		public int BassPlaylistCount { get { return 1; } }
+		public int BassPlaylistCurrentIndex { get; set; }
+		public Song BassPlaylistCurrentSong { get { return new Song.Factory().CreateSong(6815); } }
+		public Song BassPlaylistNextSong { get { return null; } }
+		public bool BassIsOfflineMode { get { return false; } }
 	}
 }
 

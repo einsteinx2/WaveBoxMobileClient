@@ -1,39 +1,50 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone.6.0" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="WaveBox.Client-iOS/src/AudioEngine/BassStream.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="WaveBox.Core-iOS/Logger.cs">
     <Files>
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/BassStream.cs" Line="12" Column="46" />
-      <File FileName="../WaveBox/WaveBox.Core/src/Model/Album.cs" Line="15" Column="46" />
-      <File FileName="WaveBox.Core-iOS/Logger.cs" Line="239" Column="12" />
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/BassWrapper.cs" Line="186" Column="15" />
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/BassGaplessPlayer.cs" Line="3" Column="25" />
+      <File FileName="Wave-iOS/AppDelegate.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/ViewControllers/MainViewController.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/Database.cs" Line="1" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/AudioEngine/Interfaces/IBassGaplessPlayer.cs" Line="1" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/AudioEngine/AudioEngine.cs" Line="1" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/Injection/ClientModule.cs" Line="13" Column="63" />
+      <File FileName="WaveBox.Client-iOS/src/AudioEngine/BassGaplessPlayer.cs" Line="1" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/AudioEngine/SongExtension.cs" Line="1" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/AudioEngine/BassStream.cs" Line="1" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/AudioEngine/RingBuffer.cs" Line="1" Column="1" />
+      <File FileName="WaveBox.Core-iOS/Logger.cs" Line="216" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="WaveBox.Client-iOS" expanded="True">
             <Node name="References" expanded="True" />
-            <Node name="src" expanded="True">
-              <Node name="AudioEngine" expanded="True">
-                <Node name="BassStream.cs" selected="True" />
-              </Node>
-            </Node>
+            <Node name="src" expanded="True" />
           </Node>
           <Node name="WaveBox.Core-iOS" expanded="True">
             <Node name="References" expanded="True" />
-            <Node name="src" expanded="True">
-              <Node name="Model" expanded="True" />
-            </Node>
+            <Node name="src" expanded="True" />
           </Node>
-          <Node name="Wave-iOS" expanded="True">
+          <Node name="Wave-iOS" expanded="True" selected="True">
             <Node name="ViewControllers" expanded="True" />
           </Node>
         </State>
       </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+      <Pad Id="ConnectionManagerPad">
+        <State selected="True" />
+      </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/bbaron/workspacew/Wave-iOS/Wave-iOS/ViewControllers/MainViewController.cs" line="16" column="23" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

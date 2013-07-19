@@ -44,9 +44,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\WaveBox\WaveBox.Core\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject">
-      <HintPath>..\..\WaveBox\WaveBox.Core\lib\Ninject.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows">
       <HintPath>..\..\WaveBox\WaveBox.Core\lib\System.Windows.dll</HintPath>
     </Reference>
@@ -55,6 +52,9 @@
     </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="Mono.Security" />
+    <Reference Include="Ninject">
+      <HintPath>..\WaveBox.Client-iOS\lib\Ninject.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -62,6 +62,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <Compile Include="Logger.cs" />
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\BaseClasses.cs">
       <Link>src\BaseClasses.cs</Link>
     </Compile>
@@ -71,11 +72,14 @@
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\DateTimeExtensions.cs">
       <Link>src\Extensions\DateTimeExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Injected\IDatabase.cs">
-      <Link>src\Injected\IDatabase.cs</Link>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Injection\CoreModule.cs">
+      <Link>src\Injection\CoreModule.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Injected\IServerSettings.cs">
-      <Link>src\Injected\IServerSettings.cs</Link>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Injection\IDatabase.cs">
+      <Link>src\Injection\IDatabase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Injection\IServerSettings.cs">
+      <Link>src\Injection\IServerSettings.cs</Link>
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Album.cs">
       <Link>src\Model\Album.cs</Link>
@@ -98,15 +102,6 @@
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Genre.cs">
       <Link>src\Model\Genre.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\IItem.cs">
-      <Link>src\Model\IItem.cs</Link>
-    </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\IMediaItem.cs">
-      <Link>src\Model\IMediaItem.cs</Link>
-    </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Item.cs">
-      <Link>src\Model\Item.cs</Link>
-    </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\ItemType.cs">
       <Link>src\Model\ItemType.cs</Link>
     </Compile>
@@ -118,9 +113,6 @@
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\PlaylistItem.cs">
       <Link>src\Model\PlaylistItem.cs</Link>
-    </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\QueryLog.cs">
-      <Link>src\Model\QueryLog.cs</Link>
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\ServerSettingsData.cs">
       <Link>src\Model\ServerSettingsData.cs</Link>
@@ -140,6 +132,12 @@
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Video.cs">
       <Link>src\Model\Video.cs</Link>
     </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Interfaces\IItem.cs">
+      <Link>src\Model\Interfaces\IItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Interfaces\IMediaItem.cs">
+      <Link>src\Model\Interfaces\IMediaItem.cs</Link>
+    </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\AbstractOperation.cs">
       <Link>src\OperationQueue\AbstractOperation.cs</Link>
     </Compile>
@@ -149,12 +147,80 @@
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\IDelayedOperation.cs">
       <Link>src\OperationQueue\IDelayedOperation.cs</Link>
     </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\AlbumRepository.cs">
+      <Link>src\Repository\AlbumRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\ArtRepository.cs">
+      <Link>src\Repository\ArtRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\ArtistRepository.cs">
+      <Link>src\Repository\ArtistRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\FolderRepository.cs">
+      <Link>src\Repository\FolderRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\GenreRepository.cs">
+      <Link>src\Repository\GenreRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\ItemRepository.cs">
+      <Link>src\Repository\ItemRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\SessionRepository.cs">
+      <Link>src\Repository\SessionRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\SongRepository.cs">
+      <Link>src\Repository\SongRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\StatRepository.cs">
+      <Link>src\Repository\StatRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\UserRepository.cs">
+      <Link>src\Repository\UserRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\VideoRepository.cs">
+      <Link>src\Repository\VideoRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IAlbumRepository.cs">
+      <Link>src\Repository\Interfaces\IAlbumRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IArtRepository.cs">
+      <Link>src\Repository\Interfaces\IArtRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IArtistRepository.cs">
+      <Link>src\Repository\Interfaces\IArtistRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IFolderRepository.cs">
+      <Link>src\Repository\Interfaces\IFolderRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IGenreRepository.cs">
+      <Link>src\Repository\Interfaces\IGenreRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IItemRepository.cs">
+      <Link>src\Repository\Interfaces\IItemRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\ISessionRepository.cs">
+      <Link>src\Repository\Interfaces\ISessionRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\ISongRepository.cs">
+      <Link>src\Repository\Interfaces\ISongRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IStatRepository.cs">
+      <Link>src\Repository\Interfaces\IStatRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IUserRepository.cs">
+      <Link>src\Repository\Interfaces\IUserRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IVideoRepository.cs">
+      <Link>src\Repository\Interfaces\IVideoRepository.cs</Link>
+    </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Static\Injection.cs">
       <Link>src\Static\Injection.cs</Link>
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Static\Utility.cs">
       <Link>src\Static\Utility.cs</Link>
     </Compile>
-    <Compile Include="Logger.cs" />
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\SQLiteConnectionPool.cs">
+      <Link>src\SQLiteConnectionPool.cs</Link>
+    </Compile>
   </ItemGroup>
 </Project>

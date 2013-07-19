@@ -3,12 +3,15 @@ using WaveBox.Model;
 using System.IO;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Mix;
+using System.Runtime.InteropServices;
 
-namespace WaveBox.Client
+namespace WaveBox.Client.AudioEngine
 {
 	public class BassStream
 	{
 		private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+		public GCHandle PointerHandle { get; set; }
 
 		public BassGaplessPlayer Player { get; set; }
 
@@ -18,10 +21,10 @@ namespace WaveBox.Client
 		public double CrossfadeInterval { get; set; }
 		public Song MySong { get; set; }
 
-		public int channelCount { get; set; }
-		public int sampleRate { get; set; }
+		public int ChannelCount { get; set; }
+		public int SampleRate { get; set; }
 
-		//public NSFileHandle *fileHandle { get; set; }
+		public FileStream FileHandle { get; set; }
 		public bool ShouldBreakWaitLoop { get; set; }
 		public bool ShouldBreakWaitLoopForever { get; set; }
 		public long NeededSize { get; set; }
@@ -40,13 +43,18 @@ namespace WaveBox.Client
 
 		public bool ShouldIncrementIndex { get; set; }
 
+		public int Identifier { get; set; }
+
+		public byte[] ReadProcBuffer = new byte[32 * 1024];
+
+
 		public BassStream ()
 		{
 			NeededSize = long.MaxValue;
 			ShouldIncrementIndex = true;
 		}
 
-		public long localFileSize()
+		public long LocalFileSize()
 		{
 			FileInfo f = new FileInfo (this.WritePath);
 			return f.Length;
@@ -98,14 +106,10 @@ namespace WaveBox.Client
 
 			if (this.FileLengthQueryCount == 5)
 			{
-				logger.Error(@"[BassStream] File length check happened > 5 times for %@, restarting the song", this.MySong);
+				logger.Error(@"[BassStream] File length check happened > 5 times for %@, restarting the song", MySong);
 
-				// This is a failure, notify the delegate
-				if (this.Player.Delegate != null)
-				{
-					this.Player.Delegate.BassSongFailedToPlay (this.MySong);
-				}
-
+				// This is a failure, raise the event
+				Player.RaiseSongFailedToPlayEvent(MySong);
 			}
 		}
 

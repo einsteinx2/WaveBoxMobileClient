@@ -1,9 +1,9 @@
 using System;
 using Un4seen.Bass;
 
-namespace WaveBox.Client
+namespace WaveBox.Client.AudioEngine
 {
-	public class BassWrapper
+	public class BassWrapper : IBassWrapper
 	{
 		private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -57,8 +57,9 @@ namespace WaveBox.Client
 
 		}
 
-		/*public string FormatForChannel(int channel)
+		public string FormatForChannel(int channel)
 		{
+			/*
 			BASSConfig.BASS_CHANNELINFO i;
 			BASS_ChannelGetInfo(channel, &i);
 
@@ -119,8 +120,9 @@ namespace WaveBox.Client
 					}
 				}
 			}
-			return @"";
-		}*/
+			return @"";*/
+			return "";
+		}
 
 		public string StringFromErrorCode(BASSError errorCode)
 		{

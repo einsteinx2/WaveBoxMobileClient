@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Ninject.Modules;
+using WaveBox.Client;
+using WaveBox.Static;
+using WaveBox.Core.Injection;
 
 namespace WaveiOS
 {
@@ -24,6 +28,12 @@ namespace WaveiOS
 		//
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
+			// Initialize the Ninject kernel
+			List<INinjectModule> modules = new List<INinjectModule>();
+			modules.Add(new ClientModule());
+			Injection.Kernel.Load(modules);
+			Injection.Kernel.Bind<IDatabase>().To<Database>().InSingletonScope();
+
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 			
 			viewController = new MainViewController ();

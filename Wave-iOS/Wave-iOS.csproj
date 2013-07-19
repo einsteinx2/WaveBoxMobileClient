@@ -23,6 +23,9 @@
     <MtouchLink>None</MtouchLink>
     <ConsolePause>false</ConsolePause>
     <MtouchDebug>true</MtouchDebug>
+    <MtouchExtraArgs>-gcc_flags "-L${ProjectDir} -lbass -force_load ${ProjectDir}/libbass.a -lbassmix -force_load ${ProjectDir}/libbassmix.a"</MtouchExtraArgs>
+    <MtouchI18n />
+    <MtouchArch>ARMv7, ARMv7s</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>full</DebugType>
@@ -43,7 +46,10 @@
     <WarningLevel>4</WarningLevel>
     <MtouchDebug>true</MtouchDebug>
     <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Developer: Benjamin Baron (V4H8F256PU)</CodesignKey>
+    <MtouchI18n />
+    <MtouchArch>ARMv7</MtouchArch>
+    <CodesignProvision>EED2128F-D6B4-4256-93A5-2E239BF6687B</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>full</DebugType>
@@ -80,13 +86,19 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
+    <Reference Include="Ninject">
+      <HintPath>..\WaveBox.Client-iOS\lib\Ninject.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="ViewControllers\" />
+    <Folder Include="native_libs\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
+    <None Include="libbassmix.a" />
+    <None Include="libbass.a" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -95,6 +107,7 @@
       <DependentUpon>MainViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewControllers\MainViewController.cs" />
+    <Compile Include="Database.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="ViewControllers\MainViewController_iPad.xib" />
@@ -110,5 +123,9 @@
       <Project>{76601533-2890-438A-9FCF-E79191F4F6B2}</Project>
       <Name>WaveBox.Client-iOS</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="wavebox.db" />
+    <BundleResource Include="Broken.mp3" />
   </ItemGroup>
 </Project>
