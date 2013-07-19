@@ -15,6 +15,15 @@ namespace WaveBox.Client.AudioEngine
 		event PlayerEventHandler SongEndedFinishedIsPlaying;
 		event PlayerEventHandler SongFailedToPlay;
 
+		// Callbacks
+		void StreamCrossfadeCallback(int handle, int channel, int data, IntPtr user);
+		void StreamEndCallback(int handle, int channel, int data, IntPtr user);
+		void FileCloseProc(IntPtr user);
+		long FileLenProc(IntPtr user);
+		int FileReadProc(IntPtr buffer, int length, IntPtr user);
+		bool FileSeekProc(long offset, IntPtr user);
+		int StreamProc(int handle, IntPtr buffer, int length, IntPtr user);
+
 		IBassGaplessPlayerDataSource DataSource { get; set; }
 		bool IsPlaying { get; }
 		bool IsInitialBuffering { get; set; }
