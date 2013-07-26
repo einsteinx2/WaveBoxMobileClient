@@ -11,7 +11,7 @@ using WaveBox.Client.AudioEngine;
 using WaveBox.Client.ServerInteraction;
 using WaveBox.Client;
 
-namespace Wave.iOS
+namespace Wave.iOS.ViewControllers
 {
 	public partial class MainViewController : UIViewController
 	{
@@ -19,6 +19,7 @@ namespace Wave.iOS
 		IBassGaplessPlayer player = Injection.Kernel.Get<IBassGaplessPlayer>();
 		IClientDatabase clientDatabase = Injection.Kernel.Get<IClientDatabase>();
 		IClientSettings clientSettings = Injection.Kernel.Get<IClientSettings>();
+
 
 		UIButton button;
 		UILabel label;

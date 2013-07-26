@@ -48,7 +48,8 @@
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer: Benjamin Baron (V4H8F256PU)</CodesignKey>
     <MtouchI18n />
-    <MtouchArch>ARMv7</MtouchArch>
+    <MtouchArch>ARMv7, ARMv7s</MtouchArch>
+    <IpaPackageName />
     <CodesignProvision>EED2128F-D6B4-4256-93A5-2E239BF6687B</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
@@ -86,17 +87,18 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
-    <Reference Include="Ninject">
-      <HintPath>..\WaveBox.Client-iOS\lib\Ninject.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>lib\Ninject.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="ViewControllers\" />
     <Folder Include="native_libs\" />
+    <Folder Include="ViewControllers\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -113,6 +115,8 @@
     <Compile Include="Database.cs" />
     <Compile Include="iOSModule.cs" />
     <Compile Include="iOSPlatformSettings.cs" />
+    <Compile Include="ViewControllers\WebViewController.cs" />
+    <Compile Include="ViewControllers\Interfaces\IWebViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="ViewControllers\MainViewController_iPad.xib" />

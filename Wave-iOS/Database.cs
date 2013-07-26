@@ -83,7 +83,7 @@ namespace Wave.iOS
 
 		public async Task ReplaceDatabaseWithDownloaded()
 		{
-			await mainPool.CloseAllConnections(delegate {
+			mainPool.CloseAllConnections(delegate {
 				Console.WriteLine("Moving database, main exists: " + File.Exists(DatabasePath) + " download exists: " + File.Exists(DatabaseDownloadPath));
 				File.Delete(DatabasePath);
 				File.Move(DatabaseDownloadPath, DatabasePath);

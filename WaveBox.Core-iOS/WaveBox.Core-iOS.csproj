@@ -35,25 +35,19 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
-    <Reference Include="Cirrious.MvvmCross.Plugins.Sqlite">
-      <HintPath>..\..\WaveBox\WaveBox.Core\lib\Cirrious.MvvmCross.Plugins.Sqlite.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross">
-      <HintPath>..\..\WaveBox\WaveBox.Core\lib\Cirrious.MvvmCross.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows">
-      <HintPath>..\..\WaveBox\WaveBox.Core\lib\System.Windows.dll</HintPath>
-    </Reference>
-    <Reference Include="taglib-sharp">
-      <HintPath>..\..\WaveBox\WaveBox.Core\lib\taglib-sharp.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="Mono.Security" />
-    <Reference Include="Ninject">
-      <HintPath>..\WaveBox.Client-iOS\lib\Ninject.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Wave-iOS\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\Wave-iOS\lib\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.Sqlite">
+      <HintPath>..\Wave-iOS\lib\Cirrious.MvvmCross.Plugins.Sqlite.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross">
+      <HintPath>..\Wave-iOS\lib\Cirrious.MvvmCross.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

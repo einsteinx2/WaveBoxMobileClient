@@ -10,27 +10,18 @@ using WaveBox.Client.AudioEngine;
 using Ninject;
 using WaveBox.Core.Model;
 using WaveBox.Core.Model.Repository;
+using Wave.iOS.ViewControllers;
 
 namespace Wave.iOS
 {
-	// The UIApplicationDelegate for the application. This class is responsible for launching the 
-	// User Interface of the application, as well as listening (and optionally responding) to 
-	// application events from iOS.
 	[Register ("AppDelegate")]
 	public partial class AppDelegate : UIApplicationDelegate, IBassGaplessPlayerDataSource
 	{
 		IKernel kernel = Injection.Kernel;
 
-		// class-level declarations
 		UIWindow window;
-		MainViewController viewController;
-		//
-		// This method is invoked when the application has loaded and is ready to run. In this 
-		// method you should instantiate the window, load the UI into it and then make the window
-		// visible.
-		//
-		// You have 17 seconds to return from this method, or iOS will terminate your application.
-		//
+		WebViewController webController;
+
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
 			// Initialize the Ninject kernel
@@ -40,9 +31,14 @@ namespace Wave.iOS
 			Injection.Kernel.Load(modules);
 
 			IClientSettings clientSettings = kernel.Get<IClientSettings>();
-			clientSettings.ServerUrl = "http://home.benjamm.in:6500";
-			clientSettings.UserName = "test";
-			clientSettings.Password = "test";
+			clientSettings.LoadSettings();
+			if (clientSettings.ServerUrl == null)
+			{
+				Console.WriteLine("Setting server url");
+				clientSettings.ServerUrl = "http://home.benjamm.in:6500";
+				clientSettings.UserName = "test";
+				clientSettings.Password = "test";
+			}
 
 			BassPlaylistCurrentIndex = 0;
 
@@ -52,8 +48,8 @@ namespace Wave.iOS
 
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 			
-			viewController = new MainViewController ();
-			window.RootViewController = viewController;
+			webController = kernel.Get<WebViewController>();
+			window.RootViewController = webController;
 			window.MakeKeyAndVisible ();
 			
 			return true;

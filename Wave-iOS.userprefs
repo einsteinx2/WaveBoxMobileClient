@@ -1,26 +1,36 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone.6.0" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone.6.1" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Wave-iOS/Database.cs">
     <Files>
-      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/LoginLoader.cs" Line="15" Column="10" />
-      <File FileName="Wave-iOS/ViewControllers/MainViewController.cs" Line="52" Column="52" />
-      <File FileName="Wave-iOS/AppDelegate.cs" Line="49" Column="31" />
-      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/DatabaseSync.cs" Line="13" Column="85" />
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/Interfaces/IBassGaplessPlayer.cs" Line="8" Column="4" />
-      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/Interfaces/ILoginLoader.cs" Line="8" Column="42" />
-      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/Interfaces/IDatabaseSyncLoader.cs" Line="8" Column="53" />
-      <File FileName="WaveBox.Client-iOS/src/Injection/Interfaces/IClientDatabase.cs" Line="8" Column="30" />
-      <File FileName="WaveBox.Client-iOS/src/Injection/ClientModule.cs" Line="1" Column="1" />
-      <File FileName="Wave-iOS/iOSModule.cs" Line="13" Column="56" />
-      <File FileName="Wave-iOS/Database.cs" Line="57" Column="4" />
-      <File FileName="../WaveBox/WaveBox.Core/src/Injection/Interfaces/IDatabase.cs" Line="17" Column="3" />
+      <File FileName="Wave-iOS/Database.cs" Line="86" Column="4" />
+      <File FileName="../WaveBox/WaveBox.Core/src/SQLiteConnectionPool.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/ViewControllers/MainViewController.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/AppDelegate.cs" Line="1" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/Interfaces/IDatabaseSyncLoader.cs" Line="1" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/DatabaseSync.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/Main.cs" Line="1" Column="1" />
+      <File FileName="../../../../Developer/MonoTouch/Source/mono/mcs/class/corlib/System.Runtime.CompilerServices/AsyncTaskMethodBuilder.cs" Line="1" Column="1" />
+      <File FileName="../../../../Developer/MonoTouch/Source/mono/mcs/class/corlib/System.Runtime.CompilerServices/TaskAwaiter.cs" Line="1" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/Settings/Interfaces/IClientSettings.cs" Line="1" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/Settings/ClientSettings.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/ViewControllers/WebViewController.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/ViewControllers/Interfaces/IWebViewController.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/iOSModule.cs" Line="1" Column="1" />
+      <File FileName="../WaveBox/WaveBox.Core/src/BaseClasses.cs" Line="1" Column="1" />
+      <File FileName="../WaveBox/WaveBox.Core/src/Model/Art.cs" Line="1" Column="1" />
+      <File FileName="../WaveBox/WaveBox.Core/src/Model/Session.cs" Line="1" Column="1" />
+      <File FileName="../WaveBox/WaveBox.Core/src/Model/Song.cs" Line="1" Column="1" />
+      <File FileName="../WaveBox/WaveBox.Core/src/Model/Stat.cs" Line="10" Column="1" />
+      <File FileName="../WaveBox/WaveBox.Core/src/Model/Video.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Wave.iOS" expanded="True">
             <Node name="References" expanded="True" />
-            <Node name="ViewControllers" expanded="True" />
+            <Node name="ViewControllers" expanded="True">
+              <Node name="Interfaces" expanded="True" />
+            </Node>
             <Node name="Database.cs" selected="True" />
           </Node>
           <Node name="WaveBox.Client-iOS" expanded="True">
@@ -40,10 +50,12 @@
             </Node>
           </Node>
           <Node name="WaveBox.Core-iOS" expanded="True">
+            <Node name="References" expanded="True" />
             <Node name="src" expanded="True">
               <Node name="Injection" expanded="True">
                 <Node name="Interfaces" expanded="True" />
               </Node>
+              <Node name="Model" expanded="True" />
             </Node>
           </Node>
         </State>

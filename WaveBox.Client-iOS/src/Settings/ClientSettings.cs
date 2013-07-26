@@ -1,4 +1,6 @@
 using System;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace WaveBox.Client
 {
@@ -16,13 +18,7 @@ namespace WaveBox.Client
 
 		public int LastQueryId { get; set; }
 
-		public string DownloadsPath 
-		{ 
-			get 
-			{ 
-				return clientPlatformSettings.DocumentsPath + clientPlatformSettings.PathSeparator + "downloads";
-			}
-		}
+		public string DownloadsPath { get { return Path.Combine(clientPlatformSettings.DocumentsPath, "downloads"); } }
 
 		private readonly IClientPlatformSettings clientPlatformSettings;
 
@@ -34,14 +30,25 @@ namespace WaveBox.Client
 			this.clientPlatformSettings = clientPlatformSettings;
 		}
 
-		void SaveSettings()
+		public void SaveSettings()
 		{
 			// For now just dump everything into a json file, later we'll better secure the login info
+			string json = JsonConvert.SerializeObject(this);
+			File.WriteAllText(Path.Combine(clientPlatformSettings.DocumentsPath, "settings.json"), json);
 		}
 
-		void LoadSettings()
+		public void LoadSettings()
 		{
-
+			string path = Path.Combine(clientPlatformSettings.DocumentsPath, "settings.json");
+			if (File.Exists(path))
+			{
+				try
+				{
+					string json = File.ReadAllText(path);
+					JsonConvert.PopulateObject(json, this, new JsonSerializerSettings());
+				}
+				catch {}
+			}
 		}
 	}
 }
