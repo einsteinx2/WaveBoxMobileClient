@@ -41,16 +41,24 @@
     <Reference Include="Ninject">
       <HintPath>lib\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Wave-iOS\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="src\" />
     <Folder Include="src\AudioEngine\" />
-    <Folder Include="src\StreamManager\" />
     <Folder Include="src\AudioEngine\Equalizer\" />
     <Folder Include="src\Settings\" />
     <Folder Include="src\AudioEngine\Interfaces\" />
     <Folder Include="src\Injection\" />
+    <Folder Include="src\Settings\Interfaces\" />
+    <Folder Include="src\ServerInteraction\" />
+    <Folder Include="src\ServerInteraction\Exceptions\" />
+    <Folder Include="src\ServerInteraction\Interfaces\" />
+    <Folder Include="src\Injection\Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -66,15 +74,28 @@
     <Compile Include="src\AudioEngine\RingBuffer.cs" />
     <Compile Include="src\AudioEngine\SongExtension.cs" />
     <Compile Include="src\AudioEngine\AudioEngine.cs" />
-    <Compile Include="src\PlayQueue.cs" />
-    <Compile Include="src\Settings\IClientSettings.cs" />
     <Compile Include="src\Settings\ClientSettings.cs" />
     <Compile Include="src\AudioEngine\Interfaces\IBassGaplessPlayer.cs" />
     <Compile Include="src\AudioEngine\Interfaces\IAudioEngine.cs" />
     <Compile Include="src\AudioEngine\Interfaces\IBassWrapper.cs" />
-    <Compile Include="src\IPlayQueue.cs" />
     <Compile Include="src\AudioEngine\PlayerEventArgs.cs" />
     <Compile Include="src\Injection\ClientModule.cs" />
     <Compile Include="src\AudioEngine\Interfaces\IBassGaplessPlayerDataSource.cs" />
+    <Compile Include="src\AudioEngine\PlayQueue.cs" />
+    <Compile Include="src\AudioEngine\Interfaces\IPlayQueue.cs" />
+    <Compile Include="src\Settings\Interfaces\IClientSettings.cs" />
+    <Compile Include="src\Settings\Interfaces\IClientPlatformSettings.cs" />
+    <Compile Include="src\ServerInteraction\DatabaseSync.cs" />
+    <Compile Include="src\ServerInteraction\Exceptions\MissingSessionIdException.cs" />
+    <Compile Include="src\ServerInteraction\DatabaseSyncEventArgs.cs" />
+    <Compile Include="src\ServerInteraction\DatabaseQuery.cs" />
+    <Compile Include="src\ServerInteraction\Interfaces\IDatabaseSyncLoader.cs" />
+    <Compile Include="src\ServerInteraction\Exceptions\MissingApiParameterException.cs" />
+    <Compile Include="src\ServerInteraction\Exceptions\MissingServerUrlException.cs" />
+    <Compile Include="src\ServerInteraction\Exceptions\ServerInteractionException.cs" />
+    <Compile Include="src\ServerInteraction\Interfaces\ILoginLoader.cs" />
+    <Compile Include="src\ServerInteraction\LoginLoader.cs" />
+    <Compile Include="src\ServerInteraction\LoginEventArgs.cs" />
+    <Compile Include="src\Injection\Interfaces\IClientDatabase.cs" />
   </ItemGroup>
 </Project>

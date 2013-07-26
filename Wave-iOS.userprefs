@@ -1,35 +1,49 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone.6.0" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Wave-iOS/ViewControllers/MainViewController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Wave-iOS/Database.cs">
     <Files>
-      <File FileName="Wave-iOS/AppDelegate.cs" Line="1" Column="1" />
-      <File FileName="Wave-iOS/ViewControllers/MainViewController.cs" Line="65" Column="18" />
-      <File FileName="Wave-iOS/Database.cs" Line="1" Column="1" />
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/Interfaces/IBassGaplessPlayer.cs" Line="18" Column="15" />
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/AudioEngine.cs" Line="1" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/LoginLoader.cs" Line="15" Column="10" />
+      <File FileName="Wave-iOS/ViewControllers/MainViewController.cs" Line="52" Column="52" />
+      <File FileName="Wave-iOS/AppDelegate.cs" Line="49" Column="31" />
+      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/DatabaseSync.cs" Line="13" Column="85" />
+      <File FileName="WaveBox.Client-iOS/src/AudioEngine/Interfaces/IBassGaplessPlayer.cs" Line="8" Column="4" />
+      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/Interfaces/ILoginLoader.cs" Line="8" Column="42" />
+      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/Interfaces/IDatabaseSyncLoader.cs" Line="8" Column="53" />
+      <File FileName="WaveBox.Client-iOS/src/Injection/Interfaces/IClientDatabase.cs" Line="8" Column="30" />
       <File FileName="WaveBox.Client-iOS/src/Injection/ClientModule.cs" Line="1" Column="1" />
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/BassGaplessPlayer.cs" Line="673" Column="12" />
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/SongExtension.cs" Line="1" Column="1" />
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/BassStream.cs" Line="1" Column="1" />
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/RingBuffer.cs" Line="1" Column="1" />
-      <File FileName="WaveBox.Core-iOS/Logger.cs" Line="216" Column="1" />
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/Interfaces/IBassGaplessPlayerDataSource.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/iOSModule.cs" Line="13" Column="56" />
+      <File FileName="Wave-iOS/Database.cs" Line="57" Column="4" />
+      <File FileName="../WaveBox/WaveBox.Core/src/Injection/Interfaces/IDatabase.cs" Line="17" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="Wave.iOS" expanded="True">
+            <Node name="References" expanded="True" />
+            <Node name="ViewControllers" expanded="True" />
+            <Node name="Database.cs" selected="True" />
+          </Node>
           <Node name="WaveBox.Client-iOS" expanded="True">
             <Node name="References" expanded="True" />
             <Node name="src" expanded="True">
-              <Node name="AudioEngine" expanded="True">
+              <Node name="AudioEngine" expanded="True" />
+              <Node name="Injection" expanded="True">
+                <Node name="Interfaces" expanded="True" />
+              </Node>
+              <Node name="ServerInteraction" expanded="True">
+                <Node name="Exceptions" expanded="True" />
+                <Node name="Interfaces" expanded="True" />
+              </Node>
+              <Node name="Settings" expanded="True">
                 <Node name="Interfaces" expanded="True" />
               </Node>
             </Node>
           </Node>
-          <Node name="WaveBox.Core-iOS" expanded="True" />
-          <Node name="Wave-iOS" expanded="True">
-            <Node name="ViewControllers" expanded="True">
-              <Node name="MainViewController.cs" selected="True" />
+          <Node name="WaveBox.Core-iOS" expanded="True">
+            <Node name="src" expanded="True">
+              <Node name="Injection" expanded="True">
+                <Node name="Interfaces" expanded="True" />
+              </Node>
             </Node>
           </Node>
         </State>
@@ -46,9 +60,7 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/bbaron/workspacew/Wave-iOS/Wave-iOS/ViewControllers/MainViewController.cs" line="16" column="23" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

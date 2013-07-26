@@ -1,6 +1,6 @@
 using System;
 using System.Timers;
-using WaveBox.Model;
+using WaveBox.Core.Model;
 
 namespace WaveBox.Client.AudioEngine
 {

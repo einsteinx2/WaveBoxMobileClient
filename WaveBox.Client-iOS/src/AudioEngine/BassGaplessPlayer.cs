@@ -1,12 +1,12 @@
 using System;
 using System.Threading;
 using System.Collections.Generic;
-using WaveBox.Model;
+using WaveBox.Core.Model;
+using WaveBox.Core;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Mix;
 using System.Runtime.InteropServices;
 using System.IO;
-using WaveBox.Static;
 using Ninject;
 using System.Timers;
 using MonoTouch;

@@ -5,17 +5,22 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Ninject.Modules;
 using WaveBox.Client;
-using WaveBox.Static;
-using WaveBox.Core.Injection;
+using WaveBox.Core;
+using WaveBox.Client.AudioEngine;
+using Ninject;
+using WaveBox.Core.Model;
+using WaveBox.Core.Model.Repository;
 
-namespace WaveiOS
+namespace Wave.iOS
 {
 	// The UIApplicationDelegate for the application. This class is responsible for launching the 
 	// User Interface of the application, as well as listening (and optionally responding) to 
 	// application events from iOS.
 	[Register ("AppDelegate")]
-	public partial class AppDelegate : UIApplicationDelegate
+	public partial class AppDelegate : UIApplicationDelegate, IBassGaplessPlayerDataSource
 	{
+		IKernel kernel = Injection.Kernel;
+
 		// class-level declarations
 		UIWindow window;
 		MainViewController viewController;
@@ -31,8 +36,19 @@ namespace WaveiOS
 			// Initialize the Ninject kernel
 			List<INinjectModule> modules = new List<INinjectModule>();
 			modules.Add(new ClientModule());
+			modules.Add(new iOSModule());
 			Injection.Kernel.Load(modules);
-			Injection.Kernel.Bind<IDatabase>().To<Database>().InSingletonScope();
+
+			IClientSettings clientSettings = kernel.Get<IClientSettings>();
+			clientSettings.ServerUrl = "http://home.benjamm.in:6500";
+			clientSettings.UserName = "test";
+			clientSettings.Password = "test";
+
+			BassPlaylistCurrentIndex = 0;
+
+			IBassGaplessPlayer player = kernel.Get<IBassGaplessPlayer>();
+			player.AudioEngine = kernel.Get<IAudioEngine>();
+			player.DataSource = this;
 
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 			
@@ -42,6 +58,12 @@ namespace WaveiOS
 			
 			return true;
 		}
+
+		public int BassPlaylistCount { get { return 1; } }
+		public int BassPlaylistCurrentIndex { get; set; }
+		public Song BassPlaylistCurrentSong { get { return Injection.Kernel.Get<ISongRepository>().SongForId(6815); } }
+		public Song BassPlaylistNextSong { get { return null; } }
+		public bool BassIsOfflineMode { get { return false; } }
 	}
 }
 

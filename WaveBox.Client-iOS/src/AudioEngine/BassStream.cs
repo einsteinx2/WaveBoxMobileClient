@@ -1,5 +1,5 @@
 using System;
-using WaveBox.Model;
+using WaveBox.Core.Model;
 using System.IO;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Mix;

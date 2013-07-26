@@ -5,20 +5,22 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using Cirrious.MvvmCross.Plugins.Sqlite;
-using WaveBox.Core.Injection;
-using WaveBox.Static;
 using WaveBox;
+using WaveBox.Client;
+using WaveBox.Core;
+using WaveBox.Core.Model;
+using System.Threading.Tasks;
 
-namespace WaveiOS
+namespace Wave.iOS
 {
-	public class Database : IDatabase
+	public class Database : IClientDatabase
 	{
 		private static readonly string DATABASE_FILE_NAME = "wavebox.db";
-		public string DatabaseTemplatePath() { throw new NotImplementedException(); }
-		public string DatabasePath() { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), DATABASE_FILE_NAME); }
+		public string DatabaseTemplatePath { get { throw new NotImplementedException(); } }
+		public string DatabasePath { get { return Path.Combine(clientPlatformSettings.DocumentsPath, DATABASE_FILE_NAME); } }
 
-		public string QuerylogTemplatePath() { throw new NotImplementedException(); }
-		public string QuerylogPath() { throw new NotImplementedException(); }
+		public string QuerylogTemplatePath { get { throw new NotImplementedException(); } }
+		public string QuerylogPath { get { throw new NotImplementedException(); } }
 
 		private static readonly object dbBackupLock = new object();
 		public object DbBackupLock { get { return dbBackupLock; } }
@@ -27,9 +29,16 @@ namespace WaveiOS
 		private static readonly int MAX_CONNECTIONS = 100;
 		private SQLiteConnectionPool mainPool;
 
-		public Database()
+		private readonly IClientPlatformSettings clientPlatformSettings;
+
+		public Database(IClientPlatformSettings clientPlatformSettings)
 		{
-			mainPool = new SQLiteConnectionPool(MAX_CONNECTIONS, DatabasePath());
+			if (clientPlatformSettings == null)
+				throw new ArgumentNullException("clientPlatformSettings");
+
+			this.clientPlatformSettings = clientPlatformSettings;
+
+			mainPool = new SQLiteConnectionPool(MAX_CONNECTIONS, DatabasePath);
 		}
 
 		public void DatabaseSetup()
@@ -59,6 +68,27 @@ namespace WaveiOS
 		public long LastQueryLogId()
 		{
 			throw new NotImplementedException();
+		}
+
+		public List<QueryLog> QueryLogsSinceId(int queryLogId)
+		{
+			throw new NotImplementedException();
+		}
+
+		/*
+		 * IClientDatabase
+		 */
+
+		public string DatabaseDownloadPath { get { return DatabasePath + ".temp"; } }
+
+		public async Task ReplaceDatabaseWithDownloaded()
+		{
+			await mainPool.CloseAllConnections(delegate {
+				Console.WriteLine("Moving database, main exists: " + File.Exists(DatabasePath) + " download exists: " + File.Exists(DatabaseDownloadPath));
+				File.Delete(DatabasePath);
+				File.Move(DatabaseDownloadPath, DatabasePath);
+				Console.WriteLine("Moved database, main exists: " + File.Exists(DatabasePath) + " download exists: " + File.Exists(DatabaseDownloadPath));
+			});
 		}
 	}
 }
