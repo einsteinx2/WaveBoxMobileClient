@@ -1,32 +1,62 @@
 using System;
 using WaveBox.Core.Model;
+using System.Collections.Generic;
 
 namespace WaveBox.Client.AudioEngine
 {
-	public enum PlayQueueRepeatMode
+	public enum RepeatMode
 	{
-		Normal,
-		RepeatOne,
-		RepeatAll
+		None,
+		One,
+		All
 	}
-
+	
 	public interface IPlayQueue
 	{
-		Song CurrentSong { get; }
+		event PlayQueueEventHandler IndexChanged;
+		event PlayQueueEventHandler ShuffleToggled;
+		event PlayQueueEventHandler OrderChanged;
 
-		Song NextSong { get; }
 
-		int CurrentIndex { get; set; }
+		List<IMediaItem> PlayQueueList { get; }
+		List<IMediaItem> ShufflePlayQueueList { get; }
+		List<IMediaItem> CurrentPlayQueueList { get; }
 
-		int NextIndex { get; }
+		bool IsShuffle { get; set; }
+		RepeatMode RepeatMode { get; set; }
 
-		int PrevIndex { get; }
+		void SavePlayQueue();
+		void SaveShufflePlayQueue();
+		void SaveCurrentPlayQueue();
+		void LoadPlayQueues();
 
+		void ResetPlayQueue();
+		void ResetShufflePlayQueue();
+		void ResetBothPlayQueues();
+
+		void RemoveItemsAtIndexes(List<uint> indexes);
+		void RemoveItemAtIndex(uint index);
+		IMediaItem ItemForIndex(uint index);
+		int IndexForItem(IMediaItem item);
+		IMediaItem CurrentItem { get; }
+		IMediaItem NextItem { get; }
+		uint Index { get; set; }
+		uint ShuffleIndex { get; set; }
+		uint CurrentIndex { get; set; }
+		uint NextIndex { get; }
+		uint PrevIndex { get; }
+		uint IndexForOffsetFromCurrentIndex(int offset);
+		uint Count { get; }
+		uint Duration { get; }
+		uint decrementIndex();
+		uint IncrementIndex();
 		bool IsAnySongCached { get; }
-
-		PlayQueueRepeatMode RepeatMode { get; set; }
-
-		void IncrementIndex();
+		void ShuffleToggle(bool keepCurrentPlayingSong);
+		void MoveSong(uint fromIndex, uint toIndex);
+		void AddItems(List<IMediaItem> items);
+		void AddItem(IMediaItem item);
+		void AddItemsNext(List<IMediaItem> items);
+		void AddItemNext(IMediaItem item);
 	}
 }
 

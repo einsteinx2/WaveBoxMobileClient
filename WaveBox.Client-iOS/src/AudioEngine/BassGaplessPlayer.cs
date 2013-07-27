@@ -564,7 +564,7 @@ namespace WaveBox.Client.AudioEngine
 			}
 
 			// Get the next song in the queue
-			PrepareNextSongStream(playQueue.NextSong, false);
+			PrepareNextSongStream(playQueue.NextItem as Song, false);
 
 			Song endedSong = userInfo.MySong;
 

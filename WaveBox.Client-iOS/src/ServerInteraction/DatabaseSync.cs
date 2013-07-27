@@ -3,11 +3,13 @@ using WaveBox.Core;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace WaveBox.Client.ServerInteraction
 {
 	public class DatabaseSyncLoader : IDatabaseSyncLoader
 	{
+
 		public event DatabaseSyncEventHandler DatabaseDownloaded;
 
 		public bool isDatabaseExist { get { return File.Exists(clientDatabase.DatabasePath); } }
@@ -28,10 +30,10 @@ namespace WaveBox.Client.ServerInteraction
 
 		public async Task DownloadDatabase()
 		{
-			await DownloadDatabase(clientSettings.ServerUrl, clientSettings.SessionId);
+			await DownloadDatabase(clientSettings.ServerUrl, clientSettings.SessionId, clientDatabase.DatabaseDownloadPath);
 		}
 
-		public async Task DownloadDatabase(string serverUrl, string sessionId)
+		public async Task DownloadDatabase(string serverUrl, string sessionId, string downloadPath)
 		{
 			if (serverUrl == null)
 			{
@@ -44,31 +46,22 @@ namespace WaveBox.Client.ServerInteraction
 			}
 
 			// Initiate the Api call
-			HttpClient client = new HttpClient();
-			HttpResponseMessage response = await client.GetAsync(clientSettings.ServerUrl + "/api/database?s=" + clientSettings.SessionId);
-
-			// Check that response was successful or throw exception
-			response.EnsureSuccessStatusCode();
+			WebClient client = new WebClient();
+			client.DownloadProgressChanged += delegate(object sender, DownloadProgressChangedEventArgs e) {
+				Console.WriteLine("Download progress changed to bytes received: " + e.BytesReceived + " progress percent: " + e.ProgressPercentage);
+			};
+			client.DownloadFileCompleted += delegate(object sender, System.ComponentModel.AsyncCompletedEventArgs e) {
+				Console.WriteLine("Download file completed, error: ", e.Error);
+			};
+			await client.DownloadFileTaskAsync(serverUrl + "/api/database?s=" + sessionId, downloadPath);
 
 			// Retreive the last query id
 			int? lastQueryId = null;
-			if (response.Headers.Contains("WaveBox-LastQueryId"))
+			string idString = client.ResponseHeaders.Get("WaveBox-LastQueryId");
+			int id;
+			if (int.TryParse(idString, out id))
 			{
-				foreach (string value in response.Headers.GetValues("WaveBox-LastQueryId"))
-				{
-					int id;
-					if (int.TryParse(value, out id))
-					{
-						lastQueryId = id;
-						break;
-					}
-				}
-			}
-
-			// Save the file
-			using (FileStream stream = new FileStream(clientDatabase.DatabaseDownloadPath, FileMode.Create))
-			{
-				await response.Content.CopyToAsync(stream);
+				lastQueryId = id;
 			}
 
 			// Inform any delegates

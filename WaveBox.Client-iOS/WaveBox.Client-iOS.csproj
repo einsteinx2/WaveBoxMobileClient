@@ -97,5 +97,10 @@
     <Compile Include="src\ServerInteraction\LoginLoader.cs" />
     <Compile Include="src\ServerInteraction\LoginEventArgs.cs" />
     <Compile Include="src\Injection\Interfaces\IClientDatabase.cs" />
+    <Compile Include="src\ServerInteraction\DownloadQueue.cs" />
+    <Compile Include="src\ServerInteraction\DownloadTask.cs" />
+    <Compile Include="src\ServerInteraction\DownloadEventArgs.cs" />
+    <Compile Include="src\ServerInteraction\Interfaces\IDownloadQueue.cs" />
+    <Compile Include="src\AudioEngine\PlayQueueEventArgs.cs" />
   </ItemGroup>
 </Project>

@@ -21,6 +21,7 @@ namespace Wave.iOS
 
 		UIWindow window;
 		WebViewController webController;
+		MainViewController mainController;
 
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
@@ -35,7 +36,7 @@ namespace Wave.iOS
 			if (clientSettings.ServerUrl == null)
 			{
 				Console.WriteLine("Setting server url");
-				clientSettings.ServerUrl = "http://home.benjamm.in:6500";
+				clientSettings.ServerUrl = "http://localhost:6500";//"http://home.benjamm.in:6500";
 				clientSettings.UserName = "test";
 				clientSettings.Password = "test";
 			}
@@ -49,7 +50,8 @@ namespace Wave.iOS
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 			
 			webController = kernel.Get<WebViewController>();
-			window.RootViewController = webController;
+			mainController = new MainViewController();
+			window.RootViewController = mainController;//webController;
 			window.MakeKeyAndVisible ();
 			
 			return true;

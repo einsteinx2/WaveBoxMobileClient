@@ -134,7 +134,7 @@ namespace WaveBox.Client.AudioEngine
 		Timer startSongDelayTimer = null;
 		public void StartSongAtOffsetInBytesOrSeconds(long? bytes, double? seconds, bool delay)
 		{
-			Song currentSong = playQueue.CurrentSong;
+			Song currentSong = playQueue.CurrentItem as Song;
 			if (currentSong == null)
 				return;
 
@@ -300,12 +300,12 @@ namespace WaveBox.Client.AudioEngine
 			StartSongAtOffsetInBytesOrSeconds(0, 0, false);
 		}
 
-		public void PlaySongAtPosition(int position)
+		public void PlaySongAtPosition(uint position)
 		{
 			PlaySongAtPosition(position, false);
 		}
 
-		public void PlaySongAtPosition(int position, bool delay)
+		public void PlaySongAtPosition(uint position, bool delay)
 		{
 			//DLog(@"before stop called, progress: %f   duration: %f", AudioEngine.player.progress, AudioEngine.player.currentStream.song.duration.floatValue);
 
@@ -317,7 +317,7 @@ namespace WaveBox.Client.AudioEngine
 
 			playQueue.CurrentIndex = position;
 
-			playQueue.RepeatMode = PlayQueueRepeatMode.Normal;
+			playQueue.RepeatMode = RepeatMode.None;
 
 			//[streamManagerS removeAllStreamsExceptForSong:playlistS.currentSong];
 
@@ -333,7 +333,7 @@ namespace WaveBox.Client.AudioEngine
 			}
 			else
 			{
-				playQueue.RepeatMode = PlayQueueRepeatMode.Normal;
+				playQueue.RepeatMode = RepeatMode.None;
 
 				// Within first 10 seconds, go to previous song
 				PlaySongAtPosition(playQueue.PrevIndex, true);
@@ -342,16 +342,16 @@ namespace WaveBox.Client.AudioEngine
 
 		public void NextSong()
 		{
-			playQueue.RepeatMode = PlayQueueRepeatMode.Normal;
+			playQueue.RepeatMode = RepeatMode.None;
 
 			PlaySongAtPosition(playQueue.NextIndex, true);
 		}
 
 		public void ResumeSong()
 		{
-			if (logger.IsDebugEnabled) logger.Debug("isRecover: %@  currentSong: %@", clientSettings.IsRecover, playQueue.CurrentSong);
+			if (logger.IsDebugEnabled) logger.Debug("isRecover: %@  currentItem: %@", clientSettings.IsRecover, playQueue.CurrentItem);
 
-			if (playQueue.CurrentSong != null && clientSettings.IsRecover)
+			if (playQueue.CurrentItem != null && clientSettings.IsRecover)
 			{
 				StartSongAtOffsetInBytesOrSeconds(clientSettings.RecoverByteOffset, clientSettings.RecoverSeekTime, false);
 			}

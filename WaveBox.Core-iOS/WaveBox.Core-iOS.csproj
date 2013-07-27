@@ -225,8 +225,11 @@
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\DelayedOperationQueue.cs">
       <Link>src\OperationQueue\DelayedOperationQueue.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\IDelayedOperation.cs">
-      <Link>src\OperationQueue\IDelayedOperation.cs</Link>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\Interfaces\IDelayedOperation.cs">
+      <Link>src\OperationQueue\Interfaces\IDelayedOperation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\Interfaces\IOperationQueue.cs">
+      <Link>src\OperationQueue\Interfaces\IOperationQueue.cs</Link>
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\AlbumRepository.cs">
       <Link>src\Repository\AlbumRepository.cs</Link>
@@ -300,8 +303,16 @@
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IVideoRepository.cs">
       <Link>src\Repository\Interfaces\IVideoRepository.cs</Link>
     </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Static\ThreadSafeRandom.cs">
+      <Link>src\Static\ThreadSafeRandom.cs</Link>
+    </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Static\Utility.cs">
       <Link>src\Static\Utility.cs</Link>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\.DS_Store">
+      <Link>src\OperationQueue\.DS_Store</Link>
+    </None>
   </ItemGroup>
 </Project>
