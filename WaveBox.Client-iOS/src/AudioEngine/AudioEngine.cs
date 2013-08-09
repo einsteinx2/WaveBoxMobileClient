@@ -1,6 +1,8 @@
 using System;
 using System.Timers;
 using WaveBox.Core.Model;
+using WaveBox.Client.ServerInteraction;
+using System.Collections.Generic;
 
 namespace WaveBox.Client.AudioEngine
 {
@@ -12,9 +14,12 @@ namespace WaveBox.Client.AudioEngine
 		private readonly IPlayQueue playQueue;
 		private readonly IBassWrapper bassWrapper;
 		private readonly IClientSettings clientSettings;
+		private readonly IDownloadQueue downloadQueue;
 		//private bool shouldResumeFromInterruption;
 
-		public AudioEngine(IBassGaplessPlayer player, IPlayQueue playQueue, IBassWrapper bassWrapper, IClientSettings clientSettings)
+		private IList<int> startedItemIds = new List<int>();
+
+		public AudioEngine(IBassGaplessPlayer player, IPlayQueue playQueue, IBassWrapper bassWrapper, IClientSettings clientSettings, IDownloadQueue downloadQueue)
 		{
 			if (player == null)
 				throw new ArgumentNullException("player");
@@ -24,12 +29,59 @@ namespace WaveBox.Client.AudioEngine
 				throw new ArgumentNullException("bassWrapper");
 			if (clientSettings == null)
 				throw new ArgumentNullException("clientSettings");
+			if (downloadQueue == null)
+				throw new ArgumentNullException("downloadQueue");
 
 			player.AudioEngine = (IAudioEngine)this;
 			this.player = player;
 			this.playQueue = playQueue;
 			this.bassWrapper = bassWrapper;
 			this.clientSettings = clientSettings;
+			this.downloadQueue = downloadQueue;
+
+			// Register the progress changed delegate to know when to start streams
+			this.downloadQueue.DownloadProgressChanged += new DownloadEventHandler(DownloadProgressChanged);
+		}
+
+		private void DownloadProgressChanged(object sender, DownloadEventArgs e)
+		{
+			// If we've downloaded enough, start the player
+			if (e.BytesReceived > 50 * 1024)
+			{
+				bool isStarted = false;
+				lock (startedItemIds)
+				{
+					isStarted = startedItemIds.Contains((int)e.MediaItem.ItemId);
+				}
+
+				if (!isStarted)
+				{
+					if (e.MediaItem.Equals(playQueue.CurrentItem))
+					{
+						try
+						{
+							StartSong();
+						}
+						catch (Exception ex)
+						{
+							Console.WriteLine("Exception starting song " + e.MediaItem + ": " + ex);
+						}
+					}
+					else if (e.MediaItem.Equals(playQueue.NextItem))
+					{
+						try
+						{
+							player.PrepareNextSongStream(e.MediaItem as Song, false);
+						}
+						catch (Exception ex)
+						{
+							Console.WriteLine("Exception preparing next song " + e.MediaItem + ": " + ex);
+						}
+					}
+
+					startedItemIds.Add((int)e.MediaItem.ItemId);
+				}
+			}
 		}
 
 		/*+ (void)setup
@@ -127,6 +179,11 @@ namespace WaveBox.Client.AudioEngine
 		{
 			player.Stop();
 
+			lock (startedItemIds)
+			{
+				startedItemIds.Clear();
+			}
+
 			// Stop any loading spinners
 			//[NSNotificationCenter postNotificationToMainThreadWithName:Notification_BassPlayerStoppedBuffering];
 		}
@@ -180,6 +237,8 @@ namespace WaveBox.Client.AudioEngine
 
 			// If we're loading a song to start, then initialize BASS now or it won't start in the background
 			bassWrapper.BassInit();
+
+			player.StartWithOffsetInBytesOrSeconds(bytes, seconds);
 
 			// Always clear the temp cache
 			//[CacheManager clearTempCache];

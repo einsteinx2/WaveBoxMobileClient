@@ -14,6 +14,8 @@ namespace WaveBox.Client
 		string Password { get; set; }
 		string SessionId { get; set; }
 
+		uint StreamQueueLength { get; set; }
+
 		int LastQueryId { get; set; }
 
 		string DownloadsPath { get; }

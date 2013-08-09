@@ -1,28 +1,47 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone.6.1" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="WaveBox.Client-iOS/src/AudioEngine/PlayQueue.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Wave-iOS/ViewControllers/MainViewController.cs">
     <Files>
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/Interfaces/IPlayQueue.cs" Line="17" Column="3" />
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/PlayQueue.cs" Line="6" Column="30" />
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/PlayQueueEventArgs.cs" Line="9" Column="3" />
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/PlayerEventArgs.cs" Line="1" Column="1" />
-      <File FileName="WaveBox.Client-iOS/src/AudioEngine/Interfaces/IBassGaplessPlayer.cs" Line="8" Column="32" />
+      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/DownloadTask.cs" Line="106" Column="49" />
+      <File FileName="WaveBox.Client-iOS/src/AudioEngine/AudioEngine.cs" Line="74" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/AudioEngine/BassGaplessPlayer.cs" Line="40" Column="52" />
+      <File FileName="Wave-iOS/AppDelegate.cs" Line="65" Column="87" />
+      <File FileName="WaveBox.Client-iOS/src/AudioEngine/Interfaces/IBassGaplessPlayer.cs" Line="31" Column="29" />
+      <File FileName="WaveBox.Client-iOS/src/AudioEngine/SongExtension.cs" Line="36" Column="4" />
+      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/Interfaces/IDownloadQueue.cs" Line="1" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/DownloadQueue.cs" Line="244" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/AudioEngine/BassGaplessPlayerCallbacks.cs" Line="200" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/AudioEngine/Interfaces/IPlayQueue.cs" Line="1" Column="1" />
+      <File FileName="WaveBox.Client-iOS/src/AudioEngine/PlayQueue.cs" Line="187" Column="68" />
+      <File FileName="Wave-iOS/ViewControllers/MainViewController.cs" Line="58" Column="5" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Wave.iOS" expanded="True" />
+          <Node name="Wave.iOS" expanded="True">
+            <Node name="ViewControllers" expanded="True" />
+          </Node>
           <Node name="WaveBox.Client-iOS" expanded="True">
             <Node name="src" expanded="True">
               <Node name="AudioEngine" expanded="True">
                 <Node name="Interfaces" expanded="True" />
-                <Node name="PlayQueue.cs" selected="True" />
+              </Node>
+              <Node name="ServerInteraction" expanded="True">
+                <Node name="Interfaces" expanded="True" />
+              </Node>
+              <Node name="Settings" expanded="True">
+                <Node name="Interfaces" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="WaveBox.Core-iOS" expanded="True">
-            <Node name="References" expanded="True" />
-            <Node name="src" expanded="True" />
+            <Node name="src" expanded="True">
+              <Node name="Extensions" expanded="True" />
+              <Node name="Model" expanded="True" />
+              <Node name="Repository" expanded="True">
+                <Node name="Interfaces" expanded="True" />
+              </Node>
+            </Node>
           </Node>
         </State>
       </Pad>

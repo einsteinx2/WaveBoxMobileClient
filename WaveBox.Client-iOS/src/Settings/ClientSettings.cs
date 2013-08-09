@@ -6,7 +6,7 @@ namespace WaveBox.Client
 {
 	public class ClientSettings : IClientSettings
 	{
-		public bool IsOfflineMode { get { return true; } } 
+		public bool IsOfflineMode { get { return false; } } 
 		public bool IsRecover { get { return false; } } 
 		public long? RecoverByteOffset { get; set; }
 		public double? RecoverSeekTime { get; set; }
@@ -15,6 +15,8 @@ namespace WaveBox.Client
 		public string UserName { get; set; }
 		public string Password { get; set; }
 		public string SessionId { get; set; }
+
+		public uint StreamQueueLength { get; set; }
 
 		public int LastQueryId { get; set; }
 
@@ -28,6 +30,16 @@ namespace WaveBox.Client
 				throw new ArgumentNullException("clientPlatformSettings");
 
 			this.clientPlatformSettings = clientPlatformSettings;
+
+			// For now clear folder every launch
+			if (Directory.Exists(DownloadsPath))
+				Directory.Delete(DownloadsPath, true);
+
+			// Make sure the directory is created
+			if (!Directory.Exists(DownloadsPath))
+			{
+				Directory.CreateDirectory(DownloadsPath);
+			}
 		}
 
 		public void SaveSettings()

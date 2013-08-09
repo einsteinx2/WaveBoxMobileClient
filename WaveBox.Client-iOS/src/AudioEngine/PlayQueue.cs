@@ -1,7 +1,9 @@
 using System;
 using WaveBox.Core.Model;
 using System.Collections.Generic;
-using WaveBox.Core.Static;
+using WaveBox.Core.Extensions;
+using WaveBox.Client.ServerInteraction;
+using System.Linq;
 
 namespace WaveBox.Client.AudioEngine
 {
@@ -11,11 +13,28 @@ namespace WaveBox.Client.AudioEngine
 		public event PlayQueueEventHandler ShuffleToggled;
 		public event PlayQueueEventHandler OrderChanged;
 
-		public List<IMediaItem> PlayQueueList { get; private set; }
-		public List<IMediaItem> ShufflePlayQueueList { get; private set; }
-		public List<IMediaItem> CurrentPlayQueueList { get { return IsShuffle ? ShufflePlayQueueList : PlayQueueList; } }
+		public IList<IMediaItem> PlayQueueList { get; private set; }
+		public IList<IMediaItem> ShufflePlayQueueList { get; private set; }
+		public IList<IMediaItem> CurrentPlayQueueList { get { return IsShuffle ? ShufflePlayQueueList : PlayQueueList; } }
 
 		public bool IsShuffle { get; set; }
+
+		private IDownloadQueue downloadQueue;
+		private IClientSettings clientSettings;
+
+		public PlayQueue(IDownloadQueue downloadQueue, IClientSettings clientSettings)
+		{
+			if (downloadQueue == null)
+				throw new ArgumentNullException("downloadQueue");
+			if (clientSettings == null)
+				throw new ArgumentNullException("clientSettings");
+
+			this.downloadQueue = downloadQueue;
+			this.clientSettings = clientSettings;
+
+			// Load the play queues from disk
+			LoadPlayQueues();
+		}
 
 		private RepeatMode repeatMode;
 		public RepeatMode RepeatMode 
@@ -34,12 +53,9 @@ namespace WaveBox.Client.AudioEngine
 				{
 					repeatMode = value;
 				}
-			}
-		}
 
-		public PlayQueue()
-		{
-			LoadPlayQueues();
+				FillDownloadQueue();
+			}
 		}
 
 		public void SavePlayQueue()
@@ -83,13 +99,12 @@ namespace WaveBox.Client.AudioEngine
 			ResetShufflePlayQueue();
 		}
 
-		public void RemoveItemsAtIndexes(List<uint> indexes)
+		public void RemoveItemsAtIndexes(IList<uint> indexes)
 		{
 			lock (PlayQueueList)
 			{		
 				// Sort the indexes to make sure they're descending
-				indexes.Sort();
-				indexes.Reverse();
+				indexes = new List<uint>(from i in indexes orderby i descending select i);
 
 				if (indexes.Count == Count)
 				{
@@ -124,6 +139,8 @@ namespace WaveBox.Client.AudioEngine
 					IncrementIndex();
 				}
 			}
+
+			FillDownloadQueue();
 		}
 
 		public void RemoveItemAtIndex(uint index)
@@ -167,7 +184,7 @@ namespace WaveBox.Client.AudioEngine
 			{
 				lock (PlayQueueList)
 				{
-					return NextIndex < Count ? CurrentPlayQueueList[(int)CurrentIndex] : null;
+					return NextIndex < Count ? CurrentPlayQueueList[(int)NextIndex] : null;
 				}
 			}
 		}
@@ -334,8 +351,11 @@ namespace WaveBox.Client.AudioEngine
 			lock (PlayQueueList)
 			{
 				CurrentIndex = NextIndex;
-				return CurrentIndex;
 			}
+
+			FillDownloadQueue();
+
+			return CurrentIndex;
 		}
 
 		public bool IsAnySongCached
@@ -383,6 +403,8 @@ namespace WaveBox.Client.AudioEngine
 					ShufflePlayQueueList.Insert(0, currentItem);
 				}
 			}  
+
+			FillDownloadQueue();
 		}
 
 		public void MoveSong(uint fromIndex, uint toIndex)
@@ -414,10 +436,12 @@ namespace WaveBox.Client.AudioEngine
 				}
 			}
 
+			FillDownloadQueue();
+
 			SaveCurrentPlayQueue();
 		}
 
-		public void AddItems(List<IMediaItem> items)
+		public void AddItems(IList<IMediaItem> items)
 		{
 			lock (PlayQueueList)
 			{
@@ -425,6 +449,8 @@ namespace WaveBox.Client.AudioEngine
 				if (IsShuffle)
 					ShufflePlayQueueList.AddRange(items);
 			}
+
+			FillDownloadQueue();
 
 			SaveCurrentPlayQueue();
 			if (IsShuffle)
@@ -436,7 +462,7 @@ namespace WaveBox.Client.AudioEngine
 			AddItems(new List<IMediaItem>() { item }); 
 		}
 
-		public void AddItemsNext(List<IMediaItem> items)
+		public void AddItemsNext(IList<IMediaItem> items)
 		{
 			lock (PlayQueueList)
 			{
@@ -446,6 +472,8 @@ namespace WaveBox.Client.AudioEngine
 					ShufflePlayQueueList.InsertRange((int)NextIndex, items);
 			}
 
+			FillDownloadQueue();
+
 			SaveCurrentPlayQueue();
 			if (IsShuffle)
 				SaveShufflePlayQueue();
@@ -454,6 +482,26 @@ namespace WaveBox.Client.AudioEngine
 		public void AddItemNext(IMediaItem item)
 		{
 			AddItemsNext(new List<IMediaItem>() { item }); 
+		}
+
+		public void FillDownloadQueue()
+		{
+			uint numberOfItems = clientSettings.StreamQueueLength;
+			IList<IMediaItem> itemsToQueue = new List<IMediaItem>();
+
+			lock (PlayQueueList)
+			{
+				for (int i = 0; i < numberOfItems; i++)
+				{
+					IMediaItem item = ItemForIndex(IndexForOffsetFromCurrentIndex(i));
+					if (item != null && !itemsToQueue.Contains(item))
+					{
+						itemsToQueue.Add(item);
+					}
+				}
+			}
+
+			downloadQueue.FillQueueWithMediaItems(itemsToQueue);
 		}
 	}
 }

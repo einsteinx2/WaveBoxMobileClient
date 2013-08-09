@@ -13,67 +13,9 @@ using MonoTouch;
 
 namespace WaveBox.Client.AudioEngine
 {
-	public class BassGaplessPlayer : IBassGaplessPlayer
+	public partial class BassGaplessPlayer : IBassGaplessPlayer
 	{
 		private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-		// Xamarin.iOS doesn't support instance methods as C callbacks. So have to use Ninject.
-		public class Procs
-		{
-			private static IBassGaplessPlayer player = Injection.Kernel.Get<IBassGaplessPlayer>();
-
-			delegate void FILECLOSEPROC(IntPtr user);
-
-			delegate void FILELENPROC(IntPtr user);
-
-			delegate void FILEREADPROC(IntPtr buffer, int length, IntPtr user);
-
-			delegate void FILESEEKPROC(long offset, IntPtr user);
-
-			delegate void SYNCPROC(int handle, int channel, int data, IntPtr user);
-
-			[MonoPInvokeCallback(typeof (SYNCPROC))]
-			public static int StreamProc(int handle, IntPtr buffer, int length, IntPtr user)
-			{
-				return player.StreamProc(handle, buffer, length, user);
-			}
-
-			[MonoPInvokeCallback(typeof (SYNCPROC))]
-			public static void StreamCrossfadeCallback(int handle, int channel, int data, IntPtr user)
-			{
-				player.StreamCrossfadeCallback(handle, channel, data, user);
-			}
-
-			[MonoPInvokeCallback(typeof (SYNCPROC))]
-			public static void StreamEndCallback(int handle, int channel, int data, IntPtr user)
-			{
-				player.StreamEndCallback(handle, channel, data, user);
-			}
-
-			[MonoPInvokeCallback(typeof (FILECLOSEPROC))]
-			public static void FileCloseProc(IntPtr user)
-			{
-				player.FileCloseProc(user);
-			}
-
-			[MonoPInvokeCallback(typeof (FILELENPROC))]
-			public static long FileLenProc(IntPtr user)
-			{
-				return player.FileLenProc(user);
-			}
-
-			[MonoPInvokeCallback(typeof (FILEREADPROC))]
-			public static int FileReadProc(IntPtr buffer, int length, IntPtr user)
-			{
-				return player.FileReadProc(buffer, length, user);
-			}
-
-			[MonoPInvokeCallback(typeof (FILESEEKPROC))]
-			public static bool FileSeekProc(long offset, IntPtr user)
-			{
-				return player.FileSeekProc(offset, user);
-			}
-		}
 
 		/*
 		 * Events
@@ -231,296 +173,6 @@ namespace WaveBox.Client.AudioEngine
 			}
 		}
 
-		// This callback is called at song length - crossfadeInterval to start fading out the song and start the next song stream
-		public void StreamCrossfadeCallback(int handle, int channel, int data, IntPtr user)
-		{
-			BassStream userInfo = StreamForIdentifierPtr(user);
-			if (userInfo != null)
-			{
-				userInfo.IsCrossfadeStarted = true;
-				userInfo.CrossfadeInterval = crossfadeInterval;
-
-				// Start fading out the song (uses milliseconds)
-				Bass.BASS_ChannelSlideAttribute(channel, BASSAttribute.BASS_ATTRIB_VOL, 0f, (int)(crossfadeInterval * 1000));
-
-				// Plug in and start fading in next song stream
-				int index;
-				lock(streamQueue)
-				{
-					index = streamQueue.IndexOf(userInfo);
-				}
-
-				if (index == 0)
-				{
-					// Retreive the next song userInfo object
-					lock(streamQueue)
-					{
-						userInfo = streamQueue[1];
-					}
-
-					if (userInfo != null)
-					{
-						// Plug in the next song stream
-						bool success = BassMix.BASS_Mixer_StreamAddChannel(mixerStream, userInfo.MyStream, 0);
-
-						// Fade in the next stream
-						success = success && Bass.BASS_ChannelSetAttribute(userInfo.MyStream, BASSAttribute.BASS_ATTRIB_VOL, 0f);
-						success = success && Bass.BASS_ChannelSlideAttribute(userInfo.MyStream, BASSAttribute.BASS_ATTRIB_VOL, 1f, (int)(crossfadeInterval * 1000));
-						if (logger.IsDebugEnabled) logger.Debug(@"crossfade, plugged next stream in started fading in with success: {0}", success);
-					}
-				}
-			}
-		}
-
-		public void StreamEndCallback(int handle, int channel, int data, IntPtr user)
-		{
-			BassStream userInfo = StreamForIdentifierPtr(user);
-			if (userInfo != null)
-			{
-				int index;
-				lock(streamQueue)
-				{
-					index = streamQueue.IndexOf(userInfo);
-				}
-
-				// If this is the current playing song, mark it as ended and record the remaining buffer space
-				if (index == 0)
-				{
-					// Synchronize here in case the total duration sync and end sync call at the same time on different threads
-					lock(userInfo)
-					{
-						if (userInfo.IsEnded)
-							return;
-
-						userInfo.IsEnded = true;
-					}
-
-					userInfo.BufferSpaceTilSongEnd = ringBuffer.FilledSpaceLength();
-
-					// Plug in the next stream if we didn't crossfade
-					if (!userInfo.IsCrossfadeStarted)
-					{
-						BassStream nextUserInfo = null;
-						lock(streamQueue)
-						{
-							if (streamQueue.Count >= 2)
-							{
-								nextUserInfo = streamQueue[1];
-							}
-						}
-
-						if (nextUserInfo != null)
-						{
-							// Plug in the next song stream
-							bool success = BassMix.BASS_Mixer_StreamAddChannel(mixerStream, nextUserInfo.MyStream, 0);
-							if (logger.IsDebugEnabled) logger.Debug("stream end, plugged next stream {0} in started fading in with success: {1}", nextUserInfo.MyStream, success);
-						}
-					}
-				}
-			}
-			else
-			{
-				logger.Error("stream end: somehow this is not the stream at index 0");
-			}
-		}
-
-		public void FileCloseProc(IntPtr user)
-		{	
-			if (user == IntPtr.Zero)
-				return;
-
-			// Get the user info object
-			BassStream userInfo = StreamForIdentifierPtr(user);
-
-			// Tell the read wait loop to break in case it's waiting
-			userInfo.ShouldBreakWaitLoop = true;
-			userInfo.ShouldBreakWaitLoopForever = true;
-
-			// Close the file handle
-			if (userInfo.FileHandle != null)
-				userInfo.FileHandle.Close();
-
-			userInfo.ClearFileLengthQueryCount();
-		}
-
-		public long FileLenProc(IntPtr user)
-		{
-			if (user == IntPtr.Zero)
-				return 0;
-
-			BassStream userInfo = StreamForIdentifierPtr(user);
-			if (userInfo == null || userInfo.FileHandle == null)
-				return 0;
-
-			long length = 0;
-			Song theSong = userInfo.MySong;
-			if (userInfo.ShouldBreakWaitLoopForever)
-			{
-				return 0;
-			}
-			else if (theSong.IsFullyCached() || userInfo.IsTempCached)
-			{
-				// Return actual file size on disk
-				length = theSong.LocalFileSize();
-			}
-			else
-			{
-				// Return server reported file size
-				length = (long)theSong.FileSize;
-			}
-
-			userInfo.IncrementFileLengthQueryCount();
-
-			if (logger.IsDebugEnabled) logger.Debug("checking {0} length: {1}", theSong, length);
-			return length;
-		}
-
-		public int FileReadProc(IntPtr buffer, int length, IntPtr user)
-		{
-			if (logger.IsDebugEnabled) logger.Debug(@"Ring Buffer - Starting MyFileReadProc");
-
-			if (buffer == IntPtr.Zero || user == IntPtr.Zero)
-				return 0;
-
-			BassStream userInfo = StreamForIdentifierPtr(user);
-			if (userInfo == null || userInfo.FileHandle == null)
-				return 0;
-
-			// If the buffer is not big enough, recreate it
-			if (userInfo.ReadProcBuffer.Length < length)
-			{
-				userInfo.ReadProcBuffer = new byte[length];
-			}
-
-			// Read from the file
-			int bytesRead = 0;
-			try 
-			{
-				bytesRead = userInfo.FileHandle.Read(userInfo.ReadProcBuffer, 0, length);
-			}
-			catch (Exception e)
-			{
-				logger.Error("Exception in MyFileReadProc: " + e);
-				bytesRead = 0;
-			}
-
-			if (bytesRead > 0)
-			{
-				if (logger.IsDebugEnabled) logger.Debug(@"Ring Buffer - MyFileReadProc 1");
-
-				if (bytesRead > 0)
-				{
-					// Copy the data to the buffer
-					Marshal.Copy(userInfo.ReadProcBuffer, 0, buffer, bytesRead);
-				}
-
-				if (bytesRead < length && userInfo.IsSongStarted && !userInfo.WasFileJustUnderrun)
-				{
-					userInfo.IsFileUnderrun = true;
-				}
-
-				if (logger.IsDebugEnabled) logger.Debug(@"Ring Buffer - MyFileReadProc 2");
-
-				userInfo.WasFileJustUnderrun = false;
-
-				userInfo.ClearFileLengthQueryCount();
-
-				if (logger.IsDebugEnabled) logger.Debug(@"Ring Buffer - Finished MyFileReadProc");
-			}
-
-			return bytesRead;
-		}
-
-		public bool FileSeekProc(long offset, IntPtr user)
-		{	
-			if (user == IntPtr.Zero)
-				return false;
-
-			// Seek to the requested offset (returns false if data not downloaded that far)
-			BassStream userInfo = StreamForIdentifierPtr(user);
-			if (userInfo == null || userInfo.FileHandle == null)
-				return false;
-
-			bool success = true;
-
-			try 
-			{
-				userInfo.FileHandle.Seek(offset, SeekOrigin.Begin);
-			}
-			catch (Exception e) 
-			{
-				logger.Error("Failed to seek: " + e);
-				success = false;
-			}
-
-			userInfo.ClearFileLengthQueryCount();
-
-			if (logger.IsDebugEnabled) logger.Debug(@"seeking to {0}  success: {1}", offset, success);
-
-			return success;
-		}
-
-		private byte[] drainedBytes = new byte[32 * 1024];
-		public int StreamProc(int handle, IntPtr buffer, int length, IntPtr user)
-		{
-			BassStream userInfo = CurrentStream;
-			if (userInfo == null)
-				return 0;
-
-			// If the buffer is not big enough, recreate it
-			if (drainedBytes.Length < length)
-			{
-				drainedBytes = new byte[length];
-			}
-
-			// Drain the bytes
-			int bytesRead = ringBuffer.DrainBytes(drainedBytes, length);
-			if (bytesRead > 0)
-			{
-				Marshal.Copy(drainedBytes, 0, buffer, bytesRead);
-			}
-
-			if (userInfo.IsEnded)
-			{
-				userInfo.BufferSpaceTilSongEnd -= bytesRead;
-				if (userInfo.BufferSpaceTilSongEnd <= 0)
-				{
-					SongEnded(userInfo);
-				}
-			}
-
-			Song currentSong = userInfo.MySong;
-			if (bytesRead == 0 && Bass.BASS_ChannelIsActive(userInfo.MyStream) != BASSActive.BASS_ACTIVE_PLAYING && (currentSong.IsFullyCached() || currentSong.IsTempCached()))
-			{
-				this.IsPlaying = false;
-
-				if (!userInfo.IsEndedCalled)
-				{
-					// Somehow songEnded: was never called
-					SongEnded(userInfo);
-				}
-
-				// The stream should end, because there is no more music to play
-				if (SongPlaybackEnded != null)
-				{
-					SongPlaybackEnded(this, new PlayerEventArgs(userInfo.MySong));
-				}
-
-				if (logger.IsDebugEnabled) logger.Debug(@"Stream not active, freeing BASS");
-
-				// Clear state
-				Cleanup();
-
-				// Start the next song if for some reason this one isn't ready
-				AudioEngine.StartSong();
-
-				//return BASS_STREAMPROC_END;
-				return 0;
-			}
-
-			return bytesRead;
-		}
-
 		private void MoveToNextSong()
 		{
 			if (DataSource.BassPlaylistNextSong != null)
@@ -651,7 +303,6 @@ namespace WaveBox.Client.AudioEngine
 
 
 					int tempLength = Bass.BASS_ChannelGetData(localMixerStream, tempBuffer, tempBuffer.Length);
-					if (logger.IsDebugEnabled) logger.Debug(@"Ring Buffer - After BASS_ChannelGetData");
 					if (tempLength > 0)
 					{
 						userInfo.IsSongStarted = true;
@@ -687,8 +338,8 @@ namespace WaveBox.Client.AudioEngine
 
 				// Handle waiting for additional data
 				Song theSong = userInfo.MySong;
-				if (logger.IsDebugEnabled) logger.Debug("We had a file underrun for song: {0}  at path: {1}", theSong, theSong.CurrentPath());
-				if (logger.IsDebugEnabled) logger.Debug("theSong.isFullyCached: {0}  theSong.localFileSize: {1}", theSong.IsFullyCached(), theSong.LocalFileSize());
+				if (logger.IsDebugEnabled) logger.Debug("We had a file underrun for song: " + theSong + " at path: " + theSong.CurrentPath());
+				if (logger.IsDebugEnabled) logger.Debug("theSong.isFullyCached: " + theSong.IsFullyCached() + " theSong.localFileSize: " + theSong.LocalFileSize());
 
 				if (!theSong.IsFullyCached())
 				{
@@ -717,8 +368,8 @@ namespace WaveBox.Client.AudioEngine
 							userInfo.NeededSize = serverSize;
 						}
 
-						if (logger.IsDebugEnabled) logger.Debug("audioEngineBufferNumberOfSeconds: {0}", audioEngineBufferNumberOfSeconds);
-						if (logger.IsDebugEnabled) logger.Debug("AUDIO ENGINE - waiting for {0}   neededSize: {1} for song: {2}  at path: {3}", bytesToWait, userInfo.NeededSize, userInfo.MySong, userInfo.MySong.CurrentPath());
+						if (logger.IsDebugEnabled) logger.Debug("audioEngineBufferNumberOfSeconds: " + audioEngineBufferNumberOfSeconds);
+						if (logger.IsDebugEnabled) logger.Debug("AUDIO ENGINE - waiting for " + bytesToWait + " neededSize: " + userInfo.NeededSize + " for song: " + userInfo.MySong + " at path: " + userInfo.MySong.CurrentPath());
 
 						// Sleep for 1/100th of a second
 						int sleepTime = 10;
@@ -750,7 +401,7 @@ namespace WaveBox.Client.AudioEngine
 							{
 								totalSleepTime = 0;
 
-								if (logger.IsDebugEnabled) logger.Debug("Checking file size again, userInfo: {0}  song: {1}  isFullyCached: {2}  path: {3}  localFileSize: {4}  neededSize: {5}", userInfo, userInfo.MySong, userInfo.MySong.IsFullyCached(), userInfo.MySong.CurrentPath(), userInfo.MySong.LocalFileSize(), userInfo.NeededSize);
+								if (logger.IsDebugEnabled) logger.Debug("Checking file size again, userInfo: " + userInfo + "  song: " + userInfo.MySong + "  isFullyCached: " + userInfo.MySong.IsFullyCached() + "  path: " + userInfo.MySong.CurrentPath() + "  localFileSize: " + userInfo.MySong.LocalFileSize() + "  neededSize: " + userInfo.NeededSize);
 
 								// If enough of the file has downloaded, break the loop
 								if (userInfo.LocalFileSize() >= userInfo.NeededSize ||
@@ -761,7 +412,7 @@ namespace WaveBox.Client.AudioEngine
 								    // If we're not in online mode so there's no way of getting more bytes, stop waiting and try next song
 								    clientSettings.IsOfflineMode)
 								{
-									if (logger.IsDebugEnabled) logger.Debug("breaking the wait loop, userInfo: {0}  song: {1}  isFullyCached: {2}  path: {3}  localFileSize: {4}  neededSize: {5}", userInfo, userInfo.MySong, userInfo.MySong.IsFullyCached(), userInfo.MySong.CurrentPath(), userInfo.MySong.LocalFileSize(), userInfo.NeededSize);
+									if (logger.IsDebugEnabled) logger.Debug("breaking the wait loop, userInfo: " + userInfo + "  song: " + userInfo.MySong + "  isFullyCached: " + userInfo.MySong.IsFullyCached() + "  path: " + userInfo.MySong.CurrentPath() + "  localFileSize: " + userInfo.MySong.LocalFileSize() + "  neededSize: " + userInfo.NeededSize);
 
 									isWaiting = false;
 									if (StoppedBuffering != null)
@@ -847,7 +498,7 @@ namespace WaveBox.Client.AudioEngine
 			userInfo.MySong = aSong;
 			userInfo.WritePath = aSong.CurrentPath();
 			userInfo.IsTempCached = aSong.IsTempCached();
-			userInfo.FileHandle = new FileStream("./Broken.mp3", FileMode.Open, FileAccess.Read); //new FileStream(userInfo.WritePath, FileMode.Open, FileAccess.Read);
+			userInfo.FileHandle = new FileStream(userInfo.WritePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite); // new FileStream("./Broken.mp3", FileMode.Open, FileAccess.Read);
 			userInfo.Identifier = GetStreamIdentifier();
 			userInfo.Player = this;
 			if (userInfo.FileHandle == null)
@@ -863,7 +514,7 @@ namespace WaveBox.Client.AudioEngine
 
 		private BassStream PrepareStreamForSong(Song aSong)
 		{
-			if (logger.IsDebugEnabled) logger.Debug(@"preparing stream for {0}  file: {1}", aSong, aSong.CurrentPath());
+			if (logger.IsDebugEnabled) logger.Debug(@"preparing stream for " + aSong + " file: " + aSong.CurrentPath());
 			if (aSong.FileExists())
 			{
 				// Check if we're offline and the song is not downloaded or not fully cached
@@ -889,7 +540,7 @@ namespace WaveBox.Client.AudioEngine
 				if (fileStream == 0 && Bass.BASS_ErrorGetCode() == BASSError.BASS_ERROR_INIT)
 				{
 					// Retry the regular hardware sampling stream
-					logger.Error("Failed to create stream for {0} with hardware sampling because BASS is not initialized somehow, initializing BASS and trying again with hardware sampling", aSong);
+					logger.Error("Failed to create stream for " + aSong + " with hardware sampling because BASS is not initialized somehow, initializing BASS and trying again with hardware sampling");
 
 					bassWrapper.BassInit();
 					fileStream = Bass.BASS_StreamCreateFileUser(BASSStreamSystem.STREAMFILE_NOBUFFER, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT, procs, streamIdentifier);
@@ -898,7 +549,7 @@ namespace WaveBox.Client.AudioEngine
 				// Stream failed to start, try different parameters
 				if(fileStream == 0)
 				{
-					logger.Error("Failed to create stream for {0} with hardware sampling, trying again with software sampling", aSong);
+					logger.Error("Failed to create stream for " + aSong + " with hardware sampling, trying again with software sampling");
 					bassWrapper.LogError();
 
 					// Create the user info object for the stream
@@ -948,7 +599,7 @@ namespace WaveBox.Client.AudioEngine
 					return userInfo;
 				}
 
-				logger.Error("Failed to create stream for {0} with software sampling", aSong);
+				logger.Error("Failed to create stream for " + aSong + " with software sampling");
 				bassWrapper.LogError();
 				if (userInfo.FileHandle != null)
 				{
@@ -964,7 +615,6 @@ namespace WaveBox.Client.AudioEngine
 			return null;
 		}
 
-
 		public void StartWithOffsetInBytesOrSeconds(long? byteOffset, double? seconds)
 		{
  			IsInitialBuffering = true;
@@ -975,7 +625,6 @@ namespace WaveBox.Client.AudioEngine
 			Song currentSong = DataSource.BassPlaylistCurrentSong;
 			if (currentSong == null)
 				return;
-
 
 			/*// Keep disabled for now
 			if (self.isPlaying && settingsS.crossfadeInterval > 0.)
@@ -1052,7 +701,7 @@ namespace WaveBox.Client.AudioEngine
 					// Start filling the ring buffer
 					KeepRingBufferFilled();
 
-					if (logger.IsDebugEnabled) logger.Debug(@"[BassGaplessPlayer] start song called, created new ring buffer thread: {0}", ringBufferFillThread);
+					if (logger.IsDebugEnabled) logger.Debug(@"[BassGaplessPlayer] start song called, created new ring buffer thread: " + ringBufferFillThread);
 
 					// Start playback
 					Bass.BASS_ChannelPlay(outStream, false);
@@ -1090,7 +739,7 @@ namespace WaveBox.Client.AudioEngine
 					}
 					else if (!currentSong.FileExists())
 					{
-						logger.Error("Stream for song {0} failed, file is not on disk", currentSong);
+						logger.Error("Stream for song " + currentSong + " failed, file is not on disk");
 						// File was removed, most likely because the decryption failed, so start again normally
 						if (SongFailedToPlay != null)
 						{
@@ -1118,7 +767,7 @@ namespace WaveBox.Client.AudioEngine
 				}
 				else
 				{
-					logger.Error("Could not prepare stream for song {0}, so failing", currentSong);
+					logger.Error("Could not prepare stream for song " + currentSong + ", so failing");
 
 					// Song failed to play so inform the delegate to handle necessary actions
 					if (SongFailedToPlay != null)
@@ -1129,7 +778,7 @@ namespace WaveBox.Client.AudioEngine
 			}
 			else
 			{
-				logger.Error(@"Could not prepare stream for song {0}, because the file does not exist, so failing", currentSong);
+				logger.Error(@"Could not prepare stream for song " + currentSong + ", because the file does not exist, so failing");
 
 				// Song failed to play so inform the delegate to handle necessary actions
 				if (SongFailedToPlay != null)
@@ -1157,13 +806,20 @@ namespace WaveBox.Client.AudioEngine
 			}
 		}
 
-		private void PrepareNextSongStream()
+		public void PrepareNextSongStream()
 		{
 			PrepareNextSongStream(null, false);
 		}
 
-		private void PrepareNextSongStream(Song nextSong, bool isCrossfadeImmediately)
+		public void PrepareNextSongStream(Song nextSong, bool isCrossfadeImmediately)
 		{
+			Song theSong = nextSong != null ? nextSong : DataSource.BassPlaylistNextSong;
+
+			if (theSong != null)
+				if (logger.IsDebugEnabled) logger.Debug(@"nextSong.localFileSize: " + theSong.LocalFileSize());
+			if (theSong == null || theSong.LocalFileSize() == 0)
+				return;
+
 			// Remove any additional streams
 			bool isNextStreamAlreadyPluggedIn = false;
 			lock(streamQueue)
@@ -1173,22 +829,24 @@ namespace WaveBox.Client.AudioEngine
 				while (count > 1)
 				{
 					BassStream userInfo = streamQueue[streamQueue.Count - 1];
-					isNextStreamAlreadyPluggedIn = isNextStreamAlreadyPluggedIn || userInfo.IsPluggedIntoMixer();
-					Bass.BASS_StreamFree(userInfo.MyStream);
-					streamQueue.RemoveAt(streamQueue.Count - 1);
-					streamDictionary.Remove(userInfo.Identifier.ToString());
-					count = streamQueue.Count; 
+
+					if (userInfo.MySong.Equals(nextSong))
+					{
+						// We're already plugged in and ready, so bail
+						return;
+					}
+					else
+					{
+						isNextStreamAlreadyPluggedIn = isNextStreamAlreadyPluggedIn || userInfo.IsPluggedIntoMixer();
+						Bass.BASS_StreamFree(userInfo.MyStream);
+						streamQueue.RemoveAt(streamQueue.Count - 1);
+						streamDictionary.Remove(userInfo.Identifier.ToString());
+						count = streamQueue.Count; 
+					}
 				}
 			}
 
-			Song theSong = nextSong != null ? nextSong : DataSource.BassPlaylistNextSong;
-
-			if (theSong != null)
-				if (logger.IsDebugEnabled) logger.Debug(@"nextSong.localFileSize: {0}", theSong.LocalFileSize());
-			if (theSong == null || theSong.LocalFileSize() == 0)
-				return;
-
-			if (logger.IsDebugEnabled) logger.Debug(@"preparing next song stream for {0}  file: {1}", theSong, theSong.CurrentPath());
+			if (logger.IsDebugEnabled) logger.Debug(@"preparing next song stream for " + theSong + " file: " + theSong.CurrentPath());
 
 			bool success = false;
 			if (theSong.FileExists())
@@ -1200,7 +858,7 @@ namespace WaveBox.Client.AudioEngine
 				BassStream userInfo = PrepareStreamForSong(theSong);
 				if (userInfo != null)
 				{
-					if (logger.IsDebugEnabled) logger.Debug(@"nextSong: {0}\n   ", userInfo.MyStream);
+					if (logger.IsDebugEnabled) logger.Debug(@"nextSong: " + userInfo.MyStream);
 
 					lock(streamQueue)
 					{
@@ -1235,7 +893,7 @@ namespace WaveBox.Client.AudioEngine
 			}
 			else if (!success)
 			{
-				logger.Error("nextSong stream error: {0} - {1}", (int)Bass.BASS_ErrorGetCode(), bassWrapper.StringFromErrorCode(Bass.BASS_ErrorGetCode()));
+				logger.Error("nextSong stream error: " + (int)Bass.BASS_ErrorGetCode() + " - " + bassWrapper.StringFromErrorCode(Bass.BASS_ErrorGetCode()));
 
 				// If the stream is currently stuck in the wait loop for partial precaching
 				// tell the stream manager to download a few more seconds of data

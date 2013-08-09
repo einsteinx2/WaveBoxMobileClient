@@ -17,10 +17,9 @@ namespace WaveBox.Client.AudioEngine
 		event PlayQueueEventHandler ShuffleToggled;
 		event PlayQueueEventHandler OrderChanged;
 
-
-		List<IMediaItem> PlayQueueList { get; }
-		List<IMediaItem> ShufflePlayQueueList { get; }
-		List<IMediaItem> CurrentPlayQueueList { get; }
+		IList<IMediaItem> PlayQueueList { get; }
+		IList<IMediaItem> ShufflePlayQueueList { get; }
+		IList<IMediaItem> CurrentPlayQueueList { get; }
 
 		bool IsShuffle { get; set; }
 		RepeatMode RepeatMode { get; set; }
@@ -34,7 +33,7 @@ namespace WaveBox.Client.AudioEngine
 		void ResetShufflePlayQueue();
 		void ResetBothPlayQueues();
 
-		void RemoveItemsAtIndexes(List<uint> indexes);
+		void RemoveItemsAtIndexes(IList<uint> indexes);
 		void RemoveItemAtIndex(uint index);
 		IMediaItem ItemForIndex(uint index);
 		int IndexForItem(IMediaItem item);
@@ -53,10 +52,11 @@ namespace WaveBox.Client.AudioEngine
 		bool IsAnySongCached { get; }
 		void ShuffleToggle(bool keepCurrentPlayingSong);
 		void MoveSong(uint fromIndex, uint toIndex);
-		void AddItems(List<IMediaItem> items);
+		void AddItems(IList<IMediaItem> items);
 		void AddItem(IMediaItem item);
-		void AddItemsNext(List<IMediaItem> items);
+		void AddItemsNext(IList<IMediaItem> items);
 		void AddItemNext(IMediaItem item);
+		void FillDownloadQueue();
 	}
 }
 

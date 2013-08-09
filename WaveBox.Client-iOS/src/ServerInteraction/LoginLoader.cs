@@ -4,7 +4,7 @@ using System.Net.Http;
 using WaveBox.Core;
 using Newtonsoft.Json;
 using System.Text;
-using WaveBox.Core.Static;
+using WaveBox.Core.Extensions;
 
 namespace WaveBox.Client.ServerInteraction
 {

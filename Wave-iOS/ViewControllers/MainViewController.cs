@@ -10,6 +10,8 @@ using WaveBox.Core.Model.Repository;
 using WaveBox.Client.AudioEngine;
 using WaveBox.Client.ServerInteraction;
 using WaveBox.Client;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Wave.iOS.ViewControllers
 {
@@ -19,7 +21,6 @@ namespace Wave.iOS.ViewControllers
 		IBassGaplessPlayer player = Injection.Kernel.Get<IBassGaplessPlayer>();
 		IClientDatabase clientDatabase = Injection.Kernel.Get<IClientDatabase>();
 		IClientSettings clientSettings = Injection.Kernel.Get<IClientSettings>();
-
 
 		UIButton button;
 		UILabel label;
@@ -40,7 +41,7 @@ namespace Wave.iOS.ViewControllers
 			// Release any cached data, images, etc that aren't in use.
 		}
 
-		static bool test = true;
+		//static bool test = true;
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
@@ -49,11 +50,14 @@ namespace Wave.iOS.ViewControllers
 			button.SetTitle("Test", UIControlState.Normal);
 			button.BackgroundColor = UIColor.Red;
 			button.AddTarget((object sender, EventArgs args) => {
-				if (test)
+				/*if (test)
 					player.StartWithOffsetInBytesOrSeconds(0, 265.0);
 				else
 					player.Stop();
-				test = !test;
+				test = !test;*/
+
+				player.SeekToPositionInSeconds(player.Progress + 30.0);
+
 			}, UIControlEvent.TouchUpInside);
 			button.Hidden = true;
 			View.AddSubview(button);
@@ -72,14 +76,33 @@ namespace Wave.iOS.ViewControllers
 				clientSettings.SessionId = e.SessionId;
 				label.Text = "Log in completed, downloading db\n" + clientSettings.SessionId;
 
-				IDatabaseSyncLoader databaseLoader = kernel.Get<IDatabaseSyncLoader>();
+				/*IDatabaseSyncLoader databaseLoader = kernel.Get<IDatabaseSyncLoader>();
 				databaseLoader.DatabaseDownloaded += async delegate(object sender2, DatabaseSyncEventArgs e2) 
 				{
 					await clientDatabase.ReplaceDatabaseWithDownloaded();
 					label.Text = "Database swapped, ready to listen!";
 					button.Hidden = false;
+
+					// Get a list of songs for 2Pac
+					var folder = kernel.Get<IFolderRepository>().FolderForId(57);
+					var songs = folder.ListOfSongs();
+
+					var playQueue = kernel.Get<IPlayQueue>();
+					playQueue.AddItems(songs as List<IMediaItem>);
 				};
-				databaseLoader.DownloadDatabase();
+				databaseLoader.DownloadDatabase();*/
+
+				label.Text = "Database swapped, ready to listen!";
+				button.Hidden = false;
+
+				// Get a list of songs for 2Pac
+				var folder = kernel.Get<IFolderRepository>().FolderForId(40420);
+				var songs = folder.ListOfSongs();
+
+				var playQueue = kernel.Get<IPlayQueue>();
+				playQueue.AddItems(songs.Cast<IMediaItem>().ToList());
+
+				//kernel.Get<IAudioEngine>().StartSong();
 			};
 			loginLoader.Login();
 

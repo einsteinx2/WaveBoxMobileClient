@@ -177,7 +177,8 @@ namespace log4net
 
         public void Log(string logtype, string type, string meth, string msg, params object[] objs)
         {
-            _que.Enqueue(FormatLog(logtype, type, meth, msg, objs));
+			Console.WriteLine(FormatLog(logtype, type, meth, msg, objs));
+            //_que.Enqueue(FormatLog(logtype, type, meth, msg, objs));
         }
     }
 
@@ -201,7 +202,7 @@ namespace log4net
                 meth = sf.GetMethod().Name;
             }
             FileLogger.Instance.Log(logtype, typename, meth, msg, objs);
-        }
+		}
 
         #region ILog Members
 

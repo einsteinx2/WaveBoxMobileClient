@@ -10,6 +10,7 @@ using WaveBox.Client;
 using WaveBox.Core;
 using WaveBox.Core.Model;
 using System.Threading.Tasks;
+using WaveBox.Core.Extensions;
 
 namespace Wave.iOS
 {
@@ -70,7 +71,7 @@ namespace Wave.iOS
 			throw new NotImplementedException();
 		}
 
-		public List<QueryLog> QueryLogsSinceId(int queryLogId)
+		public IList<QueryLog> QueryLogsSinceId(int queryLogId)
 		{
 			throw new NotImplementedException();
 		}
@@ -83,7 +84,7 @@ namespace Wave.iOS
 
 		public async Task ReplaceDatabaseWithDownloaded()
 		{
-			mainPool.CloseAllConnections(delegate {
+			await mainPool.CloseAllConnections(delegate {
 				Console.WriteLine("Moving database, main exists: " + File.Exists(DatabasePath) + " download exists: " + File.Exists(DatabaseDownloadPath));
 				File.Delete(DatabasePath);
 				File.Move(DatabaseDownloadPath, DatabasePath);

@@ -28,6 +28,8 @@ namespace WaveBox.Client.AudioEngine
 		bool IsPlaying { get; }
 		bool IsInitialBuffering { get; set; }
 		void StartWithOffsetInBytesOrSeconds(long? byteOffset, double? seconds);
+		void PrepareNextSongStream();
+		void PrepareNextSongStream(Song nextSong, bool isCrossfadeImmediately);
 		bool IsStarted { get; }
 		long CurrentByteOffset { get; }
 		double Progress { get; }

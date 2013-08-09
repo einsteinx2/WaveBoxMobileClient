@@ -59,6 +59,7 @@
     <Folder Include="src\ServerInteraction\Exceptions\" />
     <Folder Include="src\ServerInteraction\Interfaces\" />
     <Folder Include="src\Injection\Interfaces\" />
+    <Folder Include="src\ServerInteraction\EventArgs\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -87,7 +88,6 @@
     <Compile Include="src\Settings\Interfaces\IClientPlatformSettings.cs" />
     <Compile Include="src\ServerInteraction\DatabaseSync.cs" />
     <Compile Include="src\ServerInteraction\Exceptions\MissingSessionIdException.cs" />
-    <Compile Include="src\ServerInteraction\DatabaseSyncEventArgs.cs" />
     <Compile Include="src\ServerInteraction\DatabaseQuery.cs" />
     <Compile Include="src\ServerInteraction\Interfaces\IDatabaseSyncLoader.cs" />
     <Compile Include="src\ServerInteraction\Exceptions\MissingApiParameterException.cs" />
@@ -95,12 +95,16 @@
     <Compile Include="src\ServerInteraction\Exceptions\ServerInteractionException.cs" />
     <Compile Include="src\ServerInteraction\Interfaces\ILoginLoader.cs" />
     <Compile Include="src\ServerInteraction\LoginLoader.cs" />
-    <Compile Include="src\ServerInteraction\LoginEventArgs.cs" />
     <Compile Include="src\Injection\Interfaces\IClientDatabase.cs" />
     <Compile Include="src\ServerInteraction\DownloadQueue.cs" />
     <Compile Include="src\ServerInteraction\DownloadTask.cs" />
-    <Compile Include="src\ServerInteraction\DownloadEventArgs.cs" />
     <Compile Include="src\ServerInteraction\Interfaces\IDownloadQueue.cs" />
     <Compile Include="src\AudioEngine\PlayQueueEventArgs.cs" />
+    <Compile Include="src\ServerInteraction\EventArgs\LoginEventArgs.cs" />
+    <Compile Include="src\ServerInteraction\EventArgs\DatabaseSyncEventArgs.cs" />
+    <Compile Include="src\ServerInteraction\EventArgs\DownloadEventArgs.cs" />
+    <Compile Include="src\Settings\ServerSettings.cs" />
+    <Compile Include="src\AudioEngine\BassGaplessPlayerCallbacks.cs" />
+    <Compile Include="src\AudioEngine\IMediaItemExtension.cs" />
   </ItemGroup>
 </Project>

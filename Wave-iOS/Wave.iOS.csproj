@@ -133,7 +133,4 @@
       <Name>WaveBox.Client-iOS</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Broken.mp3" />
-  </ItemGroup>
 </Project>

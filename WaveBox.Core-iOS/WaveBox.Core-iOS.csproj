@@ -93,6 +93,9 @@
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\LoginResponse.cs">
       <Link>src\ApiResponse\LoginResponse.cs</Link>
     </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\LogoutResponse.cs">
+      <Link>src\ApiResponse\LogoutResponse.cs</Link>
+    </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\PlaylistsResponse.cs">
       <Link>src\ApiResponse\PlaylistsResponse.cs</Link>
     </Compile>
@@ -135,8 +138,20 @@
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\VideosResponse.cs">
       <Link>src\ApiResponse\VideosResponse.cs</Link>
     </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\ByteExtensions.cs">
+      <Link>src\Extensions\ByteExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\DateTimeExtensions.cs">
       <Link>src\Extensions\DateTimeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\IListExtensions.cs">
+      <Link>src\Extensions\IListExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\Log4NetExtensions.cs">
+      <Link>src\Extensions\Log4NetExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\StringExtensions.cs">
+      <Link>src\Extensions\StringExtensions.cs</Link>
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Injection\CoreModule.cs">
       <Link>src\Injection\CoreModule.cs</Link>

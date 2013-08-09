@@ -36,10 +36,12 @@ namespace Wave.iOS
 			if (clientSettings.ServerUrl == null)
 			{
 				Console.WriteLine("Setting server url");
-				clientSettings.ServerUrl = "http://localhost:6500";//"http://home.benjamm.in:6500";
+				clientSettings.ServerUrl = "http://home.benjamm.in:6500";
 				clientSettings.UserName = "test";
 				clientSettings.Password = "test";
 			}
+
+			clientSettings.StreamQueueLength = 2;
 
 			BassPlaylistCurrentIndex = 0;
 
@@ -59,8 +61,8 @@ namespace Wave.iOS
 
 		public int BassPlaylistCount { get { return 1; } }
 		public int BassPlaylistCurrentIndex { get; set; }
-		public Song BassPlaylistCurrentSong { get { return Injection.Kernel.Get<ISongRepository>().SongForId(6815); } }
-		public Song BassPlaylistNextSong { get { return null; } }
+		public Song BassPlaylistCurrentSong { get { return Injection.Kernel.Get<IPlayQueue>().CurrentItem as Song; } }
+		public Song BassPlaylistNextSong { get { return Injection.Kernel.Get<IPlayQueue>().NextItem as Song; } }
 		public bool BassIsOfflineMode { get { return false; } }
 	}
 }
