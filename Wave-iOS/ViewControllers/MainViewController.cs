@@ -73,39 +73,46 @@ namespace Wave.iOS.ViewControllers
 			ILoginLoader loginLoader = kernel.Get<ILoginLoader>();
 			loginLoader.LoginCompleted += delegate(object sender, LoginEventArgs e) 
 			{
-				clientSettings.SessionId = e.SessionId;
-				label.Text = "Log in completed, downloading db\n" + clientSettings.SessionId;
-
-				/*IDatabaseSyncLoader databaseLoader = kernel.Get<IDatabaseSyncLoader>();
-				databaseLoader.DatabaseDownloaded += async delegate(object sender2, DatabaseSyncEventArgs e2) 
+				if (e.Error == null)
 				{
-					await clientDatabase.ReplaceDatabaseWithDownloaded();
+					clientSettings.SessionId = e.SessionId;
+					label.Text = "Log in completed, downloading db\n" + clientSettings.SessionId;
+
+					/*IDatabaseSyncLoader databaseLoader = kernel.Get<IDatabaseSyncLoader>();
+					databaseLoader.DatabaseDownloaded += async delegate(object sender2, DatabaseSyncEventArgs e2) 
+					{
+						await clientDatabase.ReplaceDatabaseWithDownloaded();
+						label.Text = "Database swapped, ready to listen!";
+						button.Hidden = false;
+
+						// Get a list of songs for 2Pac
+						var folder = kernel.Get<IFolderRepository>().FolderForId(57);
+						var songs = folder.ListOfSongs();
+
+						var playQueue = kernel.Get<IPlayQueue>();
+						playQueue.AddItems(songs as List<IMediaItem>);
+					};
+					databaseLoader.DownloadDatabase();*/
+
 					label.Text = "Database swapped, ready to listen!";
 					button.Hidden = false;
 
 					// Get a list of songs for 2Pac
-					var folder = kernel.Get<IFolderRepository>().FolderForId(57);
+					var folder = kernel.Get<IFolderRepository>().FolderForId(40420);
 					var songs = folder.ListOfSongs();
 
 					var playQueue = kernel.Get<IPlayQueue>();
-					playQueue.AddItems(songs as List<IMediaItem>);
-				};
-				databaseLoader.DownloadDatabase();*/
+					playQueue.AddItems(songs.Cast<IMediaItem>().ToList());
 
-				label.Text = "Database swapped, ready to listen!";
-				button.Hidden = false;
-
-				// Get a list of songs for 2Pac
-				var folder = kernel.Get<IFolderRepository>().FolderForId(40420);
-				var songs = folder.ListOfSongs();
-
-				var playQueue = kernel.Get<IPlayQueue>();
-				playQueue.AddItems(songs.Cast<IMediaItem>().ToList());
-
-				//kernel.Get<IAudioEngine>().StartSong();
+					//kernel.Get<IAudioEngine>().StartSong();
+				}
+				else
+				{
+					label.Text = "Login failed: " + e.Error;
+				}
 			};
-			loginLoader.Login();
 
+			loginLoader.Login();
 
 			// Perform any additional setup after loading the view, typically from a nib.
 		}

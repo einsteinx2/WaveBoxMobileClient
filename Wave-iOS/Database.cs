@@ -16,6 +16,8 @@ namespace Wave.iOS
 {
 	public class Database : IClientDatabase
 	{
+		private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private static readonly string DATABASE_FILE_NAME = "wavebox.db";
 		public string DatabaseTemplatePath { get { throw new NotImplementedException(); } }
 		public string DatabasePath { get { return Path.Combine(clientPlatformSettings.DocumentsPath, DATABASE_FILE_NAME); } }
@@ -25,6 +27,29 @@ namespace Wave.iOS
 
 		private static readonly object dbBackupLock = new object();
 		public object DbBackupLock { get { return dbBackupLock; } }
+
+		public int Version 
+		{ 
+			get 
+			{
+				ISQLiteConnection conn = null;
+				try
+				{
+					conn = GetSqliteConnection();
+					return conn.ExecuteScalar<int>("SELECT VersionNumber FROM Version LIMIT 1");
+				}
+				catch (Exception e)
+				{
+					logger.Error(e);
+				}
+				finally
+				{
+					CloseSqliteConnection(conn);
+				}
+
+				return 0;
+			} 
+		}
 
 		// Sqlite connection pool
 		private static readonly int MAX_CONNECTIONS = 100;
@@ -66,9 +91,12 @@ namespace Wave.iOS
 			throw new NotImplementedException();
 		}
 
-		public long LastQueryLogId()
+		public long LastQueryLogId
 		{
-			throw new NotImplementedException();
+			get
+			{
+				throw new NotImplementedException();
+			}
 		}
 
 		public IList<QueryLog> QueryLogsSinceId(int queryLogId)

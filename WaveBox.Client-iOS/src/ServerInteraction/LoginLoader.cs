@@ -48,10 +48,30 @@ namespace WaveBox.Client.ServerInteraction
 
 			// Initiate the Api call
 			HttpClient client = new HttpClient();
-			HttpResponseMessage response = await client.GetAsync(clientSettings.ServerUrl + "/api/login?u=" + clientSettings.UserName + "&p=" + clientSettings.Password);
+			client.Timeout = new TimeSpan(10 * TimeSpan.TicksPerMillisecond);
+			HttpResponseMessage response = null;
+			try
+			{
+				response = await client.GetAsync(clientSettings.ServerUrl + "/api/login?u=" + clientSettings.UserName + "&p=" + clientSettings.Password);
+			}
+			catch (Exception e)
+			{
+				logger.Debug("login failed: " + e);
+				if (LoginCompleted != null) LoginCompleted(this, new LoginEventArgs("Failed to open connection", null));
+			}
+
+			logger.Debug("response status code: " + response.StatusCode);
 
 			// Check that response was successful or throw exception
-			response.EnsureSuccessStatusCode();
+			try
+			{
+				response.EnsureSuccessStatusCode();
+			}
+			catch (Exception e)
+			{
+				logger.Debug("login failed: " + e);
+				if (LoginCompleted != null) LoginCompleted(this, new LoginEventArgs("Status code not success: " + e, null));
+			}
 
 			// Parse the response
 			string responseString = await response.Content.ReadAsStringAsync();
@@ -60,14 +80,12 @@ namespace WaveBox.Client.ServerInteraction
 			{
 				LoginResponse loginResponse = (LoginResponse)JsonConvert.DeserializeObject<LoginResponse>(responseString);
 
-				if (LoginCompleted != null)
-				{
-					LoginCompleted(this, new LoginEventArgs(loginResponse.Error, loginResponse.SessionId));
-				}
+				if (LoginCompleted != null)  LoginCompleted(this, new LoginEventArgs(loginResponse.Error, loginResponse.SessionId));
 			}
 			catch (Exception e)
 			{
 				logger.Error("Exception parsing login response: " + e);
+				if (LoginCompleted != null)  LoginCompleted(this, new LoginEventArgs("Exception parsing login response: " + e, null));
 			}
 		}
 	}

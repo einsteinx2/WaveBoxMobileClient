@@ -60,6 +60,7 @@
     <Folder Include="src\ServerInteraction\Interfaces\" />
     <Folder Include="src\Injection\Interfaces\" />
     <Folder Include="src\ServerInteraction\EventArgs\" />
+    <Folder Include="src\ViewModel\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

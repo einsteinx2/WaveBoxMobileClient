@@ -66,6 +66,9 @@
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\SQLiteNet.cs">
       <Link>src\SQLiteNet.cs</Link>
     </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\AlbumArtistsResponse.cs">
+      <Link>src\ApiResponse\AlbumArtistsResponse.cs</Link>
+    </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\AlbumsResponse.cs">
       <Link>src\ApiResponse\AlbumsResponse.cs</Link>
     </Compile>
@@ -77,6 +80,9 @@
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\ErrorResponse.cs">
       <Link>src\ApiResponse\ErrorResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\FavoritesResponse.cs">
+      <Link>src\ApiResponse\FavoritesResponse.cs</Link>
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\FoldersResponse.cs">
       <Link>src\ApiResponse\FoldersResponse.cs</Link>
@@ -95,6 +101,9 @@
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\LogoutResponse.cs">
       <Link>src\ApiResponse\LogoutResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\NowPlayingResponse.cs">
+      <Link>src\ApiResponse\NowPlayingResponse.cs</Link>
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\PlaylistsResponse.cs">
       <Link>src\ApiResponse\PlaylistsResponse.cs</Link>
@@ -144,8 +153,14 @@
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\DateTimeExtensions.cs">
       <Link>src\Extensions\DateTimeExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\FileTypeExtensions.cs">
+      <Link>src\Extensions\FileTypeExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\IListExtensions.cs">
       <Link>src\Extensions\IListExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\IntExtensions.cs">
+      <Link>src\Extensions\IntExtensions.cs</Link>
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\Log4NetExtensions.cs">
       <Link>src\Extensions\Log4NetExtensions.cs</Link>
@@ -168,6 +183,9 @@
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Album.cs">
       <Link>src\Model\Album.cs</Link>
     </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\AlbumArtist.cs">
+      <Link>src\Model\AlbumArtist.cs</Link>
+    </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Art.cs">
       <Link>src\Model\Art.cs</Link>
     </Compile>
@@ -176,6 +194,9 @@
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Artist.cs">
       <Link>src\Model\Artist.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Favorite.cs">
+      <Link>src\Model\Favorite.cs</Link>
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\FileType.cs">
       <Link>src\Model\FileType.cs</Link>
@@ -191,6 +212,9 @@
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\MediaItem.cs">
       <Link>src\Model\MediaItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\NowPlaying.cs">
+      <Link>src\Model\NowPlaying.cs</Link>
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Playlist.cs">
       <Link>src\Model\Playlist.cs</Link>
@@ -246,6 +270,9 @@
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\Interfaces\IOperationQueue.cs">
       <Link>src\OperationQueue\Interfaces\IOperationQueue.cs</Link>
     </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\AlbumArtistRepository.cs">
+      <Link>src\Repository\AlbumArtistRepository.cs</Link>
+    </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\AlbumRepository.cs">
       <Link>src\Repository\AlbumRepository.cs</Link>
     </Compile>
@@ -254,6 +281,9 @@
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\ArtistRepository.cs">
       <Link>src\Repository\ArtistRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\FavoriteRepository.cs">
+      <Link>src\Repository\FavoriteRepository.cs</Link>
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\FolderRepository.cs">
       <Link>src\Repository\FolderRepository.cs</Link>
@@ -266,6 +296,9 @@
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\MediaItemRepository.cs">
       <Link>src\Repository\MediaItemRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\PlaylistRepository.cs">
+      <Link>src\Repository\PlaylistRepository.cs</Link>
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\SessionRepository.cs">
       <Link>src\Repository\SessionRepository.cs</Link>
@@ -282,6 +315,9 @@
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\VideoRepository.cs">
       <Link>src\Repository\VideoRepository.cs</Link>
     </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IAlbumArtistRepository.cs">
+      <Link>src\Repository\Interfaces\IAlbumArtistRepository.cs</Link>
+    </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IAlbumRepository.cs">
       <Link>src\Repository\Interfaces\IAlbumRepository.cs</Link>
     </Compile>
@@ -290,6 +326,9 @@
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IArtistRepository.cs">
       <Link>src\Repository\Interfaces\IArtistRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IFavoriteRepository.cs">
+      <Link>src\Repository\Interfaces\IFavoriteRepository.cs</Link>
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IFolderRepository.cs">
       <Link>src\Repository\Interfaces\IFolderRepository.cs</Link>
@@ -302,6 +341,9 @@
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IMediaItemRepository.cs">
       <Link>src\Repository\Interfaces\IMediaItemRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IPlaylistRepository.cs">
+      <Link>src\Repository\Interfaces\IPlaylistRepository.cs</Link>
     </Compile>
     <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\ISessionRepository.cs">
       <Link>src\Repository\Interfaces\ISessionRepository.cs</Link>
