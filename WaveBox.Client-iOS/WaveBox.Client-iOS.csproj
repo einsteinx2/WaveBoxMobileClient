@@ -45,6 +45,12 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Wave-iOS\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.Sqlite">
+      <HintPath>..\Wave-iOS\lib\Cirrious.MvvmCross.Plugins.Sqlite.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross">
+      <HintPath>..\Wave-iOS\lib\Cirrious.MvvmCross.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -61,6 +67,8 @@
     <Folder Include="src\Injection\Interfaces\" />
     <Folder Include="src\ServerInteraction\EventArgs\" />
     <Folder Include="src\ViewModel\" />
+    <Folder Include="src\ViewModel\Interfaces\" />
+    <Folder Include="src\Model\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -107,5 +115,33 @@
     <Compile Include="src\Settings\ServerSettings.cs" />
     <Compile Include="src\AudioEngine\BassGaplessPlayerCallbacks.cs" />
     <Compile Include="src\AudioEngine\IMediaItemExtension.cs" />
+    <Compile Include="src\ViewModel\Interfaces\IAlbumArtistListViewModel.cs" />
+    <Compile Include="src\ViewModel\Interfaces\IArtistListViewModel.cs" />
+    <Compile Include="src\ViewModel\Interfaces\IFolderListViewModel.cs" />
+    <Compile Include="src\ViewModel\Interfaces\IPlaylistListViewModel.cs" />
+    <Compile Include="src\ViewModel\Interfaces\IListViewModel.cs" />
+    <Compile Include="src\Model\MenuItem.cs" />
+    <Compile Include="src\Model\MenuItemType.cs" />
+    <Compile Include="src\ViewModel\Interfaces\IMenuItemListViewModel.cs" />
+    <Compile Include="src\ViewModel\MenuItemListViewModel.cs" />
+    <Compile Include="src\ViewModel\Interfaces\IAlbumListViewModel.cs" />
+    <Compile Include="src\ViewModel\Interfaces\IGenreListViewModel.cs" />
+    <Compile Include="src\ViewModel\AlbumArtistListViewModel.cs" />
+    <Compile Include="src\ViewModel\AlbumListViewModel.cs" />
+    <Compile Include="src\ViewModel\ArtistListViewModel.cs" />
+    <Compile Include="src\ViewModel\FolderListViewModel.cs" />
+    <Compile Include="src\ViewModel\GenreListViewModel.cs" />
+    <Compile Include="src\ViewModel\PlaylistListViewModel.cs" />
+    <Compile Include="src\ViewModel\FolderViewModel.cs" />
+    <Compile Include="src\ViewModel\AlbumViewModel.cs" />
+    <Compile Include="src\ViewModel\Interfaces\IFolderViewModel.cs" />
+    <Compile Include="src\ViewModel\Interfaces\IAlbumViewModel.cs" />
+    <Compile Include="src\ViewModel\ArtistViewModel.cs" />
+    <Compile Include="src\ViewModel\Interfaces\IArtistViewModel.cs" />
+    <Compile Include="src\ViewModel\Interfaces\IAlbumArtistViewModel.cs" />
+    <Compile Include="src\ViewModel\AlbumArtistViewModel.cs" />
+    <Compile Include="src\ViewModel\Interfaces\IPlayQueueViewModel.cs" />
+    <Compile Include="src\ViewModel\PlayQueueViewModel.cs" />
+    <Compile Include="src\ViewModel\ViewModelEventArgs.cs" />
   </ItemGroup>
 </Project>

@@ -3,6 +3,8 @@ using WaveBox.Core;
 using System.Collections.Generic;
 using WaveBox.Core.Model;
 using Newtonsoft.Json;
+using Ninject;
+using WaveBox.Core.Model.Repository;
 
 namespace WaveBox.Client
 {
@@ -25,7 +27,7 @@ namespace WaveBox.Client
 
 		public string Theme { get { return settingsModel.Theme; } }
 
-		public IList<Folder> MediaFolders { get; private set; }
+		public IList<string> MediaFolders { get { return settingsModel.MediaFolders; } }
 
 		public string PodcastFolder { get { return settingsModel.PodcastFolder; } }
 
@@ -41,11 +43,7 @@ namespace WaveBox.Client
 
 		public ServerSettings()
 		{
-			Folder folder = new Folder();
-			folder.FolderPath = "/mnt/data1/organized_music/MP3";
-			folder.FolderName = "MP3";
-			MediaFolders = new List<Folder>();
-			MediaFolders.Add(folder);
+
 		}
 
 		public void Reload()

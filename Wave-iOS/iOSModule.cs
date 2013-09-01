@@ -2,7 +2,7 @@ using System;
 using Ninject.Modules;
 using WaveBox.Core;
 using WaveBox.Client;
-using Wave.iOS.ViewControllers;
+using Wave.iOS.ViewController;
 
 namespace Wave.iOS
 {
@@ -16,7 +16,7 @@ namespace Wave.iOS
 			Bind<IClientPlatformSettings>().To<iOSPlatformSettings>().InSingletonScope();
 
 			// View controllers
-			Bind<IWebViewController>().To<WebViewController>();
+			//Bind<IWebViewController>().To<WebViewController>();
 		}
 	}
 }

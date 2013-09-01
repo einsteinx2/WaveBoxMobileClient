@@ -95,12 +95,17 @@
     <Reference Include="Ninject">
       <HintPath>lib\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="JASidePanels">
+      <HintPath>lib\JASidePanels.dll</HintPath>
+    </Reference>
+    <Reference Include="SDWebImage">
+      <HintPath>lib\SDWebImage.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
-    <Folder Include="ViewControllers\" />
     <Folder Include="native_libs\" />
-    <Folder Include="ViewControllers\Interfaces\" />
+    <Folder Include="ViewController\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -110,19 +115,26 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="ViewControllers\Wave_iOSViewController.designer.cs">
-      <DependentUpon>MainViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ViewControllers\MainViewController.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="iOSModule.cs" />
     <Compile Include="iOSPlatformSettings.cs" />
-    <Compile Include="ViewControllers\WebViewController.cs" />
-    <Compile Include="ViewControllers\Interfaces\IWebViewController.cs" />
+    <Compile Include="ViewController\Wave_iOSViewController.designer.cs">
+      <DependentUpon>MainViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewController\MainViewController.cs" />
+    <Compile Include="ViewController\MenuViewController.cs" />
+    <Compile Include="ViewController\FolderListViewController.cs" />
+    <Compile Include="ViewController\AlbumArtistListViewController.cs" />
+    <Compile Include="ViewController\AlbumListViewController.cs" />
+    <Compile Include="ViewController\GenreListViewController.cs" />
+    <Compile Include="ViewController\AlbumViewController.cs" />
+    <Compile Include="ViewController\FolderViewController.cs" />
+    <Compile Include="ViewController\AlbumArtistViewController.cs" />
+    <Compile Include="ViewController\PlayQueueViewController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <InterfaceDefinition Include="ViewControllers\MainViewController_iPad.xib" />
-    <InterfaceDefinition Include="ViewControllers\MainViewController_iPhone.xib" />
+    <InterfaceDefinition Include="ViewController\MainViewController_iPad.xib" />
+    <InterfaceDefinition Include="ViewController\MainViewController_iPhone.xib" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

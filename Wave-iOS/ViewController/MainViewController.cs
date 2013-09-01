@@ -13,7 +13,7 @@ using WaveBox.Client;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Wave.iOS.ViewControllers
+namespace Wave.iOS.ViewController
 {
 	public partial class MainViewController : UIViewController
 	{
@@ -45,6 +45,9 @@ namespace Wave.iOS.ViewControllers
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+
+			RectangleF frame = View.Frame;
+			View.Frame = new RectangleF(frame.Location, new SizeF(250.0f, frame.Size.Height));
 
 			button = new UIButton(new RectangleF(100f, 100f, 200f, 100f));
 			button.SetTitle("Test", UIControlState.Normal);
@@ -78,7 +81,7 @@ namespace Wave.iOS.ViewControllers
 					clientSettings.SessionId = e.SessionId;
 					label.Text = "Log in completed, downloading db\n" + clientSettings.SessionId;
 
-					/*IDatabaseSyncLoader databaseLoader = kernel.Get<IDatabaseSyncLoader>();
+					IDatabaseSyncLoader databaseLoader = kernel.Get<IDatabaseSyncLoader>();
 					databaseLoader.DatabaseDownloaded += async delegate(object sender2, DatabaseSyncEventArgs e2) 
 					{
 						await clientDatabase.ReplaceDatabaseWithDownloaded();
@@ -92,9 +95,9 @@ namespace Wave.iOS.ViewControllers
 						var playQueue = kernel.Get<IPlayQueue>();
 						playQueue.AddItems(songs as List<IMediaItem>);
 					};
-					databaseLoader.DownloadDatabase();*/
+					databaseLoader.DownloadDatabase();
 
-					label.Text = "Database swapped, ready to listen!";
+					/*label.Text = "Database swapped, ready to listen!";
 					button.Hidden = false;
 
 					// Get a list of songs for 2Pac
@@ -102,7 +105,7 @@ namespace Wave.iOS.ViewControllers
 					var songs = folder.ListOfSongs();
 
 					var playQueue = kernel.Get<IPlayQueue>();
-					playQueue.AddItems(songs.Cast<IMediaItem>().ToList());
+					playQueue.AddItems(songs.Cast<IMediaItem>().ToList());*/
 
 					//kernel.Get<IAudioEngine>().StartSong();
 				}
@@ -112,9 +115,10 @@ namespace Wave.iOS.ViewControllers
 				}
 			};
 
-			loginLoader.Login();
+			//loginLoader.Login();
 
-			// Perform any additional setup after loading the view, typically from a nib.
+			// Perform any additional setup after loading the view, typically from a nib
+
 		}
 
 		public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)

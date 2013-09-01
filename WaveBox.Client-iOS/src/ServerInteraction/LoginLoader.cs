@@ -48,7 +48,7 @@ namespace WaveBox.Client.ServerInteraction
 
 			// Initiate the Api call
 			HttpClient client = new HttpClient();
-			client.Timeout = new TimeSpan(10 * TimeSpan.TicksPerMillisecond);
+			client.Timeout = TimeSpan.FromSeconds(10);
 			HttpResponseMessage response = null;
 			try
 			{

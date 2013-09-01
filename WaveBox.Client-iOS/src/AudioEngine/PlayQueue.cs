@@ -242,6 +242,9 @@ namespace WaveBox.Client.AudioEngine
 					ShuffleIndex = value;
 				else
 					Index = value;
+
+				if (IndexChanged != null)
+					IndexChanged(this, new PlayQueueEventArgs(null));
 			}
 		}
 
@@ -405,6 +408,9 @@ namespace WaveBox.Client.AudioEngine
 			}  
 
 			FillDownloadQueue();
+
+			if (ShuffleToggled != null)
+				ShuffleToggled(this, new PlayQueueEventArgs(null));
 		}
 
 		public void MoveSong(uint fromIndex, uint toIndex)
@@ -439,6 +445,9 @@ namespace WaveBox.Client.AudioEngine
 			FillDownloadQueue();
 
 			SaveCurrentPlayQueue();
+
+			if (OrderChanged != null)
+				OrderChanged(this, new PlayQueueEventArgs(null));
 		}
 
 		public void AddItems(IList<IMediaItem> items)

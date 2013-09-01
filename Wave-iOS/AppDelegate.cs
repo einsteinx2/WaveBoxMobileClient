@@ -10,7 +10,10 @@ using WaveBox.Client.AudioEngine;
 using Ninject;
 using WaveBox.Core.Model;
 using WaveBox.Core.Model.Repository;
-using Wave.iOS.ViewControllers;
+using Wave.iOS.ViewController;
+using JASidePanels;
+using WaveBox.Client.ViewModel;
+using WaveBox.Client.ServerInteraction;
 
 namespace Wave.iOS
 {
@@ -20,16 +23,15 @@ namespace Wave.iOS
 		IKernel kernel = Injection.Kernel;
 
 		UIWindow window;
-		WebViewController webController;
-		MainViewController mainController;
-
+		JASidePanelController sidePanelController;
+		
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
 			// Initialize the Ninject kernel
 			List<INinjectModule> modules = new List<INinjectModule>();
 			modules.Add(new ClientModule());
 			modules.Add(new iOSModule());
-			Injection.Kernel.Load(modules);
+			kernel.Load(modules);
 
 			IClientSettings clientSettings = kernel.Get<IClientSettings>();
 			clientSettings.LoadSettings();
@@ -50,11 +52,58 @@ namespace Wave.iOS
 			player.DataSource = this;
 
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
-			
-			webController = kernel.Get<WebViewController>();
-			mainController = new MainViewController();
-			window.RootViewController = mainController;//webController;
+
+			UIViewController blankController = new UIViewController();
+			blankController.View.BackgroundColor = UIColor.White;
+
+			window.RootViewController = new UIViewController();
 			window.MakeKeyAndVisible ();
+
+			UINavigationBar.Appearance.SetBackgroundImage(new UIImage(), UIBarMetrics.Default);
+			UINavigationBar.Appearance.BackgroundColor = UIColor.FromRGB(233, 233, 233);
+			UITextAttributes titleAttributes = new UITextAttributes();
+			titleAttributes.TextColor = UIColor.FromRGB(102, 102, 102);
+			titleAttributes.Font = UIFont.FromName("HelveticaNeue-Bold", 18.5f);
+			titleAttributes.TextShadowColor = UIColor.Clear;
+			UINavigationBar.Appearance.SetTitleTextAttributes(titleAttributes);
+
+			ILoginLoader loginLoader = kernel.Get<ILoginLoader>();
+			loginLoader.LoginCompleted += delegate(object sender, LoginEventArgs e) 
+			{
+				Console.WriteLine("Login loader login completed, sessionId: " + e.SessionId + ", error: " + e.Error);
+				if (e.Error == null)
+				{
+					clientSettings.SessionId = e.SessionId;
+
+					InvokeOnMainThread (delegate { 
+						Console.WriteLine("Setting sidepanels");
+						sidePanelController = new JASidePanelController();
+						sidePanelController.LeftPanel = new MenuViewController(sidePanelController);
+						sidePanelController.CenterPanel = new MainViewController();
+						sidePanelController.RightPanel = new PlayQueueViewController(kernel.Get<IPlayQueueViewModel>());
+						window.RootViewController = sidePanelController;
+					});
+
+					/*IDatabaseSyncLoader databaseLoader = kernel.Get<IDatabaseSyncLoader>();
+					databaseLoader.DatabaseDownloaded += delegate(object sender2, DatabaseSyncEventArgs e2) 
+					{
+						Console.WriteLine("Database loader database downloaded, e2: " + e2);
+						clientDatabase.ReplaceDatabaseWithDownloaded();
+						Console.WriteLine("Database replaced");
+
+						InvokeOnMainThread (delegate { 
+							Console.WriteLine("Setting sidepanels");
+							sidePanelController = new JASidePanelController();
+							sidePanelController.LeftPanel = new MenuViewController(sidePanelController);
+							sidePanelController.CenterPanel = new MainViewController();
+							sidePanelController.RightPanel = new UIViewController();
+							window.RootViewController = sidePanelController;
+						});
+					};
+					databaseLoader.DownloadDatabase();*/
+				}
+			};
+			loginLoader.Login();
 			
 			return true;
 		}
