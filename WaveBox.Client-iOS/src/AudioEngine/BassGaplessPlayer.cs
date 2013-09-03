@@ -1143,6 +1143,8 @@ namespace WaveBox.Client.AudioEngine
 			{
 				SongFailedToPlay(this, new PlayerEventArgs(song));
 			}
+
+			Stop();
 		}
 	}
 }

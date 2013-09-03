@@ -14,6 +14,7 @@ using Wave.iOS.ViewController;
 using JASidePanels;
 using WaveBox.Client.ViewModel;
 using WaveBox.Client.ServerInteraction;
+using System.Threading.Tasks;
 
 namespace Wave.iOS
 {
@@ -23,8 +24,7 @@ namespace Wave.iOS
 		IKernel kernel = Injection.Kernel;
 
 		UIWindow window;
-		JASidePanelController sidePanelController;
-		
+
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
 			// Initialize the Ninject kernel
@@ -35,13 +35,6 @@ namespace Wave.iOS
 
 			IClientSettings clientSettings = kernel.Get<IClientSettings>();
 			clientSettings.LoadSettings();
-			if (clientSettings.ServerUrl == null)
-			{
-				Console.WriteLine("Setting server url");
-				clientSettings.ServerUrl = "http://home.benjamm.in:6500";
-				clientSettings.UserName = "test";
-				clientSettings.Password = "test";
-			}
 
 			clientSettings.StreamQueueLength = 2;
 
@@ -67,7 +60,38 @@ namespace Wave.iOS
 			titleAttributes.TextShadowColor = UIColor.Clear;
 			UINavigationBar.Appearance.SetTitleTextAttributes(titleAttributes);
 
-			ILoginLoader loginLoader = kernel.Get<ILoginLoader>();
+			if (clientSettings.ServerUrl != null)
+			{
+				ILoginLoader loginLoader = kernel.Get<ILoginLoader>();
+				loginLoader.LoginCompleted += delegate(object sender, LoginEventArgs e) {
+					Console.WriteLine("Login loader login completed, sessionId: " + e.SessionId + ", error: " + e.Error);
+					InvokeOnMainThread(delegate {
+						if (e.Error == null)
+						{
+							JASidePanelController sidePanelController = new JASidePanelController();
+							sidePanelController.PanningLimitedToTopViewController = false;
+							sidePanelController.LeftPanel = new MenuViewController(sidePanelController);
+							sidePanelController.RightPanel = new PlayQueueViewController(kernel.Get<IPlayQueueViewModel>());
+							window.RootViewController = sidePanelController;
+
+							// TODO: rewrite this (Forces menu to load so the center is populated)
+							Console.WriteLine("Menu view: " + sidePanelController.LeftPanel.View);
+						}
+						else
+						{
+							window.RootViewController = new LoginViewController(window, kernel.Get<IPlayQueueViewModel>(), kernel.Get<ILoginViewModel>());
+						}
+					});
+				};
+				loginLoader.Login();
+			}
+			else
+			{
+				window.RootViewController = new LoginViewController(window, kernel.Get<IPlayQueueViewModel>(), kernel.Get<ILoginViewModel>());
+			}
+
+
+			/*ILoginLoader loginLoader = kernel.Get<ILoginLoader>();
 			loginLoader.LoginCompleted += delegate(object sender, LoginEventArgs e) 
 			{
 				Console.WriteLine("Login loader login completed, sessionId: " + e.SessionId + ", error: " + e.Error);
@@ -75,35 +99,27 @@ namespace Wave.iOS
 				{
 					clientSettings.SessionId = e.SessionId;
 
-					InvokeOnMainThread (delegate { 
-						Console.WriteLine("Setting sidepanels");
-						sidePanelController = new JASidePanelController();
-						sidePanelController.LeftPanel = new MenuViewController(sidePanelController);
-						sidePanelController.CenterPanel = new MainViewController();
-						sidePanelController.RightPanel = new PlayQueueViewController(kernel.Get<IPlayQueueViewModel>());
-						window.RootViewController = sidePanelController;
-					});
-
-					/*IDatabaseSyncLoader databaseLoader = kernel.Get<IDatabaseSyncLoader>();
+					IDatabaseSyncLoader databaseLoader = kernel.Get<IDatabaseSyncLoader>();
 					databaseLoader.DatabaseDownloaded += delegate(object sender2, DatabaseSyncEventArgs e2) 
 					{
-						Console.WriteLine("Database loader database downloaded, e2: " + e2);
 						clientDatabase.ReplaceDatabaseWithDownloaded();
-						Console.WriteLine("Database replaced");
 
 						InvokeOnMainThread (delegate { 
 							Console.WriteLine("Setting sidepanels");
 							sidePanelController = new JASidePanelController();
+							sidePanelController.PanningLimitedToTopViewController = false;
 							sidePanelController.LeftPanel = new MenuViewController(sidePanelController);
-							sidePanelController.CenterPanel = new MainViewController();
-							sidePanelController.RightPanel = new UIViewController();
+							sidePanelController.RightPanel = new PlayQueueViewController(kernel.Get<IPlayQueueViewModel>());
 							window.RootViewController = sidePanelController;
+
+							// TODO: rewrite this (Forces menu to load so the center is populated)
+							Console.WriteLine("Menu view: " + sidePanelController.LeftPanel.View);
 						});
 					};
-					databaseLoader.DownloadDatabase();*/
+					databaseLoader.DownloadDatabase();
 				}
 			};
-			loginLoader.Login();
+			loginLoader.Login();*/
 			
 			return true;
 		}

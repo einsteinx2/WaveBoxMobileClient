@@ -5,6 +5,8 @@ using MonoTouch.Foundation;
 using WaveBox.Core.Model;
 using WaveBox.Core;
 using Ninject;
+using SDWebImage;
+using WaveBox.Client.ServerInteraction;
 
 namespace Wave.iOS.ViewController
 {
@@ -74,6 +76,16 @@ namespace Wave.iOS.ViewController
 
 				Album album = albumListViewModel.Albums[indexPath.Row];
 				cell.TextLabel.Text = album.AlbumName;
+
+				string artUrlString = album.ArtUrlString(120);
+				if (artUrlString != null)
+				{
+					cell.ImageView.SetImageWithURL(new NSUrl(artUrlString), new UIImage("BlankAlbumCell.png"), delegate(UIImage image, NSError error, SDImageCacheType cacheType) { });
+				}
+				else
+				{
+					cell.ImageView.Image = new UIImage("BlankAlbumCell.png");
+				}
 
 				return cell;
 			}

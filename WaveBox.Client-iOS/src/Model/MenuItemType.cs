@@ -8,7 +8,8 @@ namespace WaveBox.Client.Model
 		AlbumArtists,
 		Albums,
 		Folders,
-		Genres
+		Genres,
+		Logout
 	}
 
 	public static class MenuItemExtension
@@ -27,6 +28,8 @@ namespace WaveBox.Client.Model
 					return "Folders";
 				case MenuItemType.Genres:
 					return "Genres";
+				case MenuItemType.Logout:
+					return "Logout";
 				default:
 					return "";
 			}

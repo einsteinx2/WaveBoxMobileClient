@@ -7,6 +7,7 @@ using WaveBox.Core;
 using Ninject;
 using SDWebImage;
 using System.Drawing;
+using WaveBox.Client.ServerInteraction;
 
 namespace Wave.iOS.ViewController
 {
@@ -22,7 +23,6 @@ namespace Wave.iOS.ViewController
 				throw new ArgumentNullException("folderViewModel");
 
 			this.folderViewModel = folderViewModel;
-			folderViewModel.ReloadData();
 		}
 
 		public override void ViewDidLoad()
@@ -36,11 +36,14 @@ namespace Wave.iOS.ViewController
 				Title = folderViewModel.Folder.FolderName;
 			}
 
-			UIImageView headerImageView = new UIImageView(new RectangleF(0.0f, 0.0f, View.Frame.Size.Width, 320.0f));
-			string coverUrlString = folderViewModel.CoverUrl;
-			Console.WriteLine("coverUrlString: " + coverUrlString);
-			headerImageView.SetImageWithURL(new NSUrl(coverUrlString));
-			TableView.TableHeaderView = headerImageView;
+			if (folderViewModel.Folder.ArtId != null)
+			{
+				UIImageView headerImageView = new UIImageView(new RectangleF(0.0f, 0.0f, View.Frame.Size.Width, 320.0f));
+				string coverUrlString = folderViewModel.Folder.ArtUrlString();
+				if (coverUrlString != null)
+					headerImageView.SetImageWithURL(new NSUrl(coverUrlString), new UIImage("BlankAlbumCell.png"), SDWebImageOptions.RetryFailed);
+				TableView.TableHeaderView = headerImageView;
+			}
 
 			TableView.BackgroundColor = UIColor.FromRGB(233, 233, 233);
 			TableView.SeparatorColor = UIColor.FromRGB(207, 207, 207);
@@ -56,7 +59,8 @@ namespace Wave.iOS.ViewController
 			private const int SONG_SECTION = 1;
 			private const int VIDEO_SECTION = 2;
 
-			private string cellIdentifier = "FolderTableCell";
+			private string folderCellIdentifier = "FolderTableCell";
+			private string songCellIdentifier = "FolderSongTableCell";
 
 			private readonly IFolderViewModel folderViewModel;
 			private readonly UINavigationController navigationController;
@@ -89,32 +93,49 @@ namespace Wave.iOS.ViewController
 
 			public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
 			{
-				UITableViewCell cell = tableView.DequeueReusableCell(cellIdentifier);
-				if (cell == null)
+				if (indexPath.Section == FOLDER_SECTION)
 				{
-					cell = new UITableViewCell(UITableViewCellStyle.Default, cellIdentifier);
-					cell.TextLabel.TextColor = UIColor.FromRGB(102, 102, 102);
-					cell.TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
-					cell.TextLabel.BackgroundColor = UIColor.Clear;
+					UITableViewCell cell = tableView.DequeueReusableCell(folderCellIdentifier);
+					if (cell == null)
+					{
+						cell = new UITableViewCell(UITableViewCellStyle.Default, folderCellIdentifier);
+						cell.TextLabel.TextColor = UIColor.FromRGB(102, 102, 102);
+						cell.TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
+						cell.TextLabel.BackgroundColor = UIColor.Clear;
+						cell.ImageView.ContentMode = UIViewContentMode.ScaleToFill;
+					}
+
+					Folder folder = folderViewModel.SubFolders[indexPath.Row];
+					cell.TextLabel.Text = folder.FolderName;
+					string artUrlString = folder.ArtUrlString(120);
+					if (artUrlString != null)
+					{
+						cell.ImageView.SetImageWithURL(new NSUrl(artUrlString), new UIImage("BlankAlbumCell.png"), SDWebImageOptions.RetryFailed);
+					}
+					else
+					{
+						cell.ImageView.Image = new UIImage("BlankAlbumCell.png");
+					}
+					return cell;
+				}
+				else if (indexPath.Section == SONG_SECTION)
+				{
+					SongTableCell cell = tableView.DequeueReusableCell(songCellIdentifier) as SongTableCell;
+					if (cell == null)
+					{
+						cell = new SongTableCell(UITableViewCellStyle.Default, songCellIdentifier);
+					}
+
+					cell.Song = folderViewModel.Songs[indexPath.Row];
+					return cell;
+				}
+				else if (indexPath.Section == VIDEO_SECTION)
+				{
+					//Video video = folderViewModel.Videos[indexPath.Row];
+					//cell.TextLabel.Text = video.FileName;
 				}
 
-				switch (indexPath.Section)
-				{
-					case FOLDER_SECTION:
-						Folder folder = folderViewModel.SubFolders[indexPath.Row];
-						cell.TextLabel.Text = folder.FolderName;
-						break;
-					case SONG_SECTION:
-						Song song = folderViewModel.Songs[indexPath.Row];
-						cell.TextLabel.Text = song.SongName;
-						break;
-					case VIDEO_SECTION:
-						Video video = folderViewModel.Videos[indexPath.Row];
-						cell.TextLabel.Text = video.FileName;
-						break;
-				}
-
-				return cell;
+				return null;
 			}
 
 			public override void RowSelected(UITableView tableView, NSIndexPath indexPath)

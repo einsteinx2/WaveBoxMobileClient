@@ -7,8 +7,15 @@ using WaveBox.Core.Model;
 
 namespace Wave.iOS.ViewController
 {
-	public class PlayQueueViewController : UITableViewController
+	public class PlayQueueViewController : UIViewController
 	{
+		private UIView HeaderView { get; set; }
+		private UIButton PlayPauseButton { get; set; }
+		private UILabel SongNameLabel { get; set; }
+		private UILabel ArtistNameLabel { get; set; }
+
+		private UITableView TableView { get; set; }
+
 		private TableSource Source { get; set; }
 
 		private readonly IPlayQueueViewModel playQueueViewModel;
@@ -19,28 +26,76 @@ namespace Wave.iOS.ViewController
 				throw new ArgumentNullException("playQueueViewModel");
 
 			this.playQueueViewModel = playQueueViewModel;
-
-			playQueueViewModel.DataChanged += delegate(object sender, ViewModelEventArgs e) {
-				TableView.ReloadData();
-			};
 		}
 
 		public override void ViewDidLoad()
 		{
 			base.ViewDidLoad();
 
-			TableView.ContentInset = new UIEdgeInsets(0f, 70f, 0f, 0f);
+			View.BackgroundColor = UIColor.FromRGB(233, 233, 233);
+
+			CreateHeader();
+
+			TableView = new UITableView(new RectangleF(70f, HeaderView.Frame.Height, 250f, View.Frame.Size.Height - HeaderView.Frame.Height));
+			TableView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+			View.Add(TableView);
 
 			Source = new TableSource(this.playQueueViewModel);
 
 			TableView.BackgroundColor = UIColor.FromRGB(233, 233, 233);
 			TableView.SeparatorColor = UIColor.FromRGB(207, 207, 207);
-			TableView.RowHeight = 60.0f;
-
-			TableView.TableHeaderView = new UIView(new RectangleF(0.0f, 0.0f, View.Frame.Size.Width, 60.0f));
+			TableView.RowHeight = 60f;
 
 			TableView.Source = Source;
 			TableView.ReloadData();
+
+			playQueueViewModel.DataChanged += delegate(object sender, ViewModelEventArgs e) {
+				InvokeOnMainThread(()=> {
+					// Reload the table
+					TableView.ReloadData();
+
+					// Update the player info
+					Song currentSong = playQueueViewModel.CurrentItem as Song;
+					if (currentSong == null)
+					{
+						SongNameLabel.Text = null;
+						ArtistNameLabel.Text = null;
+					}
+					else
+					{
+						SongNameLabel.Text = currentSong.SongName;
+						ArtistNameLabel.Text = currentSong.ArtistName;
+					}
+				});
+			};
+		}
+
+		private void CreateHeader()
+		{
+			float height = 60f;
+
+			HeaderView = new UIView(new RectangleF(70f, 0f, 250f, height));
+			View.Add(HeaderView);
+
+			PlayPauseButton = new UIButton(UIButtonType.RoundedRect);
+			PlayPauseButton.SetTitle(">/||", UIControlState.Normal);
+			PlayPauseButton.Frame = new RectangleF(0f, 0f, height, height);
+			PlayPauseButton.TouchUpInside += delegate(object sender, EventArgs e) {
+				playQueueViewModel.PlayPauseToggle();
+			};
+			HeaderView.Add(PlayPauseButton);
+
+			SongNameLabel = new UILabel(new RectangleF(height, 0f, HeaderView.Frame.Width - (height * 2), height / 2f));
+			SongNameLabel.BackgroundColor = UIColor.Clear;
+			SongNameLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 12f);
+			SongNameLabel.TextColor = UIColor.FromRGB(107, 107, 107);
+			HeaderView.Add(SongNameLabel);
+
+			ArtistNameLabel = new UILabel(new RectangleF(height, height / 2f, HeaderView.Frame.Width - (height * 2), height / 2f));
+			ArtistNameLabel.BackgroundColor = UIColor.Clear;
+			ArtistNameLabel.Font = UIFont.FromName("HelveticaNeue", 11f);
+			ArtistNameLabel.TextColor = UIColor.FromRGB(107, 107, 107);
+			HeaderView.Add(ArtistNameLabel);
 		}
 
 		private class TableSource : UITableViewSource

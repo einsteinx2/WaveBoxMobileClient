@@ -6,7 +6,8 @@ namespace WaveBox.Client.ViewModel
 {
 	public class ArtistViewModel : IArtistViewModel
 	{
-		public Artist Artist { get; set; }
+		private Artist artist;
+		public Artist Artist { get { return artist; } set { artist = value; ReloadData(); } }
 
 		public IList<Album> Albums { get; set; }
 

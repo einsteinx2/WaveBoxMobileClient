@@ -8,7 +8,8 @@ namespace WaveBox.Client.ViewModel
 {
 	public class AlbumViewModel : IAlbumViewModel
 	{
-		public Album Album { get; set; }
+		private Album album;
+		public Album Album { get { return album; } set { album = value; ReloadData(); } }
 
 		public IList<Song> Songs { get; set; }
 

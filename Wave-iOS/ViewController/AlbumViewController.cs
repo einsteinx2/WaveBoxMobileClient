@@ -3,10 +3,13 @@ using MonoTouch.UIKit;
 using WaveBox.Client.ViewModel;
 using MonoTouch.Foundation;
 using WaveBox.Core.Model;
+using System.Drawing;
+using WaveBox.Client.ServerInteraction;
+using SDWebImage;
 
 namespace Wave.iOS.ViewController
 {
-	public class AlbumViewController : UIViewController
+	public class AlbumViewController : UITableViewController
 	{
 		private TableSource Source { get; set; }
 
@@ -18,9 +21,34 @@ namespace Wave.iOS.ViewController
 				throw new ArgumentNullException("albumViewModel");
 
 			this.albumViewModel = albumViewModel;
-			albumViewModel.ReloadData();
+		}
 
-			Source = new TableSource(this.albumViewModel, this.NavigationController);
+		public override void ViewDidLoad()
+		{
+			base.ViewDidLoad();
+
+			Source = new TableSource(this.albumViewModel);
+
+			if (albumViewModel.Album != null)
+			{
+				Title = albumViewModel.Album.AlbumName;
+			}
+
+			if (albumViewModel.Album.ArtId != null)
+			{
+				UIImageView headerImageView = new UIImageView(new RectangleF(0.0f, 0.0f, View.Frame.Size.Width, 320.0f));
+				string coverUrlString = albumViewModel.Album.ArtUrlString();
+				if (coverUrlString != null)
+					headerImageView.SetImageWithURL(new NSUrl(coverUrlString), new UIImage("BlankAlbumCell.png"), SDWebImageOptions.RetryFailed);
+				TableView.TableHeaderView = headerImageView;
+			}
+
+			TableView.BackgroundColor = UIColor.FromRGB(233, 233, 233);
+			TableView.SeparatorColor = UIColor.FromRGB(207, 207, 207);
+			TableView.RowHeight = 60.0f;
+
+			TableView.Source = Source;
+			TableView.ReloadData();
 		}
 
 		private class TableSource : UITableViewSource
@@ -28,16 +56,15 @@ namespace Wave.iOS.ViewController
 			private string cellIdentifier = "AlbumViewTableCell";
 
 			private readonly IAlbumViewModel albumViewModel;
-			private readonly UINavigationController navigationController;
 
-			public TableSource(IAlbumViewModel albumViewModel, UINavigationController navigationController)
+			public TableSource(IAlbumViewModel albumViewModel)
 			{
 				this.albumViewModel = albumViewModel;
 			}
 
 			public override int NumberOfSections(UITableView tableView)
 			{
-				return 3;
+				return 1;
 			}
 
 			public override int RowsInSection(UITableView tableView, int section)
@@ -47,17 +74,17 @@ namespace Wave.iOS.ViewController
 
 			public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
 			{
-				UITableViewCell cell = tableView.DequeueReusableCell(cellIdentifier);
+				SongTableCell cell = tableView.DequeueReusableCell(cellIdentifier) as SongTableCell;
 				if (cell == null)
 				{
-					cell = new UITableViewCell(UITableViewCellStyle.Default, cellIdentifier);
+					cell = new SongTableCell(UITableViewCellStyle.Default, cellIdentifier);
 					cell.TextLabel.TextColor = UIColor.FromRGB(102, 102, 102);
 					cell.TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
 					cell.TextLabel.BackgroundColor = UIColor.Clear;
 				}
 
 				Song song = albumViewModel.Songs[indexPath.Row];
-				cell.TextLabel.Text = song.SongName;
+				cell.Song = song;
 
 				return cell;
 			}

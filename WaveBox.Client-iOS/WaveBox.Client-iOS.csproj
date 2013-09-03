@@ -11,6 +11,7 @@
     <RootNamespace>WaveBox.Client</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>WaveBox.Client-iOS</AssemblyName>
+    <ReleaseVersion>0.2</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,6 +70,7 @@
     <Folder Include="src\ViewModel\" />
     <Folder Include="src\ViewModel\Interfaces\" />
     <Folder Include="src\Model\" />
+    <Folder Include="src\ServerInteraction\Extensions\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -143,5 +145,8 @@
     <Compile Include="src\ViewModel\Interfaces\IPlayQueueViewModel.cs" />
     <Compile Include="src\ViewModel\PlayQueueViewModel.cs" />
     <Compile Include="src\ViewModel\ViewModelEventArgs.cs" />
+    <Compile Include="src\ServerInteraction\Extensions\IItemExtension.cs" />
+    <Compile Include="src\ViewModel\LoginViewModel.cs" />
+    <Compile Include="src\ViewModel\Interfaces\ILoginViewModel.cs" />
   </ItemGroup>
 </Project>

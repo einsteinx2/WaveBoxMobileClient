@@ -110,14 +110,28 @@ namespace Wave.iOS
 
 		public string DatabaseDownloadPath { get { return DatabasePath + ".temp"; } }
 
-		public async Task ReplaceDatabaseWithDownloaded()
+		public void ReplaceDatabaseWithDownloaded()
 		{
-			await mainPool.CloseAllConnections(delegate {
-				Console.WriteLine("Moving database, main exists: " + File.Exists(DatabasePath) + " download exists: " + File.Exists(DatabaseDownloadPath));
-				File.Delete(DatabasePath);
-				File.Move(DatabaseDownloadPath, DatabasePath);
-				Console.WriteLine("Moved database, main exists: " + File.Exists(DatabasePath) + " download exists: " + File.Exists(DatabaseDownloadPath));
-			});
+			try
+			{
+				mainPool.CloseAllConnections(delegate {
+					try
+					{
+						Console.WriteLine("Moving database, main exists: " + File.Exists(DatabasePath) + " download exists: " + File.Exists(DatabaseDownloadPath));
+						File.Delete(DatabasePath);
+						File.Move(DatabaseDownloadPath, DatabasePath);
+						Console.WriteLine("Moved database, main exists: " + File.Exists(DatabasePath) + " download exists: " + File.Exists(DatabaseDownloadPath));
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine("Exception replacing database with downloaded in completion action: " + e);
+					}
+				});
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Exception replacing database with downloaded: " + e);
+			}
 		}
 	}
 }

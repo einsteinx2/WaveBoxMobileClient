@@ -8,7 +8,7 @@ namespace WaveBox.Client
 	{
 		string DatabaseDownloadPath { get; }
 
-		Task ReplaceDatabaseWithDownloaded();
+		void ReplaceDatabaseWithDownloaded();
 	}
 }
 

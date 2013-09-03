@@ -9,7 +9,8 @@ namespace WaveBox.Client.ViewModel
 {
 	public class FolderViewModel : IFolderViewModel
 	{
-		public Folder Folder { get; set; }
+		private Folder folder;
+		public Folder Folder { get { return folder; } set { folder = value; ReloadData(); } }
 
 		public IList<Folder> SubFolders { get; set; }
 
@@ -17,24 +18,18 @@ namespace WaveBox.Client.ViewModel
 
 		public IList<Video> Videos { get; set; }
 
-		public string CoverUrl { get { return clientSettings.ServerUrl + "/api/art?size=640&s=" + clientSettings.SessionId + "&id=" + Folder.ArtId; } }
-
 		private readonly IPlayQueue playQueue;
 		private readonly IAudioEngine audioEngine;
-		private readonly IClientSettings clientSettings;
 
-		public FolderViewModel(IPlayQueue playQueue, IAudioEngine audioEngine, IClientSettings clientSettings)
+		public FolderViewModel(IPlayQueue playQueue, IAudioEngine audioEngine)
 		{
 			if (playQueue == null)
 				throw new ArgumentNullException("playQueue");
 			if (audioEngine == null)
 				throw new ArgumentNullException("audioEngine");
-			if (clientSettings == null)
-				throw new ArgumentNullException("clientSettings");
 
 			this.playQueue = playQueue;
 			this.audioEngine = audioEngine;
-			this.clientSettings = clientSettings;
 		}
 
 		public void ReloadData()

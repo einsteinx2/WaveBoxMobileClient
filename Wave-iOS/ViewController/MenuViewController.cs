@@ -8,12 +8,15 @@ using System.Collections.Generic;
 using Ninject;
 using WaveBox.Core;
 using System.Drawing;
+using WaveBox.Client;
 
 namespace Wave.iOS.ViewController
 {
-	public class MenuViewController : UITableViewController
+	public class MenuViewController : UIViewController
 	{
 		private static IKernel kernel = Injection.Kernel;
+
+		private UITableView TableView;
 
 		private TableSource Source;
 
@@ -26,12 +29,20 @@ namespace Wave.iOS.ViewController
 		{
 			base.ViewDidLoad();
 
-			TableView.ContentInset = new UIEdgeInsets(0f, 0f, 0f, 70f);
+			View.BackgroundColor = UIColor.FromRGB(233, 233, 233);
 
-			TableView.TableHeaderView = new UIView(new RectangleF(0.0f, 0.0f, View.Frame.Size.Width, 60.0f));
+			TableView = new UITableView(new RectangleF(0.0f, 0.0f, 250f, View.Frame.Size.Height));
+			TableView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+			TableView.TableHeaderView = new UIView(new RectangleF(0.0f, 0.0f, TableView.Frame.Size.Width, 60.0f));
+			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+			View.Add(TableView);
+
+			TableView.BackgroundColor = UIColor.FromRGB(233, 233, 233);
 
 			TableView.Source = Source;
 			TableView.ReloadData();
+
+			Source.RowSelected(TableView, NSIndexPath.FromRowSection(0, 0));
 		}
 
 		private class TableSource : UITableViewSource
@@ -130,6 +141,15 @@ namespace Wave.iOS.ViewController
 								listController = new GenreListViewController(kernel.Get<IGenreListViewModel>());
 								controller = new UINavigationController(listController);
 								break;
+							case MenuItemType.Logout:
+								IClientSettings clientSettings = kernel.Get<IClientSettings>();
+								clientSettings.ServerUrl = null;
+								clientSettings.UserName = null;
+								clientSettings.Password = null;
+								clientSettings.SaveSettings();
+								UIWindow window = UIApplication.SharedApplication.KeyWindow;
+								window.RootViewController = new LoginViewController(window, kernel.Get<IPlayQueueViewModel>(), kernel.Get<ILoginViewModel>());
+								return;
 						}
 
 						ViewControllers[key] = controller;

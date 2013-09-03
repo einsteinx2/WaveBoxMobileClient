@@ -14,8 +14,6 @@ namespace WaveBox.Client.ViewModel
 
 		IList<Video> Videos { get; set; }
 
-		string CoverUrl { get; }
-
 		void PlaySongAtIndex(int index);
 	}
 }

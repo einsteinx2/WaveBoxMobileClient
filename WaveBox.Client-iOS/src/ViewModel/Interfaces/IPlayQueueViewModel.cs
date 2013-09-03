@@ -10,7 +10,9 @@ namespace WaveBox.Client.ViewModel
 
 		IList<IMediaItem> MediaItems { get; }
 		uint CurrentIndex { get; }
+		IMediaItem CurrentItem { get; }
 
+		void PlayPauseToggle();
 		void PlayItemAtIndex(int index);
 	}
 }

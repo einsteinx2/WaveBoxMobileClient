@@ -5,6 +5,9 @@ using WaveBox.Core.Model;
 using MonoTouch.Foundation;
 using WaveBox.Core;
 using Ninject;
+using WaveBox.Client.ServerInteraction;
+using SDWebImage;
+using System.Drawing;
 
 namespace Wave.iOS.ViewController
 {
@@ -20,7 +23,6 @@ namespace Wave.iOS.ViewController
 				throw new ArgumentNullException("albumArtistViewModel");
 
 			this.albumArtistViewModel = albumArtistViewModel;
-			albumArtistViewModel.ReloadData();
 		}
 
 		public override void ViewDidLoad()
@@ -34,6 +36,15 @@ namespace Wave.iOS.ViewController
 				Title = albumArtistViewModel.AlbumArtist.AlbumArtistName;
 			}
 
+			if (albumArtistViewModel.AlbumArtist.ArtId != null)
+			{
+				UIImageView headerImageView = new UIImageView(new RectangleF(0.0f, 0.0f, View.Frame.Size.Width, 320.0f));
+				string coverUrlString = albumArtistViewModel.AlbumArtist.ArtUrlString();
+				if (coverUrlString != null)
+					headerImageView.SetImageWithURL(new NSUrl(coverUrlString), new UIImage("BlankAlbumCell.png"), SDWebImageOptions.RetryFailed);
+				TableView.TableHeaderView = headerImageView;
+			}
+
 			TableView.BackgroundColor = UIColor.FromRGB(233, 233, 233);
 			TableView.SeparatorColor = UIColor.FromRGB(207, 207, 207);
 			TableView.RowHeight = 60.0f;
@@ -44,7 +55,11 @@ namespace Wave.iOS.ViewController
 
 		private class TableSource : UITableViewSource
 		{
-			private string cellIdentifier = "AlbumArtistViewAlbumTableCell";
+			private const int ALBUM_SECTION = 0;
+			private const int SONG_SECTION = 1;
+
+			private string albumCellIdentifier = "AlbumArtistViewAlbumTableCell";
+			private string songCellIdentifier = "AlbumArtistViewSingleTableCell";
 
 			private readonly IAlbumArtistViewModel albumArtistViewModel;
 			private readonly UINavigationController navigationController;
@@ -57,37 +72,75 @@ namespace Wave.iOS.ViewController
 
 			public override int NumberOfSections(UITableView tableView)
 			{
-				return 1;
+				return 2;
 			}
 
 			public override int RowsInSection(UITableView tableView, int section)
 			{
-				return albumArtistViewModel.Albums.Count;
+				return section == ALBUM_SECTION ? albumArtistViewModel.Albums.Count : albumArtistViewModel.Singles.Count;
 			}
 
 			public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
 			{
-				UITableViewCell cell = tableView.DequeueReusableCell(cellIdentifier);
-				if (cell == null)
+				if (indexPath.Section == ALBUM_SECTION)
 				{
-					cell = new UITableViewCell(UITableViewCellStyle.Default, cellIdentifier);
-					cell.TextLabel.TextColor = UIColor.FromRGB(102, 102, 102);
-					cell.TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
-					cell.TextLabel.BackgroundColor = UIColor.Clear;
+					UITableViewCell cell = tableView.DequeueReusableCell(albumCellIdentifier);
+					if (cell == null)
+					{
+						cell = new UITableViewCell(UITableViewCellStyle.Default, albumCellIdentifier);
+						cell.TextLabel.TextColor = UIColor.FromRGB(102, 102, 102);
+						cell.TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
+						cell.TextLabel.BackgroundColor = UIColor.Clear;
+					}
+
+					Album album = albumArtistViewModel.Albums[indexPath.Row];
+					cell.TextLabel.Text = album.AlbumName;
+
+					string artUrlString = album.ArtUrlString(120);
+					if (artUrlString != null)
+					{
+						cell.ImageView.SetImageWithURL(new NSUrl(artUrlString), new UIImage("BlankAlbumCell.png"), delegate(UIImage image, NSError error, SDImageCacheType cacheType) { });
+					}
+					else
+					{
+						cell.ImageView.Image = new UIImage("BlankAlbumCell.png");
+					}
+
+					return cell;
+				}
+				else if (indexPath.Section == SONG_SECTION)
+				{
+					SongTableCell cell = tableView.DequeueReusableCell(songCellIdentifier) as SongTableCell;
+					if (cell == null)
+					{
+						cell = new SongTableCell(UITableViewCellStyle.Default, songCellIdentifier);
+						cell.TextLabel.TextColor = UIColor.FromRGB(102, 102, 102);
+						cell.TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
+						cell.TextLabel.BackgroundColor = UIColor.Clear;
+					}
+
+					Song song = albumArtistViewModel.Singles[indexPath.Row];
+					cell.Song = song;
+
+					return cell;
 				}
 
-				Album album = albumArtistViewModel.Albums[indexPath.Row];
-				cell.TextLabel.Text = album.AlbumName;
-
-				return cell;
+				return null;
 			}
 
 			public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
 			{
-				IAlbumViewModel viewModel = Injection.Kernel.Get<IAlbumViewModel>();
-				viewModel.Album = albumArtistViewModel.Albums[indexPath.Row];
-				AlbumViewController controller = new AlbumViewController(viewModel);
-				navigationController.PushViewController(controller, true);
+				if (indexPath.Section == ALBUM_SECTION)
+				{
+					IAlbumViewModel viewModel = Injection.Kernel.Get<IAlbumViewModel>();
+					viewModel.Album = albumArtistViewModel.Albums[indexPath.Row];
+					AlbumViewController controller = new AlbumViewController(viewModel);
+					navigationController.PushViewController(controller, true);
+				}
+				else if (indexPath.Section == SONG_SECTION)
+				{
+					albumArtistViewModel.PlaySongAtIndex(indexPath.Row);
+				}
 			}
 		}
 	}

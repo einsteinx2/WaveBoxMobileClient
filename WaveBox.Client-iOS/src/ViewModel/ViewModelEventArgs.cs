@@ -6,8 +6,18 @@ namespace WaveBox.Client.ViewModel
 
 	public class ViewModelEventArgs : EventArgs
 	{
-		public ViewModelEventArgs() 
+		public bool Success { get; set; }
+		public string Error { get; set; }
+
+		public ViewModelEventArgs(bool success, string error) 
 		{
+			this.Success = success;
+			this.Error = error;
+		}
+
+		public ViewModelEventArgs()
+		{
+
 		}
 	}
 }

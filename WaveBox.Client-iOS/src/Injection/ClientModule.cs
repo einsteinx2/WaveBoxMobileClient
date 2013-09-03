@@ -41,6 +41,7 @@ namespace WaveBox.Client
 			Bind<IFolderViewModel>().To<FolderViewModel>();
 
 			Bind<IPlayQueueViewModel>().To<PlayQueueViewModel>();
+			Bind<ILoginViewModel>().To<LoginViewModel>();
 		}
 	}
 }
