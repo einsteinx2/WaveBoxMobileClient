@@ -7,6 +7,7 @@ namespace WaveBox.Client.ViewModel
 	public interface IGenreListViewModel : IListViewModel
 	{
 		IList<Genre> Genres { get; set; }
+		IList<Genre> FilteredGenres { get; set; }
 	}
 }
 

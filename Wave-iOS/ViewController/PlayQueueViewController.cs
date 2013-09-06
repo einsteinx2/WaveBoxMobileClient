@@ -49,23 +49,16 @@ namespace Wave.iOS.ViewController
 			TableView.Source = Source;
 			TableView.ReloadData();
 
+			// Update the player info in case it happened before the view was loaded
+			UpdatePlayerInfo(playQueueViewModel.CurrentItem as Song);
+
 			playQueueViewModel.DataChanged += delegate(object sender, ViewModelEventArgs e) {
-				InvokeOnMainThread(()=> {
+				BeginInvokeOnMainThread(()=> {
 					// Reload the table
 					TableView.ReloadData();
 
 					// Update the player info
-					Song currentSong = playQueueViewModel.CurrentItem as Song;
-					if (currentSong == null)
-					{
-						SongNameLabel.Text = null;
-						ArtistNameLabel.Text = null;
-					}
-					else
-					{
-						SongNameLabel.Text = currentSong.SongName;
-						ArtistNameLabel.Text = currentSong.ArtistName;
-					}
+					UpdatePlayerInfo(playQueueViewModel.CurrentItem as Song);
 				});
 			};
 		}
@@ -98,6 +91,20 @@ namespace Wave.iOS.ViewController
 			HeaderView.Add(ArtistNameLabel);
 		}
 
+		private void UpdatePlayerInfo(Song song)
+		{
+			if (song == null)
+			{
+				SongNameLabel.Text = null;
+				ArtistNameLabel.Text = null;
+			}
+			else
+			{
+				SongNameLabel.Text = song.SongName;
+				ArtistNameLabel.Text = song.ArtistName;
+			}
+		}
+
 		private class TableSource : UITableViewSource
 		{
 			private string cellIdentifier = "PlayQueueTableCell";
@@ -121,23 +128,23 @@ namespace Wave.iOS.ViewController
 
 			public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
 			{
-				UITableViewCell cell = tableView.DequeueReusableCell(cellIdentifier);
+				SongTableCell cell = tableView.DequeueReusableCell(cellIdentifier) as SongTableCell;
 				if (cell == null)
 				{
-					cell = new UITableViewCell(UITableViewCellStyle.Default, cellIdentifier);
+					cell = new SongTableCell(UITableViewCellStyle.Default, cellIdentifier);
 					cell.TextLabel.TextColor = UIColor.FromRGB(102, 102, 102);
 					cell.TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
 					cell.TextLabel.BackgroundColor = UIColor.Clear;
 					cell.BackgroundView = new UIView();
 					cell.BackgroundView.BackgroundColor = UIColor.Clear;
+					cell.TrackNumberLabel.Hidden = true;
 				}
 
 				IMediaItem mediaItem = playQueueViewModel.MediaItems[indexPath.Row];
 
 				if (mediaItem is Song)
 				{
-					Song song = mediaItem as Song;
-					cell.TextLabel.Text = song.SongName;
+					cell.Song = mediaItem as Song;
 				}
 				else if (mediaItem is Video)
 				{

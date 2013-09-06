@@ -9,6 +9,8 @@ using Ninject;
 using WaveBox.Core;
 using System.Drawing;
 using WaveBox.Client;
+using System.Collections;
+using Wave.iOS.Extensions;
 
 namespace Wave.iOS.ViewController
 {
@@ -16,28 +18,46 @@ namespace Wave.iOS.ViewController
 	{
 		private static IKernel kernel = Injection.Kernel;
 
-		private UITableView TableView;
+		private UIView HeaderView;
+		private UIView FooterView;
 
+		private UITableView TableView;
 		private TableSource Source;
 
-		public MenuViewController(JASidePanelController sidePanelController)
+		private readonly IDictionary<string, object> styleDictionary;
+
+		public MenuViewController(JASidePanelController sidePanelController, IDictionary<string, object> styleDictionary)
 		{
-			Source = new TableSource(sidePanelController, kernel.Get<IMenuItemListViewModel>(), kernel.Get<IPlaylistListViewModel>());
+			if (styleDictionary == null)
+				throw new ArgumentNullException("styleDictionary");
+
+			this.styleDictionary = styleDictionary;
+
+			Source = new TableSource(sidePanelController, kernel.Get<IMenuItemListViewModel>(), kernel.Get<IPlaylistListViewModel>(), styleDictionary);
 		}
 
 		public override void ViewDidLoad()
 		{
 			base.ViewDidLoad();
 
-			View.BackgroundColor = UIColor.FromRGB(233, 233, 233);
+			HeaderView = new UIView(new RectangleF(0f, 0f, View.Frame.Width, float.Parse((string)styleDictionary["menu.staticHeader.height"])));
+			HeaderView.BackgroundColor = UIColorExtension.FromHex((string)styleDictionary["menu.staticHeader.backgroundColor"], float.Parse((string)styleDictionary["menu.staticHeader.backgroundColorAlpha"]));
+
+			UIView headerBottomBorder = new UIView(new RectangleF(HeaderView.Frame.Height - 1f, 0f, HeaderView.Frame.Width, 1f));
+			headerBottomBorder.BackgroundColor = UIColorExtension.FromHex((string)styleDictionary["menu.staticHeader.bottomBorderColor"], float.Parse((string)styleDictionary["menu.staticHeader.bottomBorderColorAlpha"]));
+			HeaderView.Add(headerBottomBorder);
+			View.Add(HeaderView);
+
+			UIImageView backgroundImageView = new UIImageView(new UIImage((string)styleDictionary["menu.backgroundImage"]));
+			View.Add(backgroundImageView);
 
 			TableView = new UITableView(new RectangleF(0.0f, 0.0f, 250f, View.Frame.Size.Height));
 			TableView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
 			TableView.TableHeaderView = new UIView(new RectangleF(0.0f, 0.0f, TableView.Frame.Size.Width, 60.0f));
 			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+			TableView.RowHeight = float.Parse((string)styleDictionary["menu.row.height"]);
+			TableView.BackgroundColor = UIColor.Clear;
 			View.Add(TableView);
-
-			TableView.BackgroundColor = UIColor.FromRGB(233, 233, 233);
 
 			TableView.Source = Source;
 			TableView.ReloadData();
@@ -52,13 +72,16 @@ namespace Wave.iOS.ViewController
 			private const int MENU_SECTION = 0;
 			private const int PLAYLIST_SECTION = 1;
 
+			private NSIndexPath SelectedIndexPath { get; set; }
+
 			private IDictionary<string, UIViewController> ViewControllers { get; set; }
 
 			private readonly JASidePanelController sidePanelController;
 			private readonly IMenuItemListViewModel menuItemListViewModel;
 			private readonly IPlaylistListViewModel playlistListViewModel;
+			private readonly IDictionary<string, object> styleDictionary;
 
-			public TableSource(JASidePanelController sidePanelController, IMenuItemListViewModel menuItemListViewModel, IPlaylistListViewModel playlistListViewModel)
+			public TableSource(JASidePanelController sidePanelController, IMenuItemListViewModel menuItemListViewModel, IPlaylistListViewModel playlistListViewModel, IDictionary<string, object> styleDictionary)
 			{
 				if (sidePanelController == null)
 					throw new ArgumentNullException ("sidePanelController");
@@ -70,6 +93,7 @@ namespace Wave.iOS.ViewController
 				this.sidePanelController = sidePanelController;
 				this.menuItemListViewModel = menuItemListViewModel;
 				this.playlistListViewModel = playlistListViewModel;
+				this.styleDictionary = styleDictionary;
 
 				ViewControllers = new Dictionary<string, UIViewController>();
 			}
@@ -90,8 +114,33 @@ namespace Wave.iOS.ViewController
 
 			public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
 			{
+				/*
+			StyleDictionary["menu.rowHeader.height"] = 20f;
+			StyleDictionary["menu.rowHeader.fontColor"] = "FFFFFF";
+			StyleDictionary["menu.rowHeader.fontColorAlpha"] = 1.0f;
+			StyleDictionary["menu.rowHeader.fontName"] = "HelveticaNeue";
+			StyleDictionary["menu.rowHeader.fontSize"] = 22.72f;*/
+
 				UITableViewCell cell = tableView.DequeueReusableCell(cellIdentifier);
-				if (cell == null) cell = new UITableViewCell (UITableViewCellStyle.Default, cellIdentifier);
+				if (cell == null)
+				{
+					cell = new UITableViewCell (UITableViewCellStyle.Default, cellIdentifier);
+					cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+					cell.BackgroundView = new UIView();
+				}
+
+				if (indexPath.Equals(SelectedIndexPath))
+				{
+					cell.BackgroundView.BackgroundColor = UIColorExtension.FromHex((string)styleDictionary["menu.rowSelected.backgroundColor"], float.Parse((string)styleDictionary["menu.rowSelected.backgroundColorAlpha"]));
+					cell.TextLabel.Font = UIFont.FromName((string)styleDictionary["menu.rowSelected.fontName"], float.Parse((string)styleDictionary["menu.rowSelected.fontSize"]));
+					cell.TextLabel.TextColor = UIColorExtension.FromHex((string)styleDictionary["menu.rowSelected.fontColor"], float.Parse((string)styleDictionary["menu.rowSelected.fontColorAlpha"]));
+				}
+				else
+				{
+					cell.BackgroundView.BackgroundColor = UIColorExtension.FromHex((string)styleDictionary["menu.row.backgroundColor"], float.Parse((string)styleDictionary["menu.row.backgroundColorAlpha"]));
+					cell.TextLabel.Font = UIFont.FromName((string)styleDictionary["menu.row.fontName"], float.Parse((string)styleDictionary["menu.row.fontSize"]));
+					cell.TextLabel.TextColor = UIColorExtension.FromHex((string)styleDictionary["menu.row.fontColor"], float.Parse((string)styleDictionary["menu.row.fontColorAlpha"]));
+				}
 
 				if (indexPath.Section == MENU_SECTION)
 				{
@@ -148,7 +197,7 @@ namespace Wave.iOS.ViewController
 								clientSettings.Password = null;
 								clientSettings.SaveSettings();
 								UIWindow window = UIApplication.SharedApplication.KeyWindow;
-								window.RootViewController = new LoginViewController(window, kernel.Get<IPlayQueueViewModel>(), kernel.Get<ILoginViewModel>());
+								window.RootViewController = new LoginViewController(window, kernel.Get<IPlayQueueViewModel>(), kernel.Get<ILoginViewModel>(), clientSettings.StyleDictionary);
 								return;
 						}
 
@@ -161,6 +210,9 @@ namespace Wave.iOS.ViewController
 				{
 
 				}
+
+				SelectedIndexPath = indexPath;
+				tableView.ReloadData();
 			}
 		}
 	}

@@ -21,6 +21,7 @@ namespace WaveBox.Client.AudioEngine
 		 * Events
 		 */
 
+		// TODO: clean these up they're from the port
 		public event PlayerEventHandler PositionStarted;
 		public event PlayerEventHandler SeekToPositionStarted;
 		public event PlayerEventHandler SeekToPositionSuccess;
@@ -38,6 +39,8 @@ namespace WaveBox.Client.AudioEngine
 		public event PlayerEventHandler StartedBuffering;
 		public event PlayerEventHandler StillBuffering;
 		public event PlayerEventHandler StoppedBuffering;
+
+		public event PlayerEventHandler PlaybackStarted;
 
 		public IBassGaplessPlayerDataSource DataSource { get; set; }
 
@@ -110,7 +113,7 @@ namespace WaveBox.Client.AudioEngine
 			streamDictionary.TryGetValue(streamIdentifier.ToString(), out stream);
 			return stream;
 		}
-			
+					
 		public BassGaplessPlayer(IPlayQueue playQueue, IBassWrapper bassWrapper, IClientSettings clientSettings)
 		{
 			if (playQueue == null)
@@ -123,6 +126,9 @@ namespace WaveBox.Client.AudioEngine
 			this.playQueue = playQueue;
 			this.bassWrapper = bassWrapper;
 			this.clientSettings = clientSettings;
+
+			// Can't use Ninject for this, have to set it here instead
+			StaticProcs.player = this;
 
 			Un4seen.Bass.BassNet.Registration("ben@einsteinx2.com", "2X11231418232922");
 
@@ -167,7 +173,7 @@ namespace WaveBox.Client.AudioEngine
 
 						long position = Bass.BASS_ChannelSeconds2Bytes(userInfo.MyStream, (float)userInfo.MySong.Duration - crossfadeInterval);
 						userInfo.PointerHandle = GCHandle.Alloc(userInfo, GCHandleType.Pinned);
-						userInfo.CrossfadeSync = Bass.BASS_ChannelSetSync(userInfo.MyStream, BASSSync.BASS_SYNC_POS, position, new SYNCPROC(Procs.StreamCrossfadeCallback), userInfo.PointerHandle.AddrOfPinnedObject());
+						userInfo.CrossfadeSync = Bass.BASS_ChannelSetSync(userInfo.MyStream, BASSSync.BASS_SYNC_POS, position, new SYNCPROC(StaticProcs.StreamCrossfadeCallback), userInfo.PointerHandle.AddrOfPinnedObject());
 					}
 				}
 			}
@@ -528,10 +534,10 @@ namespace WaveBox.Client.AudioEngine
 
 				IntPtr streamIdentifier = new IntPtr(userInfo.Identifier);
 
-				BASS_FILEPROCS procs = new BASS_FILEPROCS(new FILECLOSEPROC(Procs.FileCloseProc), 
-				                                          new FILELENPROC(Procs.FileLenProc), 
-				                                          new FILEREADPROC(Procs.FileReadProc), 
-				                                          new FILESEEKPROC(Procs.FileSeekProc));
+				BASS_FILEPROCS procs = new BASS_FILEPROCS(new FILECLOSEPROC(StaticProcs.FileCloseProc), 
+				                                          new FILELENPROC(StaticProcs.FileLenProc), 
+				                                          new FILEREADPROC(StaticProcs.FileReadProc), 
+				                                          new FILESEEKPROC(StaticProcs.FileSeekProc));
 
 				// Create the stream
 				int fileStream = Bass.BASS_StreamCreateFileUser(BASSStreamSystem.STREAMFILE_NOBUFFER, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT, procs, streamIdentifier);
@@ -564,11 +570,11 @@ namespace WaveBox.Client.AudioEngine
 				if (fileStream != 0)
 				{
 					// Add the stream free callback
-					Bass.BASS_ChannelSetSync(fileStream, BASSSync.BASS_SYNC_END, 0, Procs.StreamEndCallback, streamIdentifier);
+					Bass.BASS_ChannelSetSync(fileStream, BASSSync.BASS_SYNC_END, 0, StaticProcs.StreamEndCallback, streamIdentifier);
 
 					// Also set a sync on the total duration because it can take a few seconds after playback finishes before the END sync is called
 					long totalDurationPosition = Bass.BASS_ChannelSeconds2Bytes(fileStream, (double)aSong.Duration);
-					Bass.BASS_ChannelSetSync(fileStream, BASSSync.BASS_SYNC_POS, totalDurationPosition, Procs.StreamEndCallback, streamIdentifier);
+					Bass.BASS_ChannelSetSync(fileStream, BASSSync.BASS_SYNC_POS, totalDurationPosition, StaticProcs.StreamEndCallback, streamIdentifier);
 
 					// Stream successfully created
 					userInfo.MyStream = fileStream;
@@ -584,7 +590,7 @@ namespace WaveBox.Client.AudioEngine
 					if (crossfadeInterval > 0.0)
 					{
 						long position = Bass.BASS_ChannelSeconds2Bytes(fileStream, (double)(aSong.Duration - crossfadeInterval));
-						userInfo.CrossfadeSync = Bass.BASS_ChannelSetSync(fileStream, BASSSync.BASS_SYNC_POS, position, new SYNCPROC(Procs.StreamCrossfadeCallback), streamIdentifier);
+						userInfo.CrossfadeSync = Bass.BASS_ChannelSetSync(fileStream, BASSSync.BASS_SYNC_POS, position, new SYNCPROC(StaticProcs.StreamCrossfadeCallback), streamIdentifier);
 					}
 
 					// Store the userInfo object here temporarily until we add it to the regular stream queue to try and prevent an EXC_BAD_ACCESS that happens sometimes
@@ -646,7 +652,7 @@ namespace WaveBox.Client.AudioEngine
 				{
 					mixerStream = BassMix.BASS_Mixer_StreamCreate(ISMS_defaultSampleRate, 2, BASSFlag.BASS_STREAM_DECODE);
 					BassMix.BASS_Mixer_StreamAddChannel(mixerStream, userInfo.MyStream, 0);
-					outStream = Bass.BASS_StreamCreate(ISMS_defaultSampleRate, 2, 0, new STREAMPROC(Procs.StreamProc), IntPtr.Zero);
+					outStream = Bass.BASS_StreamCreate(ISMS_defaultSampleRate, 2, 0, new STREAMPROC(StaticProcs.StreamProc), IntPtr.Zero);
 
 					ringBuffer.TotalBytesDrained = 0;
 
@@ -886,10 +892,10 @@ namespace WaveBox.Client.AudioEngine
 
 				currentStream.PointerHandle = GCHandle.Alloc(currentStream, GCHandleType.Pinned);
 
-				Procs.StreamCrossfadeCallback(0, currentStream.MyStream, 0, currentStream.PointerHandle.AddrOfPinnedObject());
+				StaticProcs.StreamCrossfadeCallback(0, currentStream.MyStream, 0, currentStream.PointerHandle.AddrOfPinnedObject());
 
 				// Set a new end sync to happen after the fade
-				Bass.BASS_ChannelSetSync(currentStream.MyStream, BASSSync.BASS_SYNC_SLIDE, 0, new SYNCPROC(Procs.StreamEndCallback), currentStream.PointerHandle.AddrOfPinnedObject());
+				Bass.BASS_ChannelSetSync(currentStream.MyStream, BASSSync.BASS_SYNC_SLIDE, 0, new SYNCPROC(StaticProcs.StreamEndCallback), currentStream.PointerHandle.AddrOfPinnedObject());
 			}
 			else if (!success)
 			{

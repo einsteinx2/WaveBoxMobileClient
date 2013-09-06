@@ -10,13 +10,13 @@ using WaveBox.Client.ServerInteraction;
 
 namespace Wave.iOS.ViewController
 {
-	public class AlbumArtistListViewController : UITableViewController
+	public class AlbumArtistListViewController : ListViewController
 	{
 		private TableSource Source { get; set; }
 
 		private readonly IAlbumArtistListViewModel albumArtistListViewModel;
 
-		public AlbumArtistListViewController(IAlbumArtistListViewModel albumArtistListViewModel)
+		public AlbumArtistListViewController(IAlbumArtistListViewModel albumArtistListViewModel) : base(albumArtistListViewModel)
 		{
 			if (albumArtistListViewModel == null)
 				throw new ArgumentNullException("albumArtistListViewModel");
@@ -60,7 +60,7 @@ namespace Wave.iOS.ViewController
 
 			public override int RowsInSection(UITableView tableView, int section)
 			{
-				return albumArtistListViewModel.AlbumArtists.Count;
+				return albumArtistListViewModel.FilteredAlbumArtists.Count;
 			}
 
 			public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
@@ -73,8 +73,12 @@ namespace Wave.iOS.ViewController
 					cell.TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
 					cell.TextLabel.BackgroundColor = UIColor.Clear;
 				}
+				else
+				{
+					cell.ImageView.CancelCurrentImageLoad();
+				}
 
-				AlbumArtist albumArtist = albumArtistListViewModel.AlbumArtists[indexPath.Row];
+				AlbumArtist albumArtist = albumArtistListViewModel.FilteredAlbumArtists[indexPath.Row];
 				cell.TextLabel.Text = albumArtist.AlbumArtistName;
 
 				string artUrlString = albumArtist.ArtUrlString(120);
@@ -93,7 +97,7 @@ namespace Wave.iOS.ViewController
 			public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
 			{
 				IAlbumArtistViewModel viewModel = Injection.Kernel.Get<IAlbumArtistViewModel>();
-				viewModel.AlbumArtist = albumArtistListViewModel.AlbumArtists[indexPath.Row];
+				viewModel.AlbumArtist = albumArtistListViewModel.FilteredAlbumArtists[indexPath.Row];
 				AlbumArtistViewController controller = new AlbumArtistViewController(viewModel);
 				navigationController.PushViewController(controller, true);
 			}

@@ -1,48 +1,33 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Ad-Hoc|iPhone" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.Benjamin's iPad" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Wave-iOS/AppDelegate.cs">
     <Files>
-      <File FileName="Wave-iOS/ViewController/PlayQueueViewController.cs" Line="41" Column="1" />
-      <File FileName="WaveBox.Client-iOS/src/ViewModel/Interfaces/IPlayQueueViewModel.cs" Line="13" Column="34" />
-      <File FileName="WaveBox.Client-iOS/src/ViewModel/PlayQueueViewModel.cs" Line="16" Column="10" />
-      <File FileName="Wave-iOS/AppDelegate.cs" Line="35" Column="4" />
+      <File FileName="WaveBox.Client-iOS/src/ViewModel/PlayQueueViewModel.cs" Line="36" Column="22" />
+      <File FileName="WaveBox.Client-iOS/src/AudioEngine/BassGaplessPlayer.cs" Line="43" Column="51" />
+      <File FileName="Wave-iOS/AppDelegate.cs" Line="160" Column="31" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Wave.iOS" expanded="True" selected="True">
             <Node name="References" expanded="True" />
-            <Node name="Resources" expanded="True" />
             <Node name="ViewController" expanded="True" />
           </Node>
           <Node name="WaveBox.Client-iOS" expanded="True">
-            <Node name="References" expanded="True" />
             <Node name="src" expanded="True">
-              <Node name="AudioEngine" expanded="True">
+              <Node name="AudioEngine" expanded="True" />
+              <Node name="ServerInteraction" expanded="True" />
+              <Node name="Settings" expanded="True">
                 <Node name="Interfaces" expanded="True" />
               </Node>
-              <Node name="Injection" expanded="True">
-                <Node name="Interfaces" expanded="True" />
-              </Node>
-              <Node name="Model" expanded="True" />
-              <Node name="ServerInteraction" expanded="True">
-                <Node name="EventArgs" expanded="True" />
-                <Node name="Extensions" expanded="True" />
-              </Node>
-              <Node name="Settings" expanded="True" />
               <Node name="ViewModel" expanded="True">
                 <Node name="Interfaces" expanded="True" />
               </Node>
             </Node>
           </Node>
           <Node name="WaveBox.Core-iOS" expanded="True">
-            <Node name="References" expanded="True" />
             <Node name="src" expanded="True">
-              <Node name="Extensions" expanded="True" />
-              <Node name="Injection" expanded="True" />
-              <Node name="Model" expanded="True">
-                <Node name="Interfaces" expanded="True" />
-              </Node>
+              <Node name="Model" expanded="True" />
               <Node name="Repository" expanded="True">
                 <Node name="Interfaces" expanded="True" />
               </Node>

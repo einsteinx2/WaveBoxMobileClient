@@ -11,13 +11,13 @@ using System.Drawing;
 
 namespace Wave.iOS.ViewController
 {
-	public class AlbumArtistViewController : UITableViewController
+	public class AlbumArtistViewController : ListViewController
 	{
 		private TableSource Source { get; set; }
 
 		private readonly IAlbumArtistViewModel albumArtistViewModel;
 
-		public AlbumArtistViewController(IAlbumArtistViewModel albumArtistViewModel)
+		public AlbumArtistViewController(IAlbumArtistViewModel albumArtistViewModel) : base(albumArtistViewModel)
 		{
 			if (albumArtistViewModel == null)
 				throw new ArgumentNullException("albumArtistViewModel");
@@ -77,7 +77,7 @@ namespace Wave.iOS.ViewController
 
 			public override int RowsInSection(UITableView tableView, int section)
 			{
-				return section == ALBUM_SECTION ? albumArtistViewModel.Albums.Count : albumArtistViewModel.Singles.Count;
+				return section == ALBUM_SECTION ? albumArtistViewModel.FilteredAlbums.Count : albumArtistViewModel.FilteredSingles.Count;
 			}
 
 			public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
@@ -93,7 +93,7 @@ namespace Wave.iOS.ViewController
 						cell.TextLabel.BackgroundColor = UIColor.Clear;
 					}
 
-					Album album = albumArtistViewModel.Albums[indexPath.Row];
+					Album album = albumArtistViewModel.FilteredAlbums[indexPath.Row];
 					cell.TextLabel.Text = album.AlbumName;
 
 					string artUrlString = album.ArtUrlString(120);
@@ -119,7 +119,7 @@ namespace Wave.iOS.ViewController
 						cell.TextLabel.BackgroundColor = UIColor.Clear;
 					}
 
-					Song song = albumArtistViewModel.Singles[indexPath.Row];
+					Song song = albumArtistViewModel.FilteredSingles[indexPath.Row];
 					cell.Song = song;
 
 					return cell;
@@ -133,7 +133,7 @@ namespace Wave.iOS.ViewController
 				if (indexPath.Section == ALBUM_SECTION)
 				{
 					IAlbumViewModel viewModel = Injection.Kernel.Get<IAlbumViewModel>();
-					viewModel.Album = albumArtistViewModel.Albums[indexPath.Row];
+					viewModel.Album = albumArtistViewModel.FilteredAlbums[indexPath.Row];
 					AlbumViewController controller = new AlbumViewController(viewModel);
 					navigationController.PushViewController(controller, true);
 				}

@@ -11,10 +11,10 @@ using Ninject;
 using WaveBox.Core.Model;
 using WaveBox.Core.Model.Repository;
 using Wave.iOS.ViewController;
-using JASidePanels;
 using WaveBox.Client.ViewModel;
 using WaveBox.Client.ServerInteraction;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Wave.iOS
 {
@@ -24,6 +24,11 @@ namespace Wave.iOS
 		IKernel kernel = Injection.Kernel;
 
 		UIWindow window;
+
+		IBassGaplessPlayer player;
+
+		private int backgroundTask;
+		private bool isInBackground;
 
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
@@ -40,7 +45,7 @@ namespace Wave.iOS
 
 			BassPlaylistCurrentIndex = 0;
 
-			IBassGaplessPlayer player = kernel.Get<IBassGaplessPlayer>();
+			player = kernel.Get<IBassGaplessPlayer>();
 			player.AudioEngine = kernel.Get<IAudioEngine>();
 			player.DataSource = this;
 
@@ -49,7 +54,7 @@ namespace Wave.iOS
 			UIViewController blankController = new UIViewController();
 			blankController.View.BackgroundColor = UIColor.White;
 
-			window.RootViewController = new UIViewController();
+			window.RootViewController = blankController;
 			window.MakeKeyAndVisible ();
 
 			UINavigationBar.Appearance.SetBackgroundImage(new UIImage(), UIBarMetrics.Default);
@@ -70,7 +75,7 @@ namespace Wave.iOS
 						{
 							JASidePanelController sidePanelController = new JASidePanelController();
 							sidePanelController.PanningLimitedToTopViewController = false;
-							sidePanelController.LeftPanel = new MenuViewController(sidePanelController);
+							sidePanelController.LeftPanel = new MenuViewController(sidePanelController, clientSettings.StyleDictionary);
 							sidePanelController.RightPanel = new PlayQueueViewController(kernel.Get<IPlayQueueViewModel>());
 							window.RootViewController = sidePanelController;
 
@@ -79,7 +84,7 @@ namespace Wave.iOS
 						}
 						else
 						{
-							window.RootViewController = new LoginViewController(window, kernel.Get<IPlayQueueViewModel>(), kernel.Get<ILoginViewModel>());
+							window.RootViewController = new LoginViewController(window, kernel.Get<IPlayQueueViewModel>(), kernel.Get<ILoginViewModel>(), clientSettings.StyleDictionary);
 						}
 					});
 				};
@@ -87,7 +92,7 @@ namespace Wave.iOS
 			}
 			else
 			{
-				window.RootViewController = new LoginViewController(window, kernel.Get<IPlayQueueViewModel>(), kernel.Get<ILoginViewModel>());
+				window.RootViewController = new LoginViewController(window, kernel.Get<IPlayQueueViewModel>(), kernel.Get<ILoginViewModel>(), clientSettings.StyleDictionary);
 			}
 
 
@@ -120,10 +125,64 @@ namespace Wave.iOS
 				}
 			};
 			loginLoader.Login();*/
-			
+
 			return true;
 		}
 
+		public override void WillEnterForeground(UIApplication application)
+		{
+			this.isInBackground = false;
+			if (this.backgroundTask != 0)
+			{
+				//DLog(@"the app was backgrounded and NOT put to sleep and is now active again");
+				application.EndBackgroundTask(backgroundTask);
+				this.backgroundTask = 0;
+			}
+		}
+
+		public override void DidEnterBackground(UIApplication application)
+		{
+			this.backgroundTask = application.BeginBackgroundTask( () => {
+				// App is about to be put to sleep, stop the cache download queue
+				// do that here
+
+				// Make sure to end the background so we don't get killed by the OS
+				application.EndBackgroundTask(this.backgroundTask);
+				this.backgroundTask = 0;
+			});
+
+			new Task(() => {
+				this.isInBackground = true;
+
+				while (application.BackgroundTimeRemaining > 2.0 && this.isInBackground)
+				{
+					// Sleep early if no music is playing and we're not downloading songs or playing music
+					if (application.BackgroundTimeRemaining < 300.0 && !player.IsPlaying)//&& !cacheQueueManagerS.isQueueDownloading && !AudioEngine.player.isPlaying)
+					{
+						application.EndBackgroundTask(this.backgroundTask);
+						this.backgroundTask = 0;
+						break;
+					}
+
+					/*// Warn at 2 minute mark if cache queue is downloading
+					if ([application backgroundTimeRemaining] < 120.0 && cacheQueueManagerS.isQueueDownloading)
+					{
+						UILocalNotification *localNotif = [[UILocalNotification alloc] init];
+						if (localNotif) 
+						{
+							localNotif.alertBody = NSLocalizedString(@"Songs are still downloading. Please return to Anghami within 2 minutes, as we will save resources by putting the application to sleep.", nil);
+							localNotif.alertAction = NSLocalizedString(@"Open Anghami", nil);
+							[application presentLocalNotificationNow:localNotif];
+							break;
+						}
+					}*/
+
+					// Sleep for a second to avoid a fast loop eating all cpu cycles
+					Thread.Sleep(1000);
+				}
+			}).Start();
+		}
+		
 		public int BassPlaylistCount { get { return 1; } }
 		public int BassPlaylistCurrentIndex { get; set; }
 		public Song BassPlaylistCurrentSong { get { return Injection.Kernel.Get<IPlayQueue>().CurrentItem as Song; } }

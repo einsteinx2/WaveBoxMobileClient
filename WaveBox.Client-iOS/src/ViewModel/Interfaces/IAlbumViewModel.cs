@@ -9,6 +9,7 @@ namespace WaveBox.Client.ViewModel
 		Album Album { get; set; }
 
 		IList<Song> Songs { get; set; }
+		IList<Song> FilteredSongs { get; set; }
 
 		void PlaySongAtIndex(int index);
 	}

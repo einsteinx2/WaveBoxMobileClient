@@ -1,36 +1,26 @@
 using System;
 using MonoTouch;
+using Un4seen.Bass;
+using WaveBox.Core.Model;
+using System.IO;
+using Un4seen.Bass.AddOn.Mix;
+using System.Runtime.InteropServices;
 using WaveBox.Core;
 using Ninject;
-using Un4seen.Bass;
-using System.Runtime.InteropServices;
-using WaveBox.Core.Model;
-using Un4seen.Bass.AddOn.Mix;
-using System.IO;
 
 namespace WaveBox.Client.AudioEngine
 {
 	public partial class BassGaplessPlayer
 	{
-		// Xamarin.iOS doesn't support instance methods as C callbacks. So have to use Ninject.
-		public class Procs
+		public static class StaticProcs
 		{
-			private static IBassGaplessPlayer player = Injection.Kernel.Get<IBassGaplessPlayer>();
+			public static IBassGaplessPlayer player = null;
 
-			delegate void FILECLOSEPROC(IntPtr user);
-
-			delegate void FILELENPROC(IntPtr user);
-
-			delegate void FILEREADPROC(IntPtr buffer, int length, IntPtr user);
-
-			delegate void FILESEEKPROC(long offset, IntPtr user);
-
-			delegate void SYNCPROC(int handle, int channel, int data, IntPtr user);
-
-			[MonoPInvokeCallback(typeof (SYNCPROC))]
+			[MonoPInvokeCallback(typeof (STREAMPROC))]
 			public static int StreamProc(int handle, IntPtr buffer, int length, IntPtr user)
 			{
-				return player.StreamProc(handle, buffer, length, user);
+				int value = player.StreamProc(handle, buffer, length, user);
+				return value;
 			}
 
 			[MonoPInvokeCallback(typeof (SYNCPROC))]
@@ -54,19 +44,22 @@ namespace WaveBox.Client.AudioEngine
 			[MonoPInvokeCallback(typeof (FILELENPROC))]
 			public static long FileLenProc(IntPtr user)
 			{
-				return player.FileLenProc(user);
+				long value = player.FileLenProc(user);
+				return value;
 			}
 
 			[MonoPInvokeCallback(typeof (FILEREADPROC))]
 			public static int FileReadProc(IntPtr buffer, int length, IntPtr user)
 			{
-				return player.FileReadProc(buffer, length, user);
+				int value = player.FileReadProc(buffer, length, user);
+				return value;
 			}
 
 			[MonoPInvokeCallback(typeof (FILESEEKPROC))]
 			public static bool FileSeekProc(long offset, IntPtr user)
 			{
-				return player.FileSeekProc(offset, user);
+				bool value = player.FileSeekProc(offset, user);
+				return value;
 			}
 		}
 
@@ -350,6 +343,8 @@ namespace WaveBox.Client.AudioEngine
 			}
 
 			return bytesRead;
+
+			return 0;
 		}
 	}
 }

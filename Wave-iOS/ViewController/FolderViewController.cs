@@ -11,13 +11,13 @@ using WaveBox.Client.ServerInteraction;
 
 namespace Wave.iOS.ViewController
 {
-	public class FolderViewController : UITableViewController
+	public class FolderViewController : ListViewController
 	{
 		private TableSource Source { get; set; }
 
 		private readonly IFolderViewModel folderViewModel;
 
-		public FolderViewController(IFolderViewModel folderViewModel)
+		public FolderViewController(IFolderViewModel folderViewModel) : base(folderViewModel)
 		{
 			if (folderViewModel == null)
 				throw new ArgumentNullException("folderViewModel");
@@ -81,11 +81,11 @@ namespace Wave.iOS.ViewController
 				switch (section)
 				{
 					case FOLDER_SECTION:
-						return folderViewModel.SubFolders.Count;
+						return folderViewModel.FilteredSubFolders.Count;
 					case SONG_SECTION:
-						return folderViewModel.Songs.Count;
+						return folderViewModel.FilteredSongs.Count;
 					case VIDEO_SECTION:
-						return folderViewModel.Videos.Count;
+						return folderViewModel.FilteredVideos.Count;
 					default:
 						return 0;
 				}
@@ -104,8 +104,12 @@ namespace Wave.iOS.ViewController
 						cell.TextLabel.BackgroundColor = UIColor.Clear;
 						cell.ImageView.ContentMode = UIViewContentMode.ScaleToFill;
 					}
+					else
+					{
+						cell.ImageView.CancelCurrentImageLoad();
+					}
 
-					Folder folder = folderViewModel.SubFolders[indexPath.Row];
+					Folder folder = folderViewModel.FilteredSubFolders[indexPath.Row];
 					cell.TextLabel.Text = folder.FolderName;
 					string artUrlString = folder.ArtUrlString(120);
 					if (artUrlString != null)
@@ -125,13 +129,17 @@ namespace Wave.iOS.ViewController
 					{
 						cell = new SongTableCell(UITableViewCellStyle.Default, songCellIdentifier);
 					}
+					else
+					{
+						cell.ImageView.CancelCurrentImageLoad();
+					}
 
-					cell.Song = folderViewModel.Songs[indexPath.Row];
+					cell.Song = folderViewModel.FilteredSongs[indexPath.Row];
 					return cell;
 				}
 				else if (indexPath.Section == VIDEO_SECTION)
 				{
-					//Video video = folderViewModel.Videos[indexPath.Row];
+					//Video video = folderViewModel.FilteredVideos[indexPath.Row];
 					//cell.TextLabel.Text = video.FileName;
 				}
 
@@ -144,7 +152,7 @@ namespace Wave.iOS.ViewController
 				{
 					case FOLDER_SECTION:
 						IFolderViewModel viewModel = Injection.Kernel.Get<IFolderViewModel>();
-						viewModel.Folder = folderViewModel.SubFolders[indexPath.Row];
+						viewModel.Folder = folderViewModel.FilteredSubFolders[indexPath.Row];
 						FolderViewController controller = new FolderViewController(viewModel);
 						navigationController.PushViewController(controller, true);
 						break;

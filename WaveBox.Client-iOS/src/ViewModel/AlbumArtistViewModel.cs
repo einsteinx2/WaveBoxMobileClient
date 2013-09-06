@@ -12,8 +12,10 @@ namespace WaveBox.Client.ViewModel
 		public AlbumArtist AlbumArtist { get { return albumArtist; } set { albumArtist = value; ReloadData(); } }
 
 		public IList<Album> Albums { get; set; }
+		public IList<Album> FilteredAlbums { get; set; }
 
 		public IList<Song> Singles { get; set; }
+		public IList<Song> FilteredSingles { get; set; }
 
 		private readonly IPlayQueue playQueue;
 		private readonly IAudioEngine audioEngine;
@@ -29,19 +31,28 @@ namespace WaveBox.Client.ViewModel
 			this.audioEngine = audioEngine;
 		}
 
+		public void PerformSearch(string searchTerm)
+		{
+			FilteredAlbums = Albums.Where(x => x.AlbumName.Contains(searchTerm)).ToList();
+			FilteredSingles = Singles.Where(x => x.SongName.Contains(searchTerm)).ToList();
+		}
+
 		public void ReloadData()
 		{
 			if (AlbumArtist != null)
 			{
 				Albums = AlbumArtist.ListOfAlbums();
+				FilteredAlbums = new List<Album>(Albums);
+
 				Singles = AlbumArtist.ListOfSingles();
+				FilteredSingles = new List<Song>(Singles);
 			}
 		}
 
 		public void PlaySongAtIndex(int index)
 		{
 			playQueue.ResetBothPlayQueues();
-			playQueue.AddItems(Singles.ToList<IMediaItem>());
+			playQueue.AddItems(FilteredSingles.ToList<IMediaItem>());
 
 			audioEngine.PlaySongAtPosition((uint)index);
 		}

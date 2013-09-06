@@ -6,13 +6,13 @@ using MonoTouch.Foundation;
 
 namespace Wave.iOS.ViewController
 {
-	public class GenreListViewController : UITableViewController
+	public class GenreListViewController : ListViewController
 	{
 		private TableSource Source { get; set; }
 
 		private readonly IGenreListViewModel genreListViewModel;
 
-		public GenreListViewController(IGenreListViewModel genreListViewModel)
+		public GenreListViewController(IGenreListViewModel genreListViewModel) : base(genreListViewModel)
 		{
 			if (genreListViewModel == null)
 				throw new ArgumentNullException("genreListViewModel");
@@ -54,7 +54,7 @@ namespace Wave.iOS.ViewController
 
 			public override int RowsInSection(UITableView tableView, int section)
 			{
-				return genreListViewModel.Genres.Count;
+				return genreListViewModel.FilteredGenres.Count;
 			}
 
 			public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
@@ -68,7 +68,7 @@ namespace Wave.iOS.ViewController
 					cell.TextLabel.BackgroundColor = UIColor.Clear;
 				}
 
-				Genre genre = genreListViewModel.Genres[indexPath.Row];
+				Genre genre = genreListViewModel.FilteredGenres[indexPath.Row];
 				cell.TextLabel.Text = genre.GenreName;
 
 				return cell;

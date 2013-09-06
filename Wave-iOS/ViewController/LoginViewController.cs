@@ -3,6 +3,8 @@ using MonoTouch.UIKit;
 using JASidePanels;
 using WaveBox.Client.ViewModel;
 using System.Drawing;
+using WaveBox.Client;
+using System.Collections.Generic;
 
 namespace Wave.iOS.ViewController
 {
@@ -18,8 +20,9 @@ namespace Wave.iOS.ViewController
 		private readonly UIWindow window;
 		private readonly IPlayQueueViewModel playQueueViewModel;
 		private readonly ILoginViewModel loginViewModel;
+		private readonly IDictionary<string, object> styleDictionary;
 
-		public LoginViewController(UIWindow window, IPlayQueueViewModel playQueueViewModel, ILoginViewModel loginViewModel)
+		public LoginViewController(UIWindow window, IPlayQueueViewModel playQueueViewModel, ILoginViewModel loginViewModel, IDictionary<string, object> styleDictionary)
 		{
 			if (window == null)
 				throw new ArgumentNullException("window");
@@ -27,10 +30,13 @@ namespace Wave.iOS.ViewController
 				throw new ArgumentNullException("playQueueViewModel");
 			if (loginViewModel == null)
 				throw new ArgumentNullException("loginViewModel");
+			if (styleDictionary == null)
+				throw new ArgumentNullException("styleDictionary");
 
 			this.window = window;
 			this.playQueueViewModel = playQueueViewModel;
 			this.loginViewModel = loginViewModel;
+			this.styleDictionary = styleDictionary;
 		}
 
 		public override void ViewDidLoad()
@@ -85,7 +91,7 @@ namespace Wave.iOS.ViewController
 					{
 						JASidePanelController sidePanelController = new JASidePanelController();
 						sidePanelController.PanningLimitedToTopViewController = false;
-						sidePanelController.LeftPanel = new MenuViewController(sidePanelController);
+						sidePanelController.LeftPanel = new MenuViewController(sidePanelController, styleDictionary);
 						sidePanelController.RightPanel = new PlayQueueViewController(playQueueViewModel);
 						window.RootViewController = sidePanelController;
 

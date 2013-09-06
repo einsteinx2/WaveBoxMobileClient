@@ -7,6 +7,7 @@ namespace WaveBox.Client.ViewModel
 	public interface IPlaylistListViewModel : IListViewModel
 	{
 		IList<Playlist> Playlists { get; set; }
+		IList<Playlist> FilteredPlaylists { get; set; }
 	}
 }
 

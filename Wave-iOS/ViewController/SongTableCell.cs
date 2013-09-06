@@ -72,7 +72,10 @@ namespace Wave.iOS.ViewController
 
 			float height = Frame.Height;
 			TrackNumberLabel.Frame = new RectangleF(0f, 0f, height, height);
-			SongNameLabel.Frame = new RectangleF(height, 0f, Frame.Width - (height * 2), height);
+			if (TrackNumberLabel.Hidden)
+				SongNameLabel.Frame = new RectangleF(0f, 0f, Frame.Width - height, height);
+			else
+				SongNameLabel.Frame = new RectangleF(height, 0f, Frame.Width - (height * 2), height);
 			DurationLabel.Frame = new RectangleF(Frame.Width - height, 0f, height, height);
 		}
 	}

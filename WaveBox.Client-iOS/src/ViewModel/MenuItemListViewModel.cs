@@ -14,6 +14,11 @@ namespace WaveBox.Client.ViewModel
 			ReloadData();
 		}
 
+		public void PerformSearch(string searchTerm)
+		{
+			throw new NotImplementedException();
+		}
+
 		public void ReloadData()
 		{
 			// For now show everything except Artists, as we'll use AlbumArtists instead, and put them in a particular order

@@ -7,6 +7,7 @@ namespace WaveBox.Client.ViewModel
 	public interface IAlbumArtistListViewModel : IListViewModel
 	{
 		IList<AlbumArtist> AlbumArtists { get; set; }
+		IList<AlbumArtist> FilteredAlbumArtists { get; set; }
 	}
 }
 

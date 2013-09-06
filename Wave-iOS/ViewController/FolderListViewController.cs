@@ -10,13 +10,13 @@ using WaveBox.Client.ServerInteraction;
 
 namespace Wave.iOS.ViewController
 {
-	public class FolderListViewController : UITableViewController
+	public class FolderListViewController : ListViewController
 	{
 		private TableSource Source { get; set; }
 
 		private readonly IFolderListViewModel folderListViewModel;
 
-		public FolderListViewController(IFolderListViewModel folderListViewModel)
+		public FolderListViewController(IFolderListViewModel folderListViewModel) : base(folderListViewModel)
 		{
 			if (folderListViewModel == null)
 				throw new ArgumentNullException("folderListViewModel");
@@ -60,7 +60,7 @@ namespace Wave.iOS.ViewController
 
 			public override int RowsInSection(UITableView tableView, int section)
 			{
-				return folderListViewModel.Folders.Count;
+				return folderListViewModel.FilteredFolders.Count;
 			}
 
 			public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
@@ -73,8 +73,12 @@ namespace Wave.iOS.ViewController
 					cell.TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
 					cell.TextLabel.BackgroundColor = UIColor.Clear;
 				}
+				else
+				{
+					cell.ImageView.CancelCurrentImageLoad();
+				}
 
-				Folder folder = folderListViewModel.Folders[indexPath.Row];
+				Folder folder = folderListViewModel.FilteredFolders[indexPath.Row];
 				cell.TextLabel.Text = folder.FolderName;
 
 				string artUrlString = folder.ArtUrlString(120);
@@ -93,7 +97,7 @@ namespace Wave.iOS.ViewController
 			public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
 			{
 				IFolderViewModel viewModel = Injection.Kernel.Get<IFolderViewModel>();
-				viewModel.Folder = folderListViewModel.Folders[indexPath.Row];
+				viewModel.Folder = folderListViewModel.FilteredFolders[indexPath.Row];
 				FolderViewController controller = new FolderViewController(viewModel);
 				navigationController.PushViewController(controller, true);
 			}

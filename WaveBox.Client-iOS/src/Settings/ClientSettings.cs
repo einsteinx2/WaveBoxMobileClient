@@ -1,6 +1,7 @@
 using System;
 using Newtonsoft.Json;
 using System.IO;
+using System.Collections.Generic;
 
 namespace WaveBox.Client
 {
@@ -17,6 +18,8 @@ namespace WaveBox.Client
 		public string SessionId { get; set; }
 
 		public uint StreamQueueLength { get; set; }
+
+		public IDictionary<string, object> StyleDictionary { get; set; }
 
 		public int LastQueryId { get; set; }
 
@@ -40,6 +43,9 @@ namespace WaveBox.Client
 			{
 				Directory.CreateDirectory(DownloadsPath);
 			}
+
+			// Create the default style
+			PopulateStyleDictionary();
 		}
 
 		public void SaveSettings()
@@ -61,6 +67,47 @@ namespace WaveBox.Client
 				}
 				catch {}
 			}
+		}
+
+		private void PopulateStyleDictionary()
+		{
+			StyleDictionary = new Dictionary<string, object>();
+
+			// Menu
+			StyleDictionary["menu.backgroundImage"] = "menu-background.png";
+
+			StyleDictionary["menu.staticHeader.height"] = "51";
+			StyleDictionary["menu.staticHeader.backgroundColor"] = "FFFFFF";
+			StyleDictionary["menu.staticHeader.backgroundColorAlpha"] = "0.30";
+			StyleDictionary["menu.staticHeader.bottomBorderColor"] = "FFFFFF";
+			StyleDictionary["menu.staticHeader.bottomBorderColorAlpha"] = "0.65";
+			StyleDictionary["menu.staticHeader.fontColor"] = "FFFFFF";
+			StyleDictionary["menu.staticHeader.fontName"] = "HelveticaNeue";
+			StyleDictionary["menu.staticHeader.fontSize"] = "8.4";
+
+			StyleDictionary["menu.rowHeader.height"] = "20";
+			StyleDictionary["menu.rowHeader.fontColor"] = "FFFFFF";
+			StyleDictionary["menu.rowHeader.fontColorAlpha"] = "1.0";
+			StyleDictionary["menu.rowHeader.fontName"] = "HelveticaNeue";
+			StyleDictionary["menu.rowHeader.fontSize"] = "22.72";
+
+			StyleDictionary["menu.row.height"] = "50";
+			StyleDictionary["menu.row.backgroundColor"] = "FFFFFF";
+			StyleDictionary["menu.row.backgroundColorAlpha"] = "0.0";
+			StyleDictionary["menu.row.fontColor"] = "E8E8E8";
+			StyleDictionary["menu.row.fontColorAlpha"] = "1.0";
+			StyleDictionary["menu.row.fontName"] = "HelveticaNeue";
+			StyleDictionary["menu.row.fontSize"] = "14.2";
+
+			StyleDictionary["menu.rowSelected.height"] = "50";
+			StyleDictionary["menu.rowSelected.backgroundColor"] = "FFFFFF";
+			StyleDictionary["menu.rowSelected.backgroundColorAlpha"] = "0.25";
+			StyleDictionary["menu.rowSelected.fontColor"] = "E8E8E8";
+			StyleDictionary["menu.rowSelected.fontColorAlpha"] = "1.0";
+			StyleDictionary["menu.rowSelected.fontName"] = "HelveticaNeue-Bold";
+			StyleDictionary["menu.rowSelected.fontSize"] = "14.2";
+
+			StyleDictionary["menu.newPlaylistRow.fontColorAlpha"] = "1.0";
 		}
 	}
 }

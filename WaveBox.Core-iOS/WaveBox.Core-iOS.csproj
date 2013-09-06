@@ -11,7 +11,7 @@
     <RootNamespace>WaveBox.CoreiOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>WaveBox.Core-iOS</AssemblyName>
-    <ReleaseVersion>0.2</ReleaseVersion>
+    <ReleaseVersion>0.21</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

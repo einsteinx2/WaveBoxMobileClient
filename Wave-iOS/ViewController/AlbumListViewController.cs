@@ -10,13 +10,13 @@ using WaveBox.Client.ServerInteraction;
 
 namespace Wave.iOS.ViewController
 {
-	public class AlbumListViewController : UITableViewController
+	public class AlbumListViewController : ListViewController
 	{
 		private TableSource Source { get; set; }
 
 		private readonly IAlbumListViewModel albumListViewModel;
 
-		public AlbumListViewController(IAlbumListViewModel albumListViewModel)
+		public AlbumListViewController(IAlbumListViewModel albumListViewModel) : base(albumListViewModel)
 		{
 			if (albumListViewModel == null)
 				throw new ArgumentNullException("albumListViewModel");
@@ -60,7 +60,7 @@ namespace Wave.iOS.ViewController
 
 			public override int RowsInSection(UITableView tableView, int section)
 			{
-				return albumListViewModel.Albums.Count;
+				return albumListViewModel.FilteredAlbums.Count;
 			}
 
 			public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
@@ -73,8 +73,12 @@ namespace Wave.iOS.ViewController
 					cell.TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
 					cell.TextLabel.BackgroundColor = UIColor.Clear;
 				}
+				else
+				{
+					cell.ImageView.CancelCurrentImageLoad();
+				}
 
-				Album album = albumListViewModel.Albums[indexPath.Row];
+				Album album = albumListViewModel.FilteredAlbums[indexPath.Row];
 				cell.TextLabel.Text = album.AlbumName;
 
 				string artUrlString = album.ArtUrlString(120);
@@ -93,7 +97,7 @@ namespace Wave.iOS.ViewController
 			public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
 			{
 				IAlbumViewModel viewModel = Injection.Kernel.Get<IAlbumViewModel>();
-				viewModel.Album = albumListViewModel.Albums[indexPath.Row];
+				viewModel.Album = albumListViewModel.FilteredAlbums[indexPath.Row];
 				AlbumViewController controller = new AlbumViewController(viewModel);
 				navigationController.PushViewController(controller, true);
 			}

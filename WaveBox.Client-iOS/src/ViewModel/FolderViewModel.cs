@@ -13,10 +13,13 @@ namespace WaveBox.Client.ViewModel
 		public Folder Folder { get { return folder; } set { folder = value; ReloadData(); } }
 
 		public IList<Folder> SubFolders { get; set; }
+		public IList<Folder> FilteredSubFolders { get; set; }
 
 		public IList<Song> Songs { get; set; }
+		public IList<Song> FilteredSongs { get; set; }
 
 		public IList<Video> Videos { get; set; }
+		public IList<Video> FilteredVideos { get; set; }
 
 		private readonly IPlayQueue playQueue;
 		private readonly IAudioEngine audioEngine;
@@ -32,20 +35,32 @@ namespace WaveBox.Client.ViewModel
 			this.audioEngine = audioEngine;
 		}
 
+		public void PerformSearch(string searchTerm)
+		{
+			FilteredSubFolders = SubFolders.Where(x => x.FolderName.Contains(searchTerm)).ToList();
+			FilteredSongs = Songs.Where(x => x.SongName.Contains(searchTerm)).ToList();
+			FilteredVideos = Videos.Where(x => x.FileName.Contains(searchTerm)).ToList();
+		}
+
 		public void ReloadData()
 		{
 			if (Folder != null)
 			{
 				SubFolders = Folder.ListOfSubFolders();
+				FilteredSubFolders = new List<Folder>(SubFolders);
+
 				Songs = Folder.ListOfSongs();
+				FilteredSongs = new List<Song>(Songs);
+
 				Videos = Folder.ListOfVideos();
+				FilteredVideos = new List<Video>(Videos);
 			}
 		}
 
 		public void PlaySongAtIndex(int index)
 		{
 			playQueue.ResetBothPlayQueues();
-			playQueue.AddItems(Songs.ToList<IMediaItem>());
+			playQueue.AddItems(FilteredSongs.ToList<IMediaItem>());
 
 			audioEngine.PlaySongAtPosition((uint)index);
 		}

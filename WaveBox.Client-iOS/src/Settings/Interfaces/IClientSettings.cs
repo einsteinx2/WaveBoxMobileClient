@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace WaveBox.Client
 {
@@ -15,6 +16,8 @@ namespace WaveBox.Client
 		string SessionId { get; set; }
 
 		uint StreamQueueLength { get; set; }
+
+		IDictionary<string, object> StyleDictionary { get; set; }
 
 		int LastQueryId { get; set; }
 

@@ -11,7 +11,7 @@
     <RootNamespace>WaveBox.Client</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>WaveBox.Client-iOS</AssemblyName>
-    <ReleaseVersion>0.2</ReleaseVersion>
+    <ReleaseVersion>0.21</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -115,7 +115,6 @@
     <Compile Include="src\ServerInteraction\EventArgs\DatabaseSyncEventArgs.cs" />
     <Compile Include="src\ServerInteraction\EventArgs\DownloadEventArgs.cs" />
     <Compile Include="src\Settings\ServerSettings.cs" />
-    <Compile Include="src\AudioEngine\BassGaplessPlayerCallbacks.cs" />
     <Compile Include="src\AudioEngine\IMediaItemExtension.cs" />
     <Compile Include="src\ViewModel\Interfaces\IAlbumArtistListViewModel.cs" />
     <Compile Include="src\ViewModel\Interfaces\IArtistListViewModel.cs" />
@@ -148,5 +147,6 @@
     <Compile Include="src\ServerInteraction\Extensions\IItemExtension.cs" />
     <Compile Include="src\ViewModel\LoginViewModel.cs" />
     <Compile Include="src\ViewModel\Interfaces\ILoginViewModel.cs" />
+    <Compile Include="src\AudioEngine\BassGaplessPlayerCallbacks.cs" />
   </ItemGroup>
 </Project>

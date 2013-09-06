@@ -7,6 +7,7 @@ namespace WaveBox.Client.ViewModel
 	public interface IFolderListViewModel : IListViewModel
 	{
 		IList<Folder> Folders { get; set; }
+		IList<Folder> FilteredFolders { get; set; }
 	}
 }
 

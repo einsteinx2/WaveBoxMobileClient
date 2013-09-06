@@ -9,6 +9,7 @@ namespace WaveBox.Client.ViewModel
 		Artist Artist { get; set; }
 
 		IList<Album> Albums { get; set; }
+		IList<Album> FilteredAlbums { get; set; }
 	}
 }
 

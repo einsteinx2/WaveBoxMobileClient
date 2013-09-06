@@ -9,10 +9,13 @@ namespace WaveBox.Client.ViewModel
 		Folder Folder { get; set; }
 
 		IList<Folder> SubFolders { get; set; }
+		IList<Folder> FilteredSubFolders { get; set; }
 
 		IList<Song> Songs { get; set; }
+		IList<Song> FilteredSongs { get; set; }
 
 		IList<Video> Videos { get; set; }
+		IList<Video> FilteredVideos { get; set; }
 
 		void PlaySongAtIndex(int index);
 	}

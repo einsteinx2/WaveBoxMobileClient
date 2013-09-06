@@ -8,6 +8,7 @@ namespace WaveBox.Client.ViewModel
 	public interface IAlbumListViewModel : IListViewModel
 	{
 		IList<Album> Albums { get; set; }
+		IList<Album> FilteredAlbums { get; set; }
 	}
 }
 

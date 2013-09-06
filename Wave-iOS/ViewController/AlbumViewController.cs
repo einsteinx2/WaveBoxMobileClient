@@ -9,13 +9,13 @@ using SDWebImage;
 
 namespace Wave.iOS.ViewController
 {
-	public class AlbumViewController : UITableViewController
+	public class AlbumViewController : ListViewController
 	{
 		private TableSource Source { get; set; }
 
 		private readonly IAlbumViewModel albumViewModel;
 
-		public AlbumViewController(IAlbumViewModel albumViewModel)
+		public AlbumViewController(IAlbumViewModel albumViewModel) : base(albumViewModel)
 		{
 			if (albumViewModel == null)
 				throw new ArgumentNullException("albumViewModel");
@@ -69,7 +69,7 @@ namespace Wave.iOS.ViewController
 
 			public override int RowsInSection(UITableView tableView, int section)
 			{
-				return albumViewModel.Songs.Count;
+				return albumViewModel.FilteredSongs.Count;
 			}
 
 			public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
@@ -83,7 +83,7 @@ namespace Wave.iOS.ViewController
 					cell.TextLabel.BackgroundColor = UIColor.Clear;
 				}
 
-				Song song = albumViewModel.Songs[indexPath.Row];
+				Song song = albumViewModel.FilteredSongs[indexPath.Row];
 				cell.Song = song;
 
 				return cell;
