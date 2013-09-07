@@ -15,6 +15,8 @@ using WaveBox.Client.ViewModel;
 using WaveBox.Client.ServerInteraction;
 using System.Threading.Tasks;
 using System.Threading;
+using MonoTouch.AVFoundation;
+using MonoTouch.ObjCRuntime;
 
 namespace Wave.iOS
 {
@@ -48,6 +50,19 @@ namespace Wave.iOS
 			player = kernel.Get<IBassGaplessPlayer>();
 			player.AudioEngine = kernel.Get<IAudioEngine>();
 			player.DataSource = this;
+
+			// Commented out for now because of Xamarin bug
+			/*AVAudioSession.Notifications.ObserveInterruption((sender, args) => {
+				if (args.InterruptionType == AVAudioSessionInterruptionType.Began)
+					player.Pause();
+				else if (args.Option == AVAudioSessionInterruptionOptions.ShouldResume)
+					player.Play();
+			});*/
+
+			/*AVAudioSession.Notifications.ObserveRouteChange((sender, args) => {
+				if (args.Reason == AVAudioSessionRouteChangeReason.OldDeviceUnavailable)
+					player.Pause();
+			});*/
 
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 

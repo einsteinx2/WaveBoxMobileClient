@@ -38,6 +38,7 @@ namespace WaveBox.Client.AudioEngine
 		void Start();
 		void Stop();
 		void Pause();
+		void Play();
 		void PlayPause();
 		void SeekToPositionInBytes(long bytes);
 		void SeekToPositionInSeconds(double seconds);

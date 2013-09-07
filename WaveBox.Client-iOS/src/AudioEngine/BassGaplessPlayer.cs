@@ -1011,7 +1011,14 @@ namespace WaveBox.Client.AudioEngine
 
 		public void Pause()
 		{
-			if (IsPlaying) PlayPause();
+			if (IsPlaying) 
+				PlayPause();
+		}
+
+		public void Play()
+		{
+			if (!IsPlaying) 
+				PlayPause();
 		}
 
 		public void PlayPause()
