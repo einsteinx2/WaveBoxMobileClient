@@ -1,29 +1,40 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone.7.0" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Wave-iOS/AppDelegate.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Wave-iOS/ViewController/MenuViewController.cs">
     <Files>
-      <File FileName="Wave-iOS/ViewController/PlayQueueViewController.cs" Line="1" Column="1" />
-      <File FileName="WaveBox.Client-iOS/src/ViewModel/Interfaces/IPlayQueueViewModel.cs" Line="1" Column="1" />
-      <File FileName="WaveBox.Client-iOS/src/ViewModel/PlayQueueViewModel.cs" Line="1" Column="1" />
-      <File FileName="Wave-iOS/AppDelegate.cs" Line="56" Column="70" />
-      <File FileName="../WaveBox/WaveBox.Core/src/ApiResponse/AlbumArtistsResponse.cs" Line="1" Column="1" />
-      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/LoginLoader.cs" Line="51" Column="19" />
-      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/Extensions/IItemExtension.cs" Line="1" Column="1" />
-      <File FileName="WaveBox/WaveBox.Core/src/Derived/TimedWebClient.cs" Line="1" Column="1" />
-      <File FileName="WaveBox/WaveBox.Core/src/Extensions/IDatabaseExtensions.cs" Line="1" Column="1" />
-      <File FileName="Wave-iOS/ViewController/AlbumArtistListViewController.cs" Line="5" Column="18" />
+      <File FileName="Wave-iOS/AppDelegate.cs" Line="68" Column="8" />
+      <File FileName="Wave-iOS/ViewController/LoginViewController.cs" Line="5" Column="1" />
+      <File FileName="Wave-iOS/ViewController/MenuViewController.cs" Line="131" Column="3" />
+      <File FileName="Wave-iOS/ViewController/AlbumArtistListViewController.cs" Line="13" Column="62" />
+      <File FileName="Wave-iOS/ViewController/WBSidePanelController.cs" Line="55" Column="11" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Wave.iOS" expanded="True">
+          <Node name="Wave.iOS" expanded="True" selected="True">
             <Node name="References" expanded="True" />
             <Node name="Resources" expanded="True" />
-            <Node name="ViewController" expanded="True">
-              <Node name="AlbumArtistListViewController.cs" selected="True" />
+            <Node name="ViewController" expanded="True" />
+          </Node>
+          <Node name="WaveBox.Client-iOS" expanded="True">
+            <Node name="src" expanded="True">
+              <Node name="AudioEngine" expanded="True">
+                <Node name="Interfaces" expanded="True" />
+              </Node>
+              <Node name="ServerInteraction" expanded="True">
+                <Node name="Extensions" expanded="True" />
+              </Node>
+              <Node name="ViewModel" expanded="True">
+                <Node name="Interfaces" expanded="True" />
+              </Node>
             </Node>
           </Node>
-          <Node name="WaveBox.Core-iOS" expanded="True" />
+          <Node name="WaveBox.Core-iOS" expanded="True">
+            <Node name="src" expanded="True">
+              <Node name="Derived" expanded="True" />
+              <Node name="Extensions" expanded="True" />
+            </Node>
+          </Node>
         </State>
       </Pad>
       <Pad Id="ClassPad">
