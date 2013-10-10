@@ -83,7 +83,7 @@ namespace Wave.iOS.ViewController
 				InvokeOnMainThread(delegate {
 					if (e.Success)
 					{
-						JASidePanelController sidePanelController = new JASidePanelController();
+						WBSidePanelController sidePanelController = new WBSidePanelController();
 						sidePanelController.PanningLimitedToTopViewController = false;
 						sidePanelController.LeftPanel = new MenuViewController(sidePanelController);
 						sidePanelController.RightPanel = new PlayQueueViewController(playQueueViewModel);

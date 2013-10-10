@@ -47,12 +47,11 @@
     <WarningLevel>4</WarningLevel>
     <MtouchDebug>true</MtouchDebug>
     <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Developer: Benjamin Baron (V4H8F256PU)</CodesignKey>
+    <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchI18n />
     <MtouchArch>ARMv7, ARMv7s</MtouchArch>
     <IpaPackageName />
-    <CodesignProvision>EED2128F-D6B4-4256-93A5-2E239BF6687B</CodesignProvision>
-    <MtouchSdkVersion>6.1</MtouchSdkVersion>
+    <MtouchSdkVersion>7.0</MtouchSdkVersion>
     <MtouchExtraArgs>-gcc_flags "-framework AudioToolbox -framework Accelerate -L${ProjectDir} -lbass -force_load ${ProjectDir}/libbass.a -lbassmix -force_load ${ProjectDir}/libbassmix.a"</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
@@ -141,6 +140,11 @@
     <Compile Include="ViewController\PlayQueueViewController.cs" />
     <Compile Include="ViewController\SongTableCell.cs" />
     <Compile Include="ViewController\LoginViewController.cs" />
+    <Compile Include="ViewController\WBSidePanelController.cs" />
+    <Compile Include="ViewController\WBSidePanelController.designer.cs">
+      <DependentUpon>WBSidePanelController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewController\UIViewControllerExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -162,5 +166,9 @@
     <BundleResource Include="Resources\Icon.png" />
     <BundleResource Include="Resources\Icon%402x.png" />
     <BundleResource Include="Resources\Icon-72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="ViewController\WBSidePanelController_iPhone.xib" />
+    <InterfaceDefinition Include="ViewController\WBSidePanelController_iPad.xib" />
   </ItemGroup>
 </Project>
