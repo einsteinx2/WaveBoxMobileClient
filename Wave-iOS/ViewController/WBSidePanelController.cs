@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using MonoTouch.CoreGraphics;
 using JASidePanels;
 
 namespace Wave.iOS
@@ -12,6 +13,13 @@ namespace Wave.iOS
 			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
 
+		public override float LeftVisibleWidth
+		{
+			get
+			{
+				return 250.0f;
+			}
+		}
 		private bool statusBarHidden;
 		public bool StatusBarHidden { 
 			get
@@ -25,6 +33,20 @@ namespace Wave.iOS
 			}
 		}
 
+		private UIStatusBarStyle statusBarStyle;
+		public UIStatusBarStyle StatusBarStyle
+		{
+			get
+			{
+				return this.statusBarStyle;
+			}
+			set
+			{
+				this.statusBarStyle = value;
+				this.SetNeedsStatusBarAppearanceUpdate();
+			}
+		}
+
 		public WBSidePanelController() : base()
 		{
 			statusBarHidden = false;
@@ -33,6 +55,11 @@ namespace Wave.iOS
 		public override bool PrefersStatusBarHidden()
 		{
 			return this.StatusBarHidden;
+		}
+
+		public override UIStatusBarStyle PreferredStatusBarStyle()
+		{
+			return this.statusBarStyle;
 		}
 
 		public override void DidReceiveMemoryWarning()
@@ -54,7 +81,6 @@ namespace Wave.iOS
 		{
 			return;
 		}
-
 	}
 }
 

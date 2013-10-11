@@ -1,6 +1,7 @@
 using System;
 using MonoTouch.UIKit;
 using WaveBox.Client.ViewModel;
+using Wave.iOS.ViewController.Extensions;
 using MonoTouch.Foundation;
 using WaveBox.Core.Model;
 using System.Drawing;
@@ -49,6 +50,11 @@ namespace Wave.iOS.ViewController
 
 			TableView.Source = Source;
 			TableView.ReloadData();
+		}
+
+		public override void ViewWillAppear(bool animated)
+		{
+//			this.GetSidePanelController().StatusBarStyle = UIStatusBarStyle.LightContent;
 		}
 
 		private class TableSource : UITableViewSource
