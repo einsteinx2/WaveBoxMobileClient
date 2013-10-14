@@ -13,6 +13,7 @@ namespace Wave.iOS
 			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
 
+		private UIImageView FakeStatusBar;
 		public override float LeftVisibleWidth
 		{
 			get
@@ -20,6 +21,35 @@ namespace Wave.iOS
 				return 250.0f;
 			}
 		}
+
+		public override float RightVisibleWidth
+		{
+			get
+			{
+				return 260.0f;
+			}
+		}
+
+		public override void HandlePan(UIGestureRecognizer sender)
+		{
+			base.HandlePan(sender);
+			Console.WriteLine(CenterPanel.View);
+
+			if (sender.State == UIGestureRecognizerState.Began)
+			{
+				Console.WriteLine("PANEL PAN BEGAN");
+				FakeStatusBar = CopyStatusBar();
+				StatusBarHidden = true;
+//				CenterPanelContainer.Frame = new RectangleF(CenterPanelContainer.Frame.Left, 20f, CenterPanelContainer.Frame.Width, CenterPanelContainer.Frame.Height - 20f);
+			}
+
+			if (sender.State == UIGestureRecognizerState.Ended || sender.State == UIGestureRecognizerState.Cancelled)
+			{
+				StatusBarHidden = false;
+				Console.WriteLine("PANEL PAN ENDED OR CANCELED");
+			}
+		}
+
 		private bool statusBarHidden;
 		public bool StatusBarHidden { 
 			get
@@ -80,6 +110,11 @@ namespace Wave.iOS
 		public override void StylePanel(UIView panel)
 		{
 			return;
+		}
+
+		private UIImageView CopyStatusBar()
+		{
+			return new UIImageView();
 		}
 	}
 }

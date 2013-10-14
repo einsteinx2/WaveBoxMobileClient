@@ -1,5 +1,7 @@
 using System;
 using MonoTouch.UIKit;
+using MonoTouch.CoreGraphics;
+using MonoTouch.CoreAnimation;
 using WaveBox.Client.ViewModel;
 using System.Drawing;
 using MonoTouch.Foundation;
@@ -9,6 +11,7 @@ namespace Wave.iOS.ViewController
 {
 	public class PlayQueueViewController : UIViewController
 	{
+		private MiniPlayerViewController MiniPlayer { get; set; }
 		private UIView HeaderView { get; set; }
 		private UIButton PlayPauseButton { get; set; }
 		private UILabel SongNameLabel { get; set; }
@@ -32,19 +35,28 @@ namespace Wave.iOS.ViewController
 		{
 			base.ViewDidLoad();
 
-			View.BackgroundColor = UIColor.FromRGB(233, 233, 233);
+			float width = 260f;
+			float xOffset = View.Frame.Width - width;
 
-			CreateHeader();
+			AddBackgroundLayer();
 
-			TableView = new UITableView(new RectangleF(70f, HeaderView.Frame.Height, 250f, View.Frame.Size.Height - HeaderView.Frame.Height));
-			TableView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
-			View.Add(TableView);
+			MiniPlayer = new MiniPlayerViewController(xOffset, 0f);
+			View.AddSubview(MiniPlayer.View);
+//			CreateHeader();
+
+			TableView = new UITableView();
+			TableView.Frame = new RectangleF(xOffset, 64.0f, width, View.Frame.Size.Height - 64.0f);
+			View.AddSubview(TableView);
+			TableView.BackgroundColor = UIColor.Clear;
+			TableView.SeparatorInset = UIEdgeInsets.Zero;
+//			var a = TableView.AutoresizingMask;
+//			TableView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
 
 			Source = new TableSource(this.playQueueViewModel);
 
-			TableView.BackgroundColor = UIColor.FromRGB(233, 233, 233);
-			TableView.SeparatorColor = UIColor.FromRGB(207, 207, 207);
-			TableView.RowHeight = 60f;
+//			TableView.BackgroundColor = UIColor.FromRGB(233, 233, 233);
+//			TableView.SeparatorColor = UIColor.FromRGB(207, 207, 207);
+//			TableView.RowHeight = 60f;
 
 			TableView.Source = Source;
 			TableView.ReloadData();
@@ -56,18 +68,34 @@ namespace Wave.iOS.ViewController
 
 					// Update the player info
 					Song currentSong = playQueueViewModel.CurrentItem as Song;
-					if (currentSong == null)
-					{
-						SongNameLabel.Text = null;
-						ArtistNameLabel.Text = null;
-					}
-					else
-					{
-						SongNameLabel.Text = currentSong.SongName;
-						ArtistNameLabel.Text = currentSong.ArtistName;
-					}
+//					if (currentSong == null)
+//					{
+//						SongNameLabel.Text = null;
+//						ArtistNameLabel.Text = null;
+//					}
+//					else
+//					{
+//						SongNameLabel.Text = currentSong.SongName;
+//						ArtistNameLabel.Text = currentSong.ArtistName;
+//					}
 				});
 			};
+		}
+
+		public void AddBackgroundLayer()
+		{
+			CGColor c1 = new CGColor(219f/255f, 147f/255f, 197f/255f, 1f);
+			CGColor c2 = new CGColor(169f/255f, 164f/255f, 205f/255f, 1);
+			CGColor c3 = new CGColor(148f/255f, 166f/255f, 200f/255f, 1);
+
+			CGColor[] colors = { c1, c2, c3 };
+			NSNumber[] locations = { new NSNumber(0f), new NSNumber(.48f), new NSNumber(1.0f) };
+			CAGradientLayer layer = new CAGradientLayer();
+			layer.Colors = colors;
+			layer.Locations = locations;
+			layer.Frame = View.Frame;
+
+			View.Layer.InsertSublayer(layer, 0);
 		}
 
 		private void CreateHeader()

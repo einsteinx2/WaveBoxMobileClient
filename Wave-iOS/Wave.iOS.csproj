@@ -24,7 +24,8 @@
     <ConsolePause>false</ConsolePause>
     <MtouchDebug>true</MtouchDebug>
     <MtouchExtraArgs>-gcc_flags "-framework AudioToolbox -L${ProjectDir} -lbass -force_load ${ProjectDir}/libbass.a -lbassmix -force_load ${ProjectDir}/libbassmix.a"</MtouchExtraArgs>
-    <MtouchI18n />
+    <MtouchI18n>
+    </MtouchI18n>
     <MtouchArch>ARMv7, ARMv7s</MtouchArch>
     <MtouchSdkVersion>7.0</MtouchSdkVersion>
   </PropertyGroup>
@@ -48,9 +49,11 @@
     <MtouchDebug>true</MtouchDebug>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <MtouchI18n />
+    <MtouchI18n>
+    </MtouchI18n>
     <MtouchArch>ARMv7, ARMv7s</MtouchArch>
-    <IpaPackageName />
+    <IpaPackageName>
+    </IpaPackageName>
     <MtouchSdkVersion>7.0</MtouchSdkVersion>
     <MtouchExtraArgs>-gcc_flags "-framework AudioToolbox -framework Accelerate -L${ProjectDir} -lbass -force_load ${ProjectDir}/libbass.a -lbassmix -force_load ${ProjectDir}/libbassmix.a"</MtouchExtraArgs>
   </PropertyGroup>
@@ -63,7 +66,8 @@
     <CodesignKey>iPhone Developer</CodesignKey>
     <ConsolePause>false</ConsolePause>
     <MtouchExtraArgs>-gcc_flags "-framework AudioToolbox -framework Accelerate -L${ProjectDir} -lbass -force_load ${ProjectDir}/libbass.a -lbassmix -force_load ${ProjectDir}/libbassmix.a"</MtouchExtraArgs>
-    <MtouchI18n />
+    <MtouchI18n>
+    </MtouchI18n>
     <MtouchArch>ARMv7</MtouchArch>
     <MtouchSdkVersion>6.1</MtouchSdkVersion>
   </PropertyGroup>
@@ -76,8 +80,10 @@
     <BuildIpa>true</BuildIpa>
     <ConsolePause>false</ConsolePause>
     <CodesignProvision>1552EEB7-9630-487C-A189-5B4F8682E6FA</CodesignProvision>
-    <IpaPackageName />
-    <MtouchI18n />
+    <IpaPackageName>
+    </IpaPackageName>
+    <MtouchI18n>
+    </MtouchI18n>
     <MtouchArch>ARMv7, ARMv7s</MtouchArch>
     <MtouchExtraArgs>-gcc_flags "-framework AudioToolbox -framework Accelerate -L${ProjectDir} -lbass -force_load ${ProjectDir}/libbass.a -lbassmix -force_load ${ProjectDir}/libbassmix.a"</MtouchExtraArgs>
     <MtouchSdkVersion>6.1</MtouchSdkVersion>
@@ -92,7 +98,8 @@
     <ConsolePause>false</ConsolePause>
     <CodesignProvision>Automatic:AppStore</CodesignProvision>
     <MtouchExtraArgs>-gcc_flags "-framework AudioToolbox -framework Accelerate -L${ProjectDir} -lbass -force_load ${ProjectDir}/libbass.a -lbassmix -force_load ${ProjectDir}/libbassmix.a"</MtouchExtraArgs>
-    <MtouchI18n />
+    <MtouchI18n>
+    </MtouchI18n>
     <MtouchArch>ARMv7</MtouchArch>
     <MtouchSdkVersion>6.1</MtouchSdkVersion>
   </PropertyGroup>
@@ -142,6 +149,7 @@
     <Compile Include="ViewController\LoginViewController.cs" />
     <Compile Include="ViewController\WBSidePanelController.cs" />
     <Compile Include="ViewController\UIViewControllerExtensions.cs" />
+    <Compile Include="ViewController\MiniPlayerViewController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -163,5 +171,9 @@
     <BundleResource Include="Resources\Icon.png" />
     <BundleResource Include="Resources\Icon%402x.png" />
     <BundleResource Include="Resources\Icon-72.png" />
+    <BundleResource Include="Resources\Pause.png" />
+    <BundleResource Include="Resources\Pause%402x.png" />
+    <BundleResource Include="Resources\Play.png" />
+    <BundleResource Include="Resources\Play%402x.png" />
   </ItemGroup>
 </Project>

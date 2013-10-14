@@ -65,7 +65,7 @@ namespace WaveBox.Client.ServerInteraction
 			webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadFileCompleted);
 
 			State = DownloadTaskState.Active;
-			string urlString = clientSettings.ServerUrl + "/api/stream?s=" + clientSettings.SessionId + "&id=" + MediaItem.ItemId;
+			string urlString = String.Format("{0}/api/stream/{1}?s={2}", clientSettings.ServerUrl, MediaItem.ItemId, clientSettings.SessionId);
 			string downloadPath = MediaItem.DownloadPath();
 
 			if (File.Exists(downloadPath))
