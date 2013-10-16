@@ -1,18 +1,21 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.Benjamin Baron’s iPad" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Wave-iOS/AppDelegate.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhoneRetina4.7.0" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Wave-iOS/ViewController/PlayQueueViewController.cs">
     <Files>
       <File FileName="Wave-iOS/ViewController/FolderListViewController.cs" Line="1" Column="1" />
       <File FileName="Wave-iOS/AppDelegate.cs" Line="99" Column="8" />
       <File FileName="Wave-iOS/ViewController/ListViewController.cs" Line="1" Column="1" />
       <File FileName="Wave-iOS/ViewController/MenuViewController.cs" Line="1" Column="1" />
-      <File FileName="Wave-iOS/ViewController/LoginViewController.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/ViewController/LoginViewController.cs" Line="39" Column="6" />
+      <File FileName="Wave-iOS/ViewController/PlayQueueViewController.cs" Line="63" Column="4" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Wave.iOS" expanded="True" selected="True">
-            <Node name="ViewController" expanded="True" />
+          <Node name="Wave.iOS" expanded="True">
+            <Node name="ViewController" expanded="True">
+              <Node name="PlayQueueViewController.cs" selected="True" />
+            </Node>
           </Node>
           <Node name="WaveBox.Core-iOS" expanded="True" />
         </State>

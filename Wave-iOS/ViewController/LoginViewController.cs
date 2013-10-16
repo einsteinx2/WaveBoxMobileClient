@@ -20,7 +20,7 @@ namespace Wave.iOS.ViewController
 		private readonly UIWindow window;
 		private readonly IPlayQueueViewModel playQueueViewModel;
 		private readonly ILoginViewModel loginViewModel;
-		private readonly IDictionary<string, object> styleDictionary;
+		//private readonly IDictionary<string, object> styleDictionary;
 
 		public LoginViewController(UIWindow window, IPlayQueueViewModel playQueueViewModel, ILoginViewModel loginViewModel)//, IDictionary<string, object> styleDictionary)
 		{
@@ -30,13 +30,13 @@ namespace Wave.iOS.ViewController
 				throw new ArgumentNullException("playQueueViewModel");
 			if (loginViewModel == null)
 				throw new ArgumentNullException("loginViewModel");
-			if (styleDictionary == null)
-				throw new ArgumentNullException("styleDictionary");
+			//if (styleDictionary == null)
+			//	throw new ArgumentNullException("styleDictionary");
 
 			this.window = window;
 			this.playQueueViewModel = playQueueViewModel;
 			this.loginViewModel = loginViewModel;
-			this.styleDictionary = styleDictionary;
+			//this.styleDictionary = styleDictionary;
 		}
 
 		public override void ViewDidLoad()
