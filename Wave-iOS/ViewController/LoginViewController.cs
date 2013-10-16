@@ -22,7 +22,7 @@ namespace Wave.iOS.ViewController
 		private readonly ILoginViewModel loginViewModel;
 		private readonly IDictionary<string, object> styleDictionary;
 
-		public LoginViewController(UIWindow window, IPlayQueueViewModel playQueueViewModel, ILoginViewModel loginViewModel, IDictionary<string, object> styleDictionary)
+		public LoginViewController(UIWindow window, IPlayQueueViewModel playQueueViewModel, ILoginViewModel loginViewModel)//, IDictionary<string, object> styleDictionary)
 		{
 			if (window == null)
 				throw new ArgumentNullException("window");
@@ -89,9 +89,9 @@ namespace Wave.iOS.ViewController
 				InvokeOnMainThread(delegate {
 					if (e.Success)
 					{
-						JASidePanelController sidePanelController = new JASidePanelController();
+						WBSidePanelController sidePanelController = new WBSidePanelController();
 						sidePanelController.PanningLimitedToTopViewController = false;
-						sidePanelController.LeftPanel = new MenuViewController(sidePanelController, styleDictionary);
+						sidePanelController.LeftPanel = new MenuViewController(sidePanelController);//, styleDictionary);
 						sidePanelController.RightPanel = new PlayQueueViewController(playQueueViewModel);
 						window.RootViewController = sidePanelController;
 

@@ -58,319 +58,335 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="Logger.cs" />
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\BaseClasses.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\BaseClasses.cs">
       <Link>src\BaseClasses.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\SQLiteConnectionPool.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\SQLiteConnectionPool.cs">
       <Link>src\SQLiteConnectionPool.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\SQLiteNet.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\SQLiteNet.cs">
       <Link>src\SQLiteNet.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\AlbumArtistsResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\AlbumArtistsResponse.cs">
       <Link>src\ApiResponse\AlbumArtistsResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\AlbumsResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\AlbumsResponse.cs">
       <Link>src\ApiResponse\AlbumsResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\ArtistsResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\ArtistsResponse.cs">
       <Link>src\ApiResponse\ArtistsResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\DatabaseResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\DatabaseResponse.cs">
       <Link>src\ApiResponse\DatabaseResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\ErrorResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\ErrorResponse.cs">
       <Link>src\ApiResponse\ErrorResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\FavoritesResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\ExternalArtResponse.cs">
+      <Link>src\ApiResponse\ExternalArtResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\FavoritesResponse.cs">
       <Link>src\ApiResponse\FavoritesResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\FoldersResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\FoldersResponse.cs">
       <Link>src\ApiResponse\FoldersResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\GenresResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\GenresResponse.cs">
       <Link>src\ApiResponse\GenresResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\JukeboxResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\JukeboxResponse.cs">
       <Link>src\ApiResponse\JukeboxResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\JukeboxStatus.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\JukeboxStatus.cs">
       <Link>src\ApiResponse\JukeboxStatus.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\LoginResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\LoginResponse.cs">
       <Link>src\ApiResponse\LoginResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\LogoutResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\LogoutResponse.cs">
       <Link>src\ApiResponse\LogoutResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\NowPlayingResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\NowPlayingResponse.cs">
       <Link>src\ApiResponse\NowPlayingResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\PlaylistsResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\PlaylistsResponse.cs">
       <Link>src\ApiResponse\PlaylistsResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\PodcastActionResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\PodcastActionResponse.cs">
       <Link>src\ApiResponse\PodcastActionResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\PodcastContentResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\PodcastContentResponse.cs">
       <Link>src\ApiResponse\PodcastContentResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\ScrobbleResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\ScrobbleResponse.cs">
       <Link>src\ApiResponse\ScrobbleResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\SearchResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\SearchResponse.cs">
       <Link>src\ApiResponse\SearchResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\SettingsResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\SettingsResponse.cs">
       <Link>src\ApiResponse\SettingsResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\SongsResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\SongsResponse.cs">
       <Link>src\ApiResponse\SongsResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\StatsResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\StatsResponse.cs">
       <Link>src\ApiResponse\StatsResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\StatusResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\StatusResponse.cs">
       <Link>src\ApiResponse\StatusResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\StreamResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\StreamResponse.cs">
       <Link>src\ApiResponse\StreamResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\TranscodeHlsResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\TranscodeHlsResponse.cs">
       <Link>src\ApiResponse\TranscodeHlsResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\TranscodeResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\TranscodeResponse.cs">
       <Link>src\ApiResponse\TranscodeResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\UsersResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\UsersResponse.cs">
       <Link>src\ApiResponse\UsersResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\ApiResponse\VideosResponse.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\VideosResponse.cs">
       <Link>src\ApiResponse\VideosResponse.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\ByteExtensions.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\ApiResponse\Interfaces\IApiResponse.cs">
+      <Link>src\ApiResponse\Interfaces\IApiResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Derived\TimedWebClient.cs">
+      <Link>src\Derived\TimedWebClient.cs</Link>
+    </Compile>
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Extensions\ByteExtensions.cs">
       <Link>src\Extensions\ByteExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\DateTimeExtensions.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Extensions\DateTimeExtensions.cs">
       <Link>src\Extensions\DateTimeExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\FileTypeExtensions.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Extensions\FileTypeExtensions.cs">
       <Link>src\Extensions\FileTypeExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\IListExtensions.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Extensions\IDatabaseExtensions.cs">
+      <Link>src\Extensions\IDatabaseExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Extensions\IListExtensions.cs">
       <Link>src\Extensions\IListExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\IntExtensions.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Extensions\IntExtensions.cs">
       <Link>src\Extensions\IntExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\Log4NetExtensions.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Extensions\Log4NetExtensions.cs">
       <Link>src\Extensions\Log4NetExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Extensions\StringExtensions.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Extensions\StringExtensions.cs">
       <Link>src\Extensions\StringExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Injection\CoreModule.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Injection\CoreModule.cs">
       <Link>src\Injection\CoreModule.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Injection\Injection.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Injection\Injection.cs">
       <Link>src\Injection\Injection.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Injection\Interfaces\IDatabase.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Injection\Interfaces\IDatabase.cs">
       <Link>src\Injection\Interfaces\IDatabase.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Injection\Interfaces\IServerSettings.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Injection\Interfaces\IServerSettings.cs">
       <Link>src\Injection\Interfaces\IServerSettings.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Album.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Album.cs">
       <Link>src\Model\Album.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\AlbumArtist.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\AlbumArtist.cs">
       <Link>src\Model\AlbumArtist.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Art.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Art.cs">
       <Link>src\Model\Art.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\ArtItem.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\ArtItem.cs">
       <Link>src\Model\ArtItem.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Artist.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Artist.cs">
       <Link>src\Model\Artist.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Favorite.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Favorite.cs">
       <Link>src\Model\Favorite.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\FileType.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\FileType.cs">
       <Link>src\Model\FileType.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Folder.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Folder.cs">
       <Link>src\Model\Folder.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Genre.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Genre.cs">
       <Link>src\Model\Genre.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\ItemType.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\ItemType.cs">
       <Link>src\Model\ItemType.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\MediaItem.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\MediaItem.cs">
       <Link>src\Model\MediaItem.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\NowPlaying.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\NowPlaying.cs">
       <Link>src\Model\NowPlaying.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Playlist.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\PairList.cs">
+      <Link>src\Model\PairList.cs</Link>
+    </Compile>
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Playlist.cs">
       <Link>src\Model\Playlist.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\PlaylistItem.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\PlaylistItem.cs">
       <Link>src\Model\PlaylistItem.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Podcast.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Podcast.cs">
       <Link>src\Model\Podcast.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\PodcastEpisode.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\PodcastEpisode.cs">
       <Link>src\Model\PodcastEpisode.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\QueryLog.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\QueryLog.cs">
       <Link>src\Model\QueryLog.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\ServerSettingsData.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Role.cs">
+      <Link>src\Model\Role.cs</Link>
+    </Compile>
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\ServerSettingsData.cs">
       <Link>src\Model\ServerSettingsData.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Session.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Session.cs">
       <Link>src\Model\Session.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Song.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Song.cs">
       <Link>src\Model\Song.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Stat.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Stat.cs">
       <Link>src\Model\Stat.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\User.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\User.cs">
       <Link>src\Model\User.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Video.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Video.cs">
       <Link>src\Model\Video.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Interfaces\IItem.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Interfaces\IGroupableItem.cs">
+      <Link>src\Model\Interfaces\IGroupableItem.cs</Link>
+    </Compile>
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Interfaces\IItem.cs">
       <Link>src\Model\Interfaces\IItem.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Interfaces\IMediaItem.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Interfaces\IMediaItem.cs">
       <Link>src\Model\Interfaces\IMediaItem.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Model\Interfaces\IPodcastShim.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Model\Interfaces\IPodcastShim.cs">
       <Link>src\Model\Interfaces\IPodcastShim.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\AbstractOperation.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\OperationQueue\AbstractOperation.cs">
       <Link>src\OperationQueue\AbstractOperation.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\DelayedOperationQueue.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\OperationQueue\DelayedOperationQueue.cs">
       <Link>src\OperationQueue\DelayedOperationQueue.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\Interfaces\IDelayedOperation.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\OperationQueue\Interfaces\IDelayedOperation.cs">
       <Link>src\OperationQueue\Interfaces\IDelayedOperation.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\Interfaces\IOperationQueue.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\OperationQueue\Interfaces\IOperationQueue.cs">
       <Link>src\OperationQueue\Interfaces\IOperationQueue.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\AlbumArtistRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\AlbumArtistRepository.cs">
       <Link>src\Repository\AlbumArtistRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\AlbumRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\AlbumRepository.cs">
       <Link>src\Repository\AlbumRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\ArtRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\ArtRepository.cs">
       <Link>src\Repository\ArtRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\ArtistRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\ArtistRepository.cs">
       <Link>src\Repository\ArtistRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\FavoriteRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\FavoriteRepository.cs">
       <Link>src\Repository\FavoriteRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\FolderRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\FolderRepository.cs">
       <Link>src\Repository\FolderRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\GenreRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\GenreRepository.cs">
       <Link>src\Repository\GenreRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\ItemRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\ItemRepository.cs">
       <Link>src\Repository\ItemRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\MediaItemRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\MediaItemRepository.cs">
       <Link>src\Repository\MediaItemRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\PlaylistRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\PlaylistRepository.cs">
       <Link>src\Repository\PlaylistRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\SessionRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\SessionRepository.cs">
       <Link>src\Repository\SessionRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\SongRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\SongRepository.cs">
       <Link>src\Repository\SongRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\StatRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\StatRepository.cs">
       <Link>src\Repository\StatRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\UserRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\UserRepository.cs">
       <Link>src\Repository\UserRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\VideoRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\VideoRepository.cs">
       <Link>src\Repository\VideoRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IAlbumArtistRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IAlbumArtistRepository.cs">
       <Link>src\Repository\Interfaces\IAlbumArtistRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IAlbumRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IAlbumRepository.cs">
       <Link>src\Repository\Interfaces\IAlbumRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IArtRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IArtRepository.cs">
       <Link>src\Repository\Interfaces\IArtRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IArtistRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IArtistRepository.cs">
       <Link>src\Repository\Interfaces\IArtistRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IFavoriteRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IFavoriteRepository.cs">
       <Link>src\Repository\Interfaces\IFavoriteRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IFolderRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IFolderRepository.cs">
       <Link>src\Repository\Interfaces\IFolderRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IGenreRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IGenreRepository.cs">
       <Link>src\Repository\Interfaces\IGenreRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IItemRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IItemRepository.cs">
       <Link>src\Repository\Interfaces\IItemRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IMediaItemRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IMediaItemRepository.cs">
       <Link>src\Repository\Interfaces\IMediaItemRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IPlaylistRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IPlaylistRepository.cs">
       <Link>src\Repository\Interfaces\IPlaylistRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\ISessionRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\Interfaces\ISessionRepository.cs">
       <Link>src\Repository\Interfaces\ISessionRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\ISongRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\Interfaces\ISongRepository.cs">
       <Link>src\Repository\Interfaces\ISongRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IStatRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IStatRepository.cs">
       <Link>src\Repository\Interfaces\IStatRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IUserRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IUserRepository.cs">
       <Link>src\Repository\Interfaces\IUserRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IVideoRepository.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Repository\Interfaces\IVideoRepository.cs">
       <Link>src\Repository\Interfaces\IVideoRepository.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Static\ThreadSafeRandom.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Static\ThreadSafeRandom.cs">
       <Link>src\Static\ThreadSafeRandom.cs</Link>
     </Compile>
-    <Compile Include="..\..\WaveBox\WaveBox.Core\src\Static\Utility.cs">
+    <Compile Include="..\WaveBox\WaveBox.Core\src\Static\Utility.cs">
       <Link>src\Static\Utility.cs</Link>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\WaveBox\WaveBox.Core\src\OperationQueue\.DS_Store">
-      <Link>src\OperationQueue\.DS_Store</Link>
-    </None>
   </ItemGroup>
 </Project>

@@ -27,7 +27,6 @@ namespace WaveBox.Client.ViewModel
 			MenuItems.Add(new MenuItem(MenuItemType.Albums));
 			MenuItems.Add(new MenuItem(MenuItemType.Folders));
 			MenuItems.Add(new MenuItem(MenuItemType.Genres));
-			MenuItems.Add(new MenuItem(MenuItemType.Logout));
 		}
 	}
 }

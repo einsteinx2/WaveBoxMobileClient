@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wave.iOS", "Wave-iOS\Wave.iOS.csproj", "{3E96405A-4FCC-4D9E-B86A-50CDB1789D45}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaveBox.Core-iOS", "WaveBox.Core-iOS\WaveBox.Core-iOS.csproj", "{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaveBox.Client-iOS", "WaveBox.Client-iOS\WaveBox.Client-iOS.csproj", "{76601533-2890-438A-9FCF-E79191F4F6B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wave.iOS", "Wave-iOS\Wave.iOS.csproj", "{3E96405A-4FCC-4D9E-B86A-50CDB1789D45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,7 +55,7 @@ Global
 		{A0AA3CED-7D8F-4557-9A8E-6AC707A6D031}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Wave-iOS\Wave.iOS.csproj
+		StartupItem = WaveBox.Core-iOS\WaveBox.Core-iOS.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.FileWidth = 120
@@ -73,7 +73,6 @@ Global
 		$2.EventRemoveBraceStyle = DoNotChange
 		$2.StatementBraceStyle = NextLine
 		$2.ElseNewLinePlacement = NewLine
-		$2.ElseIfNewLinePlacement = SameLine
 		$2.CatchNewLinePlacement = NewLine
 		$2.FinallyNewLinePlacement = NewLine
 		$2.WhileNewLinePlacement = NewLine

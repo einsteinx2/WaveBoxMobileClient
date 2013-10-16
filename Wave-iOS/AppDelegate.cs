@@ -21,11 +21,12 @@ using MonoTouch.ObjCRuntime;
 namespace Wave.iOS
 {
 	[Register ("AppDelegate")]
-	public partial class AppDelegate : UIApplicationDelegate, IBassGaplessPlayerDataSource
+	public partial class WBAppDelegate : UIApplicationDelegate, IBassGaplessPlayerDataSource
 	{
 		IKernel kernel = Injection.Kernel;
 
 		UIWindow window;
+		public WBSidePanelController SidePanelController;
 
 		IBassGaplessPlayer player;
 
@@ -72,8 +73,6 @@ namespace Wave.iOS
 			window.RootViewController = blankController;
 			window.MakeKeyAndVisible ();
 
-			UINavigationBar.Appearance.SetBackgroundImage(new UIImage(), UIBarMetrics.Default);
-			UINavigationBar.Appearance.BackgroundColor = UIColor.FromRGB(233, 233, 233);
 			UITextAttributes titleAttributes = new UITextAttributes();
 			titleAttributes.TextColor = UIColor.FromRGB(102, 102, 102);
 			titleAttributes.Font = UIFont.FromName("HelveticaNeue-Bold", 18.5f);
@@ -88,18 +87,19 @@ namespace Wave.iOS
 					InvokeOnMainThread(delegate {
 						if (e.Error == null)
 						{
-							JASidePanelController sidePanelController = new JASidePanelController();
+							WBSidePanelController sidePanelController = new WBSidePanelController();
 							sidePanelController.PanningLimitedToTopViewController = false;
-							sidePanelController.LeftPanel = new MenuViewController(sidePanelController, clientSettings.StyleDictionary);
+							sidePanelController.LeftPanel = new MenuViewController(sidePanelController);
 							sidePanelController.RightPanel = new PlayQueueViewController(kernel.Get<IPlayQueueViewModel>());
 							window.RootViewController = sidePanelController;
+							this.SidePanelController = sidePanelController;
 
 							// TODO: rewrite this (Forces menu to load so the center is populated)
 							Console.WriteLine("Menu view: " + sidePanelController.LeftPanel.View);
 						}
 						else
 						{
-							window.RootViewController = new LoginViewController(window, kernel.Get<IPlayQueueViewModel>(), kernel.Get<ILoginViewModel>(), clientSettings.StyleDictionary);
+							window.RootViewController = new LoginViewController(window, kernel.Get<IPlayQueueViewModel>(), kernel.Get<ILoginViewModel>());//, clientSettings.StyleDictionary);
 						}
 					});
 				};
@@ -107,7 +107,7 @@ namespace Wave.iOS
 			}
 			else
 			{
-				window.RootViewController = new LoginViewController(window, kernel.Get<IPlayQueueViewModel>(), kernel.Get<ILoginViewModel>(), clientSettings.StyleDictionary);
+				window.RootViewController = new LoginViewController(window, kernel.Get<IPlayQueueViewModel>(), kernel.Get<ILoginViewModel>());//, clientSettings.StyleDictionary);
 			}
 
 

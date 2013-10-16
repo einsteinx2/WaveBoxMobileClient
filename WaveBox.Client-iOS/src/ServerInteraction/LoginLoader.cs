@@ -5,6 +5,7 @@ using WaveBox.Core;
 using Newtonsoft.Json;
 using System.Text;
 using WaveBox.Core.Extensions;
+using WaveBox.Core.ApiResponse;
 
 namespace WaveBox.Client.ServerInteraction
 {

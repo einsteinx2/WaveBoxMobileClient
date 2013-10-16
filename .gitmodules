@@ -1,0 +1,3 @@
+[submodule "WaveBox"]
+	path = WaveBox
+	url = git@github.com:einsteinx2/WaveBox.git
