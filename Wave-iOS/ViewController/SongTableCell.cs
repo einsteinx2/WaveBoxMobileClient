@@ -14,6 +14,8 @@ namespace Wave.iOS.ViewController
 
 		public UILabel DurationLabel { get; set; }
 
+		public UILabel ArtistLabel { get; set; }
+
 		private Song song;
 		public Song Song 
 		{ 
@@ -64,6 +66,13 @@ namespace Wave.iOS.ViewController
 			DurationLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
 			DurationLabel.TextAlignment = UITextAlignment.Center;
 			Add(DurationLabel);
+
+			ArtistLabel = new UILabel();
+			ArtistLabel.BackgroundColor = UIColor.Clear;
+			ArtistLabel.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
+			ArtistLabel.TextColor = UIColor.FromRGB(102, 102, 102);
+			ArtistLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 10.5f);
+//			Add(ArtistLabel);
 		}
 
 		public override void LayoutSubviews()
@@ -73,7 +82,7 @@ namespace Wave.iOS.ViewController
 			float height = Frame.Height;
 			TrackNumberLabel.Frame = new RectangleF(0f, 0f, height, height);
 			if (TrackNumberLabel.Hidden)
-				SongNameLabel.Frame = new RectangleF(0f, 0f, Frame.Width - height, height);
+				SongNameLabel.Frame = new RectangleF(10f, 0f, Frame.Width - height - 10f, height);
 			else
 				SongNameLabel.Frame = new RectangleF(height, 0f, Frame.Width - (height * 2), height);
 			DurationLabel.Frame = new RectangleF(Frame.Width - height, 0f, height, height);

@@ -13,7 +13,7 @@ namespace WaveBox.Client.ServerInteraction
 			if (item.ArtId == null)
 				return null;
 			else
-				return string.Format("{0}/api/art?size={1}&s={2}&id={3}", clientSettings.ServerUrl, size, clientSettings.SessionId, item.ArtId);
+				return string.Format("{0}/api/art/{3}?size={1}&s={2}", clientSettings.ServerUrl, size, clientSettings.SessionId, item.ArtId);
 		}
 	}
 }

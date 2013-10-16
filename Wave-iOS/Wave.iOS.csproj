@@ -11,7 +11,7 @@
     <RootNamespace>Wave.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>WaveiOS</AssemblyName>
-    <ReleaseVersion>0.21</ReleaseVersion>
+    <ReleaseVersion>0.2</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -151,6 +151,7 @@
     <Compile Include="ViewController\UIViewControllerExtensions.cs" />
     <Compile Include="ViewController\MiniPlayerViewController.cs" />
     <Compile Include="ViewController\ListViewController.cs" />
+    <Compile Include="ViewController\BrowsableTableCell.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -1,20 +1,27 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.Benjamin Baron’s iPad" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Wave-iOS/AppDelegate.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone.7.0" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="WaveBox/WaveBox.Core/src/Injection/CoreModule.cs">
     <Files>
       <File FileName="Wave-iOS/ViewController/FolderListViewController.cs" Line="1" Column="1" />
-      <File FileName="Wave-iOS/AppDelegate.cs" Line="99" Column="8" />
+      <File FileName="Wave-iOS/AppDelegate.cs" Line="1" Column="1" />
       <File FileName="Wave-iOS/ViewController/ListViewController.cs" Line="1" Column="1" />
       <File FileName="Wave-iOS/ViewController/MenuViewController.cs" Line="1" Column="1" />
       <File FileName="Wave-iOS/ViewController/LoginViewController.cs" Line="1" Column="1" />
+      <File FileName="WaveBox/WaveBox.Core/src/Injection/CoreModule.cs" Line="3" Column="37" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Wave.iOS" expanded="True" selected="True">
+          <Node name="Wave.iOS" expanded="True">
             <Node name="ViewController" expanded="True" />
           </Node>
-          <Node name="WaveBox.Core-iOS" expanded="True" />
+          <Node name="WaveBox.Core-iOS" expanded="True">
+            <Node name="src" expanded="True">
+              <Node name="Injection" expanded="True">
+                <Node name="CoreModule.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
         </State>
       </Pad>
       <Pad Id="ClassPad">
@@ -22,6 +29,9 @@
       </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State />
+      </Pad>
+      <Pad Id="ConnectionManagerPad">
+        <State selected="True" />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

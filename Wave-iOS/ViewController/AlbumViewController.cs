@@ -47,6 +47,7 @@ namespace Wave.iOS.ViewController
 			TableView.BackgroundColor = UIColor.FromRGB(233, 233, 233);
 			TableView.SeparatorColor = UIColor.FromRGB(207, 207, 207);
 			TableView.RowHeight = 60.0f;
+			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 
 			TableView.Source = Source;
 			TableView.ReloadData();
@@ -88,6 +89,8 @@ namespace Wave.iOS.ViewController
 					cell.TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
 					cell.TextLabel.BackgroundColor = UIColor.Clear;
 				}
+
+				cell.BackgroundColor = indexPath.Row % 2 == 0 ? UIColor.FromRGB(233f/255f, 233f/255f, 233f/255f) : UIColor.FromRGB(255f, 255f, 255f);
 
 				Song song = albumViewModel.FilteredSongs[indexPath.Row];
 				cell.Song = song;

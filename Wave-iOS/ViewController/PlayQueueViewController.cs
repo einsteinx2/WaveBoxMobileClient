@@ -62,7 +62,7 @@ namespace Wave.iOS.ViewController
 			TableView.ReloadData();
 
 			// Update the player info in case it happened before the view was loaded
-			UpdatePlayerInfo(playQueueViewModel.CurrentItem as Song);
+//			UpdatePlayerInfo(playQueueViewModel.CurrentItem as Song);
 
 			playQueueViewModel.DataChanged += delegate(object sender, ViewModelEventArgs e) {
 				BeginInvokeOnMainThread(()=> {
@@ -70,7 +70,7 @@ namespace Wave.iOS.ViewController
 					TableView.ReloadData();
 
 					// Update the player info
-					UpdatePlayerInfo(playQueueViewModel.CurrentItem as Song);
+//					UpdatePlayerInfo(playQueueViewModel.CurrentItem as Song);
 				});
 			};
 		}
@@ -160,11 +160,15 @@ namespace Wave.iOS.ViewController
 				if (cell == null)
 				{
 					cell = new SongTableCell(UITableViewCellStyle.Default, cellIdentifier);
-					cell.TextLabel.TextColor = UIColor.FromRGB(102, 102, 102);
+					cell.BackgroundColor = UIColor.Clear;
 					cell.TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
 					cell.TextLabel.BackgroundColor = UIColor.Clear;
-					cell.BackgroundView = new UIView();
-					cell.BackgroundView.BackgroundColor = UIColor.Clear;
+
+					cell.DurationLabel.TextColor = UIColor.White;
+					cell.TextLabel.TextColor = UIColor.White;
+					cell.SongNameLabel.TextColor = UIColor.White;
+//					cell.BackgroundView = new UIView();
+//					cell.BackgroundView.BackgroundColor = UIColor.Clear;
 					cell.TrackNumberLabel.Hidden = true;
 				}
 
@@ -180,14 +184,14 @@ namespace Wave.iOS.ViewController
 					cell.TextLabel.Text = video.FileName;
 				}
 
-				if (indexPath.Row == playQueueViewModel.CurrentIndex)
-				{
-					cell.BackgroundView.BackgroundColor = UIColor.FromRGB(207, 207, 207);
-				}
-				else
-				{
-					cell.BackgroundView.BackgroundColor = UIColor.Clear;
-				}
+//				if (indexPath.Row == playQueueViewModel.CurrentIndex)
+//				{
+//					cell.BackgroundView.BackgroundColor = UIColor.FromRGB(207, 207, 207);
+//				}
+//				else
+//				{
+//					cell.BackgroundView.BackgroundColor = UIColor.Clear;
+//				}
 
 				return cell;
 			}

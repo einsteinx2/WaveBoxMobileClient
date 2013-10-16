@@ -35,6 +35,7 @@ namespace Wave.iOS.ViewController
 			TableView.BackgroundColor = UIColor.FromRGB(233, 233, 233);
 			TableView.SeparatorColor = UIColor.FromRGB(207, 207, 207);
 			TableView.RowHeight = 60.0f;
+			TableView.SeparatorInset = UIEdgeInsets.Zero;
 
 			TableView.Source = Source;
 			TableView.ReloadData();
@@ -68,7 +69,7 @@ namespace Wave.iOS.ViewController
 				UITableViewCell cell = tableView.DequeueReusableCell(cellIdentifier);
 				if (cell == null)
 				{
-					cell = new UITableViewCell(UITableViewCellStyle.Default, cellIdentifier);
+					cell = new BrowsableTableCell(cellIdentifier);
 					cell.TextLabel.TextColor = UIColor.FromRGB(102, 102, 102);
 					cell.TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
 					cell.TextLabel.BackgroundColor = UIColor.Clear;
