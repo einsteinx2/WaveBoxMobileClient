@@ -42,7 +42,7 @@ namespace Wave.iOS.ViewController
 
 			MiniPlayer = new MiniPlayerViewController(xOffset, 0f);
 			View.AddSubview(MiniPlayer.View);
-//			CreateHeader();
+			CreateHeader();
 
 			TableView = new UITableView();
 			TableView.Frame = new RectangleF(xOffset, 64.0f, width, View.Frame.Size.Height - 64.0f);

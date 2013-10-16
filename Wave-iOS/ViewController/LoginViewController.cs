@@ -20,7 +20,7 @@ namespace Wave.iOS.ViewController
 		private readonly UIWindow window;
 		private readonly IPlayQueueViewModel playQueueViewModel;
 		private readonly ILoginViewModel loginViewModel;
-		private IDictionary<string, object> styleDictionary;
+		private readonly IDictionary<string, object> styleDictionary;
 
 		public LoginViewController(UIWindow window, IPlayQueueViewModel playQueueViewModel, ILoginViewModel loginViewModel)//, IDictionary<string, object> styleDictionary)
 		{
@@ -37,7 +37,7 @@ namespace Wave.iOS.ViewController
 			this.window = window;
 			this.playQueueViewModel = playQueueViewModel;
 			this.loginViewModel = loginViewModel;
-			this.styleDictionary = styleDictionary;
+			//this.styleDictionary = styleDictionary;
 		}
 
 		public override void ViewDidLoad()
@@ -73,7 +73,7 @@ namespace Wave.iOS.ViewController
 			};
 			View.Add(LoginButton);
 		}
-	
+
 		private void Login()
 		{
 			LoginButton.Enabled = false;
