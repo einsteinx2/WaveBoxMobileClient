@@ -211,6 +211,8 @@ namespace Wave.iOS.ViewController
 					{
 						// Use the existing controller
 						controller = ViewControllers[key];
+						UINavigationController c = controller as UINavigationController;
+						c.PopToRootViewController(false);
 					}
 					else
 					{

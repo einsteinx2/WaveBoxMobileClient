@@ -3,17 +3,21 @@ using MonoTouch.UIKit;
 using WaveBox.Client.ViewModel;
 using WaveBox.Core.Model;
 using MonoTouch.Foundation;
+using MonoTouch.ObjCRuntime;
 using WaveBox.Core;
 using Ninject;
 using WaveBox.Client.ServerInteraction;
 using SDWebImage;
 using System.Drawing;
+using Wave.iOS.ViewController.Extensions;
 
 namespace Wave.iOS.ViewController
 {
-	public class AlbumArtistViewController : ListViewController
+	public partial class AlbumArtistViewController : ListViewController
 	{
 		private TableSource Source { get; set; }
+
+		private UIView TableHeaderOverlay { get; set; }
 
 		private readonly IAlbumArtistViewModel albumArtistViewModel;
 
@@ -36,24 +40,109 @@ namespace Wave.iOS.ViewController
 				Title = albumArtistViewModel.AlbumArtist.AlbumArtistName;
 			}
 
-			if (albumArtistViewModel.AlbumArtist.ArtId != null)
+			if (albumArtistViewModel.AlbumArtist.MusicBrainzId != null)
 			{
 				UIImageView headerImageView = new UIImageView(new RectangleF(0.0f, 0.0f, View.Frame.Size.Width, 320.0f));
-				string coverUrlString = albumArtistViewModel.AlbumArtist.ArtUrlString();
+				headerImageView.ContentMode = UIViewContentMode.ScaleAspectFill;
+				headerImageView.ClipsToBounds = true;
+				string coverUrlString = albumArtistViewModel.AlbumArtist.ArtUrlString(false);
 				if (coverUrlString != null)
 					headerImageView.SetImageWithURL(new NSUrl(coverUrlString), new UIImage("BlankAlbumCell.png"), SDWebImageOptions.RetryFailed);
 				TableView.TableHeaderView = headerImageView;
+				AddTableHeaderOverlay();
 			}
 
+			TableView.ContentInset = new UIEdgeInsets(-20f, 0, 0, 0);
 			TableView.BackgroundColor = UIColor.FromRGB(233, 233, 233);
 			TableView.SeparatorColor = UIColor.FromRGB(207, 207, 207);
 			TableView.RowHeight = 60.0f;
-			TableView.SeparatorInset = UIEdgeInsets.Zero;
 
 			TableView.Source = Source;
 			TableView.ReloadData();
 		}
 
+		public override void ViewWillAppear(bool animated)
+		{
+			base.ViewWillAppear(animated);
+
+			this.GetSidePanelController().StatusBarStyle = UIStatusBarStyle.LightContent;
+			NavigationController.NavigationBarHidden = true;
+			var b = View.AlignmentRectInsets;
+			TableView.Frame = new RectangleF(0, 0, View.Frame.Width, View.Frame.Height);
+			var a = this.NavigationController.View;
+		}
+
+		public override void ViewWillDisappear(bool animated)
+		{
+			base.ViewWillDisappear(animated);
+
+			NavigationController.NavigationBarHidden = false;
+			this.GetSidePanelController().StatusBarStyle = UIStatusBarStyle.Default;
+		}
+
+		public void AddTableHeaderOverlay()
+		{
+			TableHeaderOverlay = new UIView();
+			TableHeaderOverlay.Frame = TableView.TableHeaderView.Bounds;
+			TableHeaderOverlay.BackgroundColor = UIColor.FromRGBA(0f, 0f, 0f, 0.75f);
+			TableView.TableHeaderView.AddSubview(TableHeaderOverlay);
+
+			UIButton button = new UIButton(UIButtonType.RoundedRect);
+			TableHeaderOverlay.AddSubview(button);
+			button.Frame = new RectangleF(0f, 0f, TableHeaderOverlay.Frame.Width, TableHeaderOverlay.Frame.Height);
+
+			UITapGestureRecognizer tap = new UITapGestureRecognizer(() => {
+				Console.WriteLine("TAP TAP TAP TAP TAP");
+				UIView.Animate(0.25, () => {
+					if (TableHeaderOverlay.Alpha == 1f)
+					{
+						TableHeaderOverlay.Alpha = 0f;
+					}
+					else
+					{
+						TableHeaderOverlay.Alpha = 1f;
+					}
+				});
+			});
+			tap.Delegate = new TapDelegate(TableHeaderOverlay);
+			tap.NumberOfTapsRequired = 1;
+			TableView.TableHeaderView.AddGestureRecognizer(tap);
+
+			UILabel artistName = new UILabel();
+			artistName.Text = this.albumArtistViewModel.AlbumArtist.AlbumArtistName;
+			artistName.Font = UIFont.FromName("HelveticaNeue-Bold", 17.0f);
+			artistName.TextColor = UIColor.FromRGB(245f/255f, 245f/255f, 245f/255f);
+			artistName.Frame = new RectangleF(25f, TableHeaderOverlay.Frame.Height - 80.0f, TableHeaderOverlay.Frame.Width - 50f, 30f);
+			TableHeaderOverlay.AddSubview(artistName);
+
+			UIView separator = new UIView();
+			separator.BackgroundColor = UIColor.FromRGBA(255f, 255f, 255f, 0.5f);
+			separator.Frame = new RectangleF(25f, TableHeaderOverlay.Frame.Height - 47.0f, TableHeaderOverlay.Frame.Width - 50f, 1f);
+			TableHeaderOverlay.AddSubview(separator);
+
+		}
+
+		private class TapDelegate : UIGestureRecognizerDelegate
+		{
+			UIView TableHeaderOverlay { set; get; }
+			public TapDelegate(UIView tableHeaderOverlay)
+			{
+				TableHeaderOverlay = tableHeaderOverlay;
+			}
+
+			public override bool ShouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
+			{
+				return true;
+			}
+
+			public override bool ShouldReceiveTouch(UIGestureRecognizer recognizer, UITouch touch)
+			{
+				return true;
+			}
+		}
+
+
+//
 		private class TableSource : UITableViewSource
 		{
 			private const int ALBUM_SECTION = 0;

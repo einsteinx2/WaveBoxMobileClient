@@ -1,25 +1,42 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone.7.0" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="WaveBox/WaveBox.Core/src/Injection/CoreModule.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Wave-iOS/ViewController/AlbumArtistViewController.cs">
     <Files>
       <File FileName="Wave-iOS/ViewController/FolderListViewController.cs" Line="1" Column="1" />
       <File FileName="Wave-iOS/AppDelegate.cs" Line="1" Column="1" />
       <File FileName="Wave-iOS/ViewController/ListViewController.cs" Line="1" Column="1" />
-      <File FileName="Wave-iOS/ViewController/MenuViewController.cs" Line="1" Column="1" />
-      <File FileName="Wave-iOS/ViewController/LoginViewController.cs" Line="1" Column="1" />
-      <File FileName="WaveBox/WaveBox.Core/src/Injection/CoreModule.cs" Line="3" Column="37" />
+      <File FileName="Wave-iOS/ViewController/MenuViewController.cs" Line="215" Column="37" />
+      <File FileName="WaveBox/WaveBox.Core/src/Injection/CoreModule.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/ViewController/PlayQueueViewController.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/ViewController/AlbumArtistListViewController.cs" Line="93" Column="5" />
+      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/Extensions/IItemExtension.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/ViewController/AlbumArtistViewController.cs" Line="55" Column="47" />
+      <File FileName="Wave-iOS/ViewController/LoginViewController.cs" Line="23" Column="15" />
+      <File FileName="Wave-iOS/ViewController/SongTableCell.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/ViewController/BrowsableTableCell.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/ViewController/AlbumViewController.cs" Line="1" Column="1" />
+      <File FileName="Wave-iOS/ViewController/AlbumListViewController.cs" Line="96" Column="4" />
+      <File FileName="WaveBox.Client-iOS/src/ServerInteraction/Extensions/AlbumArtistExtension.cs" Line="10" Column="87" />
+      <File FileName="Wave-iOS/Main.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Wave.iOS" expanded="True">
-            <Node name="ViewController" expanded="True" />
+            <Node name="ViewController" expanded="True">
+              <Node name="AlbumArtistViewController.cs" selected="True" />
+            </Node>
+          </Node>
+          <Node name="WaveBox.Client-iOS" expanded="True">
+            <Node name="src" expanded="True">
+              <Node name="ServerInteraction" expanded="True">
+                <Node name="Extensions" expanded="True" />
+              </Node>
+            </Node>
           </Node>
           <Node name="WaveBox.Core-iOS" expanded="True">
             <Node name="src" expanded="True">
-              <Node name="Injection" expanded="True">
-                <Node name="CoreModule.cs" selected="True" />
-              </Node>
+              <Node name="Injection" expanded="True" />
             </Node>
           </Node>
         </State>
@@ -28,7 +45,11 @@
         <State expanded="True" selected="True" />
       </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
+        <State>
+          <Value>TableView</Value>
+          <Value>View</Value>
+          <Value>View.AlignmentEdgeInsets</Value>
+        </State>
       </Pad>
       <Pad Id="ConnectionManagerPad">
         <State selected="True" />

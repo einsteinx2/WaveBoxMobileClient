@@ -86,10 +86,9 @@ namespace Wave.iOS.ViewController
 
 				cell.ImageView.Frame = new RectangleF(0f, 0f, 44f, 44f); 
 
-
 				if (albumArtist.MusicBrainzId != null)
 				{
-					string artUrlString = albumArtist.ArtUrlString();
+					string artUrlString = albumArtist.ArtUrlString(true);
 					cell.ImageView.SetImageWithURL(new NSUrl(artUrlString), new UIImage("BlankAlbumCell.png"), delegate(UIImage image, NSError error, SDImageCacheType cacheType) { });
 				}
 				else
