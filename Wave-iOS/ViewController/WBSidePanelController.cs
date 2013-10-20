@@ -3,7 +3,9 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using MonoTouch.CoreGraphics;
+using MonoTouch.ObjCRuntime;
 using JASidePanels;
+using System.Threading;
 
 namespace Wave.iOS
 {
@@ -13,7 +15,7 @@ namespace Wave.iOS
 			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
 
-		private UIImageView FakeStatusBar;
+		private UIView FakeScreen;
 		public override float LeftVisibleWidth
 		{
 			get
@@ -30,24 +32,80 @@ namespace Wave.iOS
 			}
 		}
 
+		public override bool BounceOnSidePanelOpen
+		{
+			get
+			{
+				return false;
+			}
+		}
+
+		public override bool BounceOnCenterPanelChange
+		{
+			get
+			{
+				return false;
+			}
+		}
+
 		public override void HandlePan(UIGestureRecognizer sender)
 		{
 			base.HandlePan(sender);
 			Console.WriteLine(CenterPanel.View);
 
-			if (sender.State == UIGestureRecognizerState.Began)
+			if (sender.State == UIGestureRecognizerState.Began && VisiblePanel == CenterPanel)
 			{
-				Console.WriteLine("PANEL PAN BEGAN");
-				FakeStatusBar = CopyStatusBar();
-				StatusBarHidden = true;
-//				CenterPanelContainer.Frame = new RectangleF(CenterPanelContainer.Frame.Left, 20f, CenterPanelContainer.Frame.Width, CenterPanelContainer.Frame.Height - 20f);
+				AddFakeScreen();
 			}
 
 			if (sender.State == UIGestureRecognizerState.Ended || sender.State == UIGestureRecognizerState.Cancelled)
 			{
-				StatusBarHidden = false;
-				Console.WriteLine("PANEL PAN ENDED OR CANCELED");
+				if (VisiblePanel == CenterPanel)
+				{
+					PerformSelector(new Selector("RemoveFakeScreen"), null, MaximumAnimationDuration);
+				}
 			}
+		}
+
+		public override void CenterPanelTapped(UIGestureRecognizer gesture)
+		{
+			base.CenterPanelTapped(gesture);
+			PerformSelector(new Selector("RemoveFakeScreen"), null, MaximumAnimationDuration);
+		}
+
+		public override void ToggleLeftPanel(NSObject sender)
+		{
+			// We don't have to worry about the other toggle state, as we're adding
+			// the fake screen over all the buttons
+			AddFakeScreen();
+
+			base.ToggleLeftPanel(sender);
+		}
+
+		public override void ToggleRightPanel(NSObject sender)
+		{
+			// We don't have to worry about the other toggle state, as we're adding
+			// the fake screen over all the buttons
+			AddFakeScreen();
+
+			base.ToggleRightPanel(sender);
+		}
+
+		public void AddFakeScreen()
+		{
+			FakeScreen = UIScreen.MainScreen.SnapshotView(false);
+			CenterPanel.View.AddSubview(FakeScreen);
+			StatusBarHidden = true;
+		}
+
+		[Export("RemoveFakeScreen")]
+		public void RemoveFakeScreen()
+		{
+			StatusBarHidden = false;
+			NSTimer.CreateScheduledTimer(.01, () => {
+				FakeScreen.RemoveFromSuperview();
+				FakeScreen = null;
+			});
 		}
 
 		private bool statusBarHidden;
@@ -59,7 +117,7 @@ namespace Wave.iOS
 			set
 			{
 				statusBarHidden = value;
-				this.SetNeedsStatusBarAppearanceUpdate();
+				SetNeedsStatusBarAppearanceUpdate();
 			}
 		}
 
@@ -68,12 +126,12 @@ namespace Wave.iOS
 		{
 			get
 			{
-				return this.statusBarStyle;
+				return statusBarStyle;
 			}
 			set
 			{
-				this.statusBarStyle = value;
-				this.SetNeedsStatusBarAppearanceUpdate();
+				statusBarStyle = value;
+				SetNeedsStatusBarAppearanceUpdate();
 			}
 		}
 
@@ -84,12 +142,12 @@ namespace Wave.iOS
 
 		public override bool PrefersStatusBarHidden()
 		{
-			return this.StatusBarHidden;
+			return StatusBarHidden;
 		}
 
 		public override UIStatusBarStyle PreferredStatusBarStyle()
 		{
-			return this.statusBarStyle;
+			return statusBarStyle;
 		}
 
 		public override void DidReceiveMemoryWarning()
@@ -110,11 +168,6 @@ namespace Wave.iOS
 		public override void StylePanel(UIView panel)
 		{
 			return;
-		}
-
-		private UIImageView CopyStatusBar()
-		{
-			return new UIImageView();
 		}
 	}
 }
