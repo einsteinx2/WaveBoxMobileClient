@@ -51,25 +51,16 @@ namespace Wave.iOS
 		public override void HandlePan(UIGestureRecognizer sender)
 		{
 			base.HandlePan(sender);
-			Console.WriteLine(CenterPanel.View);
 
 			if (sender.State == UIGestureRecognizerState.Began && VisiblePanel == CenterPanel)
 			{
 				AddFakeScreen();
 			}
-
-			if (sender.State == UIGestureRecognizerState.Ended || sender.State == UIGestureRecognizerState.Cancelled)
-			{
-				if (VisiblePanel == CenterPanel)
-				{
-					PerformSelector(new Selector("RemoveFakeScreen"), null, MaximumAnimationDuration);
-				}
-			}
 		}
 
-		public override void CenterPanelTapped(UIGestureRecognizer gesture)
+		public override void ShowCenterPanelInternal(bool animated, bool shouldBounce)
 		{
-			base.CenterPanelTapped(gesture);
+			base.ShowCenterPanelInternal(animated, shouldBounce);
 			PerformSelector(new Selector("RemoveFakeScreen"), null, MaximumAnimationDuration);
 		}
 
@@ -77,7 +68,8 @@ namespace Wave.iOS
 		{
 			// We don't have to worry about the other toggle state, as we're adding
 			// the fake screen over all the buttons
-			AddFakeScreen();
+			if (VisiblePanel == CenterPanel)
+				AddFakeScreen();
 
 			base.ToggleLeftPanel(sender);
 		}
@@ -86,7 +78,8 @@ namespace Wave.iOS
 		{
 			// We don't have to worry about the other toggle state, as we're adding
 			// the fake screen over all the buttons
-			AddFakeScreen();
+			if (VisiblePanel == CenterPanel)
+				AddFakeScreen();
 
 			base.ToggleRightPanel(sender);
 		}
