@@ -38,39 +38,27 @@ namespace Wave.iOS.ViewController
 			float width = 260f;
 			float xOffset = View.Frame.Width - width;
 
+
+
 			AddBackgroundLayer();
 
 			MiniPlayer = new MiniPlayerViewController(xOffset, 0f);
 			View.AddSubview(MiniPlayer.View);
-			CreateHeader();
-
 			TableView = new UITableView();
 			TableView.Frame = new RectangleF(xOffset, 64.0f, width, View.Frame.Size.Height - 64.0f);
 			View.AddSubview(TableView);
 			TableView.BackgroundColor = UIColor.Clear;
 			TableView.SeparatorInset = UIEdgeInsets.Zero;
-//			var a = TableView.AutoresizingMask;
-//			TableView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
 
 			Source = new TableSource(this.playQueueViewModel);
 
-//			TableView.BackgroundColor = UIColor.FromRGB(233, 233, 233);
-//			TableView.SeparatorColor = UIColor.FromRGB(207, 207, 207);
-//			TableView.RowHeight = 60f;
-
 			TableView.Source = Source;
 			TableView.ReloadData();
-
-			// Update the player info in case it happened before the view was loaded
-//			UpdatePlayerInfo(playQueueViewModel.CurrentItem as Song);
 
 			playQueueViewModel.DataChanged += delegate(object sender, ViewModelEventArgs e) {
 				BeginInvokeOnMainThread(()=> {
 					// Reload the table
 					TableView.ReloadData();
-
-					// Update the player info
-//					UpdatePlayerInfo(playQueueViewModel.CurrentItem as Song);
 				});
 			};
 		}
@@ -89,48 +77,6 @@ namespace Wave.iOS.ViewController
 			layer.Frame = View.Frame;
 
 			View.Layer.InsertSublayer(layer, 0);
-		}
-
-		private void CreateHeader()
-		{
-			float height = 60f;
-
-			HeaderView = new UIView(new RectangleF(70f, 0f, 250f, height));
-			View.Add(HeaderView);
-
-			PlayPauseButton = new UIButton(UIButtonType.RoundedRect);
-			PlayPauseButton.SetTitle(">/||", UIControlState.Normal);
-			PlayPauseButton.Frame = new RectangleF(0f, 0f, height, height);
-			PlayPauseButton.TouchUpInside += delegate(object sender, EventArgs e) {
-				playQueueViewModel.PlayPauseToggle();
-			};
-			HeaderView.Add(PlayPauseButton);
-
-			SongNameLabel = new UILabel(new RectangleF(height, 0f, HeaderView.Frame.Width - (height * 2), height / 2f));
-			SongNameLabel.BackgroundColor = UIColor.Clear;
-			SongNameLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 12f);
-			SongNameLabel.TextColor = UIColor.FromRGB(107, 107, 107);
-			HeaderView.Add(SongNameLabel);
-
-			ArtistNameLabel = new UILabel(new RectangleF(height, height / 2f, HeaderView.Frame.Width - (height * 2), height / 2f));
-			ArtistNameLabel.BackgroundColor = UIColor.Clear;
-			ArtistNameLabel.Font = UIFont.FromName("HelveticaNeue", 11f);
-			ArtistNameLabel.TextColor = UIColor.FromRGB(107, 107, 107);
-			HeaderView.Add(ArtistNameLabel);
-		}
-
-		private void UpdatePlayerInfo(Song song)
-		{
-			if (song == null)
-			{
-				SongNameLabel.Text = null;
-				ArtistNameLabel.Text = null;
-			}
-			else
-			{
-				SongNameLabel.Text = song.SongName;
-				ArtistNameLabel.Text = song.ArtistName;
-			}
 		}
 
 		private class TableSource : UITableViewSource

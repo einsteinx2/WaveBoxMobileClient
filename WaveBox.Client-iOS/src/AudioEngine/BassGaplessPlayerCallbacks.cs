@@ -288,8 +288,12 @@ namespace WaveBox.Client.AudioEngine
 		public int StreamProc(int handle, IntPtr buffer, int length, IntPtr user)
 		{
 			BassStream userInfo = CurrentStream;
+
 			if (userInfo == null)
 				return 0;
+
+			long position_bytes = Bass.BASS_ChannelGetPosition(userInfo.MyStream, BASSMode.BASS_POS_BYTES);
+			Position = Bass.BASS_ChannelBytes2Seconds(userInfo.MyStream, position_bytes);
 
 			// If the buffer is not big enough, recreate it
 			if (drainedBytes.Length < length)
@@ -343,8 +347,6 @@ namespace WaveBox.Client.AudioEngine
 			}
 
 			return bytesRead;
-
-			return 0;
 		}
 	}
 }

@@ -84,29 +84,18 @@ namespace Wave.iOS.ViewController
 		{
 			TableHeaderOverlay = new UIView();
 			TableHeaderOverlay.Frame = TableView.TableHeaderView.Bounds;
+			TableHeaderOverlay.ClipsToBounds = true;
 			TableHeaderOverlay.BackgroundColor = UIColor.FromRGBA(0f, 0f, 0f, 0.75f);
+			TableHeaderOverlay.UserInteractionEnabled = true;
 			TableView.TableHeaderView.AddSubview(TableHeaderOverlay);
 
-			UIButton button = new UIButton(UIButtonType.RoundedRect);
-			TableHeaderOverlay.AddSubview(button);
-			button.Frame = new RectangleF(0f, 0f, TableHeaderOverlay.Frame.Width, TableHeaderOverlay.Frame.Height);
+			UITapGestureRecognizer tap = new UITapGestureRecognizer(ToggleHeaderOverlay);
 
-			UITapGestureRecognizer tap = new UITapGestureRecognizer(() => {
-				Console.WriteLine("TAP TAP TAP TAP TAP");
-				UIView.Animate(0.25, () => {
-					if (TableHeaderOverlay.Alpha == 1f)
-					{
-						TableHeaderOverlay.Alpha = 0f;
-					}
-					else
-					{
-						TableHeaderOverlay.Alpha = 1f;
-					}
-				});
-			});
+
 			tap.Delegate = new TapDelegate(TableHeaderOverlay);
 			tap.NumberOfTapsRequired = 1;
-			TableView.TableHeaderView.AddGestureRecognizer(tap);
+			tap.CancelsTouchesInView = false;
+			TableView.AddGestureRecognizer(tap);
 
 			UILabel artistName = new UILabel();
 			artistName.Text = this.albumArtistViewModel.AlbumArtist.AlbumArtistName;
@@ -119,7 +108,27 @@ namespace Wave.iOS.ViewController
 			separator.BackgroundColor = UIColor.FromRGBA(255f, 255f, 255f, 0.5f);
 			separator.Frame = new RectangleF(25f, TableHeaderOverlay.Frame.Height - 47.0f, TableHeaderOverlay.Frame.Width - 50f, 1f);
 			TableHeaderOverlay.AddSubview(separator);
+		}
 
+		private void ToggleHeaderOverlay(UITapGestureRecognizer tap)
+		{
+			if (TableHeaderOverlay.PointInside(tap.LocationInView(TableView), null))
+			{
+				UIView.Animate(0.2, () => {
+					if (TableHeaderOverlay.Alpha == 1f)
+					{
+						TableHeaderOverlay.Alpha = 0f;
+					}
+					else
+					{
+						TableHeaderOverlay.Alpha = 1f;
+					}
+				});
+			}
+//			else
+//			{
+//				TableView.Source.RowSelected(TableView, row);
+//			}
 		}
 
 		private class TapDelegate : UIGestureRecognizerDelegate

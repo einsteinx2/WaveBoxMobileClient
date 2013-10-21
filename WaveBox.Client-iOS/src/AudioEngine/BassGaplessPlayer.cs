@@ -23,6 +23,7 @@ namespace WaveBox.Client.AudioEngine
 
 		// TODO: clean these up they're from the port
 		public event PlayerEventHandler PositionStarted;
+		public event PlayerEventHandler PositionUpdate;
 		public event PlayerEventHandler SeekToPositionStarted;
 		public event PlayerEventHandler SeekToPositionSuccess;
 		public event PlayerEventHandler Stopped;
@@ -77,6 +78,29 @@ namespace WaveBox.Client.AudioEngine
 		private Song previousSongForProgress;
 		private int outStream;
 		private int mixerStream;
+
+		private double position;
+		public double Position
+		{
+			get
+			{
+				return position;
+			}
+
+			set
+			{
+				double rounded = Math.Floor(value);
+				if (position != rounded)
+				{
+					position = rounded;
+
+					if (PositionUpdate != null)
+					{
+						PositionUpdate(this, null);
+					}
+				}
+			}
+		}
 
 		public bool IsPlaying { get; private set; }
 

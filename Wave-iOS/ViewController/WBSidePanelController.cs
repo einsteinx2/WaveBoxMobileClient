@@ -15,7 +15,6 @@ namespace Wave.iOS
 			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
 
-		private UIView FakeScreen;
 		public override float LeftVisibleWidth
 		{
 			get
@@ -46,59 +45,6 @@ namespace Wave.iOS
 			{
 				return false;
 			}
-		}
-
-		public override void HandlePan(UIGestureRecognizer sender)
-		{
-			base.HandlePan(sender);
-
-			if (sender.State == UIGestureRecognizerState.Began && VisiblePanel == CenterPanel)
-			{
-				AddFakeScreen();
-			}
-		}
-
-		public override void ShowCenterPanelInternal(bool animated, bool shouldBounce)
-		{
-			base.ShowCenterPanelInternal(animated, shouldBounce);
-			PerformSelector(new Selector("RemoveFakeScreen"), null, MaximumAnimationDuration);
-		}
-
-		public override void ToggleLeftPanel(NSObject sender)
-		{
-			// We don't have to worry about the other toggle state, as we're adding
-			// the fake screen over all the buttons
-			if (VisiblePanel == CenterPanel)
-				AddFakeScreen();
-
-			base.ToggleLeftPanel(sender);
-		}
-
-		public override void ToggleRightPanel(NSObject sender)
-		{
-			// We don't have to worry about the other toggle state, as we're adding
-			// the fake screen over all the buttons
-			if (VisiblePanel == CenterPanel)
-				AddFakeScreen();
-
-			base.ToggleRightPanel(sender);
-		}
-
-		public void AddFakeScreen()
-		{
-			FakeScreen = UIScreen.MainScreen.SnapshotView(false);
-			CenterPanel.View.AddSubview(FakeScreen);
-			StatusBarHidden = true;
-		}
-
-		[Export("RemoveFakeScreen")]
-		public void RemoveFakeScreen()
-		{
-			StatusBarHidden = false;
-			NSTimer.CreateScheduledTimer(.01, () => {
-				FakeScreen.RemoveFromSuperview();
-				FakeScreen = null;
-			});
 		}
 
 		private bool statusBarHidden;
@@ -133,33 +79,14 @@ namespace Wave.iOS
 			statusBarHidden = false;
 		}
 
-		public override bool PrefersStatusBarHidden()
-		{
-			return StatusBarHidden;
-		}
-
 		public override UIStatusBarStyle PreferredStatusBarStyle()
 		{
 			return statusBarStyle;
 		}
 
-		public override void DidReceiveMemoryWarning()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning();
-			
-			// Release any cached data, images, etc that aren't in use.
-		}
-
-		public override void ViewDidLoad()
-		{
-			base.ViewDidLoad();
-
-			// Perform any additional setup after loading the view, typically from a nib.
-		}
-
 		public override void StylePanel(UIView panel)
 		{
+			// do nothing
 			return;
 		}
 	}

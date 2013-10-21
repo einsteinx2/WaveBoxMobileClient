@@ -6,6 +6,7 @@ namespace WaveBox.Client.AudioEngine
 	public interface IBassGaplessPlayer
 	{
 		event PlayerEventHandler PositionStarted;
+		event PlayerEventHandler PositionUpdate;
 		event PlayerEventHandler SeekToPositionStarted;
 		event PlayerEventHandler SeekToPositionSuccess;
 		event PlayerEventHandler Stopped;
@@ -25,6 +26,7 @@ namespace WaveBox.Client.AudioEngine
 		int StreamProc(int handle, IntPtr buffer, int length, IntPtr user);
 
 		IBassGaplessPlayerDataSource DataSource { get; set; }
+		double Position { get; }
 		bool IsPlaying { get; }
 		bool IsInitialBuffering { get; set; }
 		void StartWithOffsetInBytesOrSeconds(long? byteOffset, double? seconds);
