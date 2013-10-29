@@ -30,7 +30,7 @@ namespace WaveBox.Client.ViewModel
 
 		public void PerformSearch(string searchTerm)
 		{
-			FilteredSongs = Songs.Where(x => x.SongName.Contains(searchTerm)).ToList();
+			FilteredSongs = Songs.Where(x => x.SongName.ToLower().Contains(searchTerm.ToLower())).ToList();
 		}
 
 		public void ReloadData()

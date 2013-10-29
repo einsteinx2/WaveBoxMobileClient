@@ -84,6 +84,17 @@ namespace Wave.iOS
 			return statusBarStyle;
 		}
 
+		public override void StyleContainer(UIView container, bool animate, double duration)
+		{
+			UIBezierPath shadowPath = UIBezierPath.FromRoundedRect(container.Bounds, 0f);
+
+			container.Layer.ShadowPath = shadowPath.CGPath;	
+			container.Layer.ShadowColor = UIColor.FromRGB(50f / 255f, 50f / 255f, 50f / 255f).CGColor;
+		    container.Layer.ShadowRadius = 15.0f;
+		    container.Layer.ShadowOpacity = 0.3f;
+		    container.ClipsToBounds = false;
+		}
+
 		public override void StylePanel(UIView panel)
 		{
 			// do nothing

@@ -8,8 +8,8 @@ namespace Wave.iOS
 	{
 		public BrowsableTableCell(string reuseIdentifier) : base(UITableViewCellStyle.Default, reuseIdentifier)
 		{
-			ImageView.ContentMode = UIViewContentMode.ScaleAspectFill;
-			ImageView.ClipsToBounds = true;
+//			ImageView.ContentMode = UIViewContentMode.ScaleAspectFill;
+//			ImageView.ClipsToBounds = true;
 		}
 
 		public BrowsableTableCell(UIImage displayImage, string labelText, string reuseIdentifier) : this(reuseIdentifier)

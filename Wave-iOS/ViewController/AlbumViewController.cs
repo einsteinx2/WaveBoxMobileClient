@@ -46,7 +46,7 @@ namespace Wave.iOS.ViewController
 
 			TableView.BackgroundColor = UIColor.FromRGB(233, 233, 233);
 			TableView.SeparatorColor = UIColor.FromRGB(207, 207, 207);
-			TableView.RowHeight = 60.0f;
+			TableView.RowHeight = 50.0f;
 			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 
 			TableView.Source = Source;

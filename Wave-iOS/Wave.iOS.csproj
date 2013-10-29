@@ -177,5 +177,7 @@
     <BundleResource Include="Resources\Pause%402x.png" />
     <BundleResource Include="Resources\Play.png" />
     <BundleResource Include="Resources\Play%402x.png" />
+    <BundleResource Include="Resources\fullscreen.png" />
+    <BundleResource Include="Resources\fullscreen%402x.png" />
   </ItemGroup>
 </Project>

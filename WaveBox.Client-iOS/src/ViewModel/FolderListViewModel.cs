@@ -27,7 +27,7 @@ namespace WaveBox.Client.ViewModel
 
 		public void PerformSearch(string searchTerm)
 		{
-			FilteredFolders = Folders.Where(x => x.FolderName.Contains(searchTerm)).ToList();
+			FilteredFolders = Folders.Where(x => x.FolderName.ToLower().Contains(searchTerm.ToLower())).ToList();
 		}
 
 		public void ReloadData()

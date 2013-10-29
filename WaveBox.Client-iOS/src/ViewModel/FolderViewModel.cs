@@ -37,9 +37,9 @@ namespace WaveBox.Client.ViewModel
 
 		public void PerformSearch(string searchTerm)
 		{
-			FilteredSubFolders = SubFolders.Where(x => x.FolderName.Contains(searchTerm)).ToList();
-			FilteredSongs = Songs.Where(x => x.SongName.Contains(searchTerm)).ToList();
-			FilteredVideos = Videos.Where(x => x.FileName.Contains(searchTerm)).ToList();
+			FilteredSubFolders = SubFolders.Where(x => x.FolderName.ToLower().Contains(searchTerm.ToLower())).ToList();
+			FilteredSongs = Songs.Where(x => x.SongName.ToLower().Contains(searchTerm.ToLower())).ToList();
+			FilteredVideos = Videos.Where(x => x.FileName.ToLower().Contains(searchTerm.ToLower())).ToList();
 		}
 
 		public void ReloadData()

@@ -20,7 +20,7 @@ namespace WaveBox.Client.ViewModel
 
 		public void PerformSearch(string searchTerm)
 		{
-			FilteredAlbums = Albums.Where(x => x.AlbumName.Contains(searchTerm)).ToList();
+			FilteredAlbums = Albums.Where(x => x.AlbumName.ToLower().Contains(searchTerm.ToLower())).ToList();
 		}
 
 		public void ReloadData()

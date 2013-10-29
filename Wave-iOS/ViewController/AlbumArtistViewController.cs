@@ -18,6 +18,16 @@ namespace Wave.iOS.ViewController
 		private TableSource Source { get; set; }
 
 		private UIView TableHeaderOverlay { get; set; }
+		private UIButton BackButton { get; set; }
+		private UIButton MenuButton { get; set; }
+		private UIButton PlayQueueButton { get; set; }
+		private bool TableHeaderOverlayHidden
+		{
+			get
+			{
+				return TableHeaderOverlay.Alpha == 0f;
+			}
+		}
 
 		private readonly IAlbumArtistViewModel albumArtistViewModel;
 
@@ -40,17 +50,17 @@ namespace Wave.iOS.ViewController
 				Title = albumArtistViewModel.AlbumArtist.AlbumArtistName;
 			}
 
+			UIImageView headerImageView = new UIImageView(new RectangleF(0.0f, 0.0f, View.Frame.Size.Width, 320.0f));
+			headerImageView.ContentMode = UIViewContentMode.ScaleAspectFill;
+			headerImageView.ClipsToBounds = true;
 			if (albumArtistViewModel.AlbumArtist.MusicBrainzId != null)
 			{
-				UIImageView headerImageView = new UIImageView(new RectangleF(0.0f, 0.0f, View.Frame.Size.Width, 320.0f));
-				headerImageView.ContentMode = UIViewContentMode.ScaleAspectFill;
-				headerImageView.ClipsToBounds = true;
 				string coverUrlString = albumArtistViewModel.AlbumArtist.ArtUrlString(false);
 				if (coverUrlString != null)
 					headerImageView.SetImageWithURL(new NSUrl(coverUrlString), new UIImage("BlankAlbumCell.png"), SDWebImageOptions.RetryFailed);
-				TableView.TableHeaderView = headerImageView;
-				AddTableHeaderOverlay();
 			}
+			TableView.TableHeaderView = headerImageView;
+			AddTableHeaderOverlay();
 
 			TableView.ContentInset = new UIEdgeInsets(-20f, 0, 0, 0);
 			TableView.BackgroundColor = UIColor.FromRGB(233, 233, 233);
@@ -66,10 +76,11 @@ namespace Wave.iOS.ViewController
 			base.ViewWillAppear(animated);
 
 			this.GetSidePanelController().StatusBarStyle = UIStatusBarStyle.LightContent;
-			NavigationController.NavigationBarHidden = true;
+			if (NavigationController != null)
+				NavigationController.NavigationBarHidden = true;
 			var b = View.AlignmentRectInsets;
-			TableView.Frame = new RectangleF(0, 0, View.Frame.Width, View.Frame.Height);
-			var a = this.NavigationController.View;
+//			TableView.Frame = new RectangleF(0, 0, View.Frame.Width, View.Frame.Height);
+//			var a = this.NavigationController.View;
 		}
 
 		public override void ViewWillDisappear(bool animated)
@@ -89,8 +100,15 @@ namespace Wave.iOS.ViewController
 			TableHeaderOverlay.UserInteractionEnabled = true;
 			TableView.TableHeaderView.AddSubview(TableHeaderOverlay);
 
-			UITapGestureRecognizer tap = new UITapGestureRecognizer(ToggleHeaderOverlay);
+			BackButton = new UIButton(UIButtonType.System);
+			BackButton.SetTitle("Back", UIControlState.Normal);
+			BackButton.TitleLabel.TextColor = UIColor.White;
+			BackButton.Frame = new RectangleF(0f, 0f, 50f, 50f);
+			TableHeaderOverlay.AddSubview(BackButton);
 
+
+
+			UITapGestureRecognizer tap = new UITapGestureRecognizer(ToggleHeaderOverlay);
 
 			tap.Delegate = new TapDelegate(TableHeaderOverlay);
 			tap.NumberOfTapsRequired = 1;
@@ -112,7 +130,14 @@ namespace Wave.iOS.ViewController
 
 		private void ToggleHeaderOverlay(UITapGestureRecognizer tap)
 		{
-			if (TableHeaderOverlay.PointInside(tap.LocationInView(TableView), null))
+			PointF coord = tap.LocationInView(TableView);
+			if (BackButton.PointInside(coord, null) && !TableHeaderOverlayHidden)
+			{
+				NavigationController.PopViewControllerAnimated(true);
+				return;
+			}
+
+			if (TableHeaderOverlay.PointInside(coord, null))
 			{
 				UIView.Animate(0.2, () => {
 					if (TableHeaderOverlay.Alpha == 1f)
@@ -130,7 +155,7 @@ namespace Wave.iOS.ViewController
 //				TableView.Source.RowSelected(TableView, row);
 //			}
 		}
-
+		 
 		private class TapDelegate : UIGestureRecognizerDelegate
 		{
 			UIView TableHeaderOverlay { set; get; }

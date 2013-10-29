@@ -53,6 +53,7 @@ namespace Wave.iOS.ViewController
 			Source = new TableSource(this.playQueueViewModel);
 
 			TableView.Source = Source;
+			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 			TableView.ReloadData();
 
 			playQueueViewModel.DataChanged += delegate(object sender, ViewModelEventArgs e) {
@@ -100,6 +101,16 @@ namespace Wave.iOS.ViewController
 				return playQueueViewModel.MediaItems.Count;
 			}
 
+			public override float EstimatedHeight(UITableView tableView, NSIndexPath indexPath)
+			{
+				return 50f;
+			}
+
+			public override float GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
+			{
+				return 50f;
+			}
+
 			public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
 			{
 				SongTableCell cell = tableView.DequeueReusableCell(cellIdentifier) as SongTableCell;
@@ -107,15 +118,15 @@ namespace Wave.iOS.ViewController
 				{
 					cell = new SongTableCell(UITableViewCellStyle.Default, cellIdentifier);
 					cell.BackgroundColor = UIColor.Clear;
-					cell.TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
-					cell.TextLabel.BackgroundColor = UIColor.Clear;
+					cell.SongNameLabel.Font = UIFont.FromName("HelveticaNeue-Medium", 15.5f);
+					cell.ArtistLabel.Font = UIFont.FromName("HelveticaNeue", 10.5f);
 
 					cell.DurationLabel.TextColor = UIColor.White;
-					cell.TextLabel.TextColor = UIColor.White;
 					cell.SongNameLabel.TextColor = UIColor.White;
-//					cell.BackgroundView = new UIView();
-//					cell.BackgroundView.BackgroundColor = UIColor.Clear;
+					cell.ArtistLabel.TextColor = UIColor.White;
+
 					cell.TrackNumberLabel.Hidden = true;
+					cell.ArtistLabel.Hidden = false;
 				}
 
 				IMediaItem mediaItem = playQueueViewModel.MediaItems[indexPath.Row];
@@ -127,17 +138,17 @@ namespace Wave.iOS.ViewController
 				else if (mediaItem is Video)
 				{
 					Video video = mediaItem as Video;
-					cell.TextLabel.Text = video.FileName;
+					cell.SongNameLabel.Text = video.FileName;
 				}
 
-//				if (indexPath.Row == playQueueViewModel.CurrentIndex)
-//				{
-//					cell.BackgroundView.BackgroundColor = UIColor.FromRGB(207, 207, 207);
-//				}
-//				else
-//				{
-//					cell.BackgroundView.BackgroundColor = UIColor.Clear;
-//				}
+				if (indexPath.Row == playQueueViewModel.CurrentIndex)
+				{
+					cell.BackgroundColor = UIColor.FromRGBA(1f, 1f, 1f, 0.3f);
+				}
+				else
+				{
+					cell.BackgroundColor = UIColor.Clear;
+				}
 
 				return cell;
 			}

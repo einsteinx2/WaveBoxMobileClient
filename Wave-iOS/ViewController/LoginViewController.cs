@@ -90,10 +90,12 @@ namespace Wave.iOS.ViewController
 				InvokeOnMainThread(delegate {
 					if (e.Success)
 					{
+						WBAppDelegate appDelegate = UIApplication.SharedApplication.Delegate as WBAppDelegate;
 						WBSidePanelController sidePanelController = new WBSidePanelController();
 						sidePanelController.PanningLimitedToTopViewController = false;
 						sidePanelController.LeftPanel = new MenuViewController(sidePanelController);//, styleDictionary);
 						sidePanelController.RightPanel = new PlayQueueViewController(playQueueViewModel);
+						appDelegate.SidePanelController = sidePanelController;
 						window.RootViewController = sidePanelController;
 
 						// TODO: rewrite this (Forces menu to load so the center is populated)

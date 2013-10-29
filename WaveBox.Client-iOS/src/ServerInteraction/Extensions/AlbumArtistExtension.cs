@@ -15,7 +15,7 @@ namespace WaveBox.Client.ServerInteraction
 			else if (thumbnail)
 				return string.Format("{0}/api/fanartthumb/?musicBrainzId={1}&s={2}", clientSettings.ServerUrl, albumArtist.MusicBrainzId, clientSettings.SessionId);
 			else
-				return string.Format("http://herpderp.me:8000?action=art&type=artist&id={0}", albumArtist.MusicBrainzId);
+				return string.Format("http://musicbrainz.herpderp.me:8000?action=art&type=artist&id={0}", albumArtist.MusicBrainzId);
 		}
 	}
 }

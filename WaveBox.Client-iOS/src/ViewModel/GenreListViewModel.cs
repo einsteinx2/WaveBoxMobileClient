@@ -26,7 +26,7 @@ namespace WaveBox.Client.ViewModel
 
 		public void PerformSearch(string searchTerm)
 		{
-			FilteredGenres = Genres.Where(x => x.GenreName.Contains(searchTerm)).ToList();
+			FilteredGenres = Genres.Where(x => x.GenreName.ToLower().Contains(searchTerm.ToLower())).ToList();
 		}
 
 		public void ReloadData()

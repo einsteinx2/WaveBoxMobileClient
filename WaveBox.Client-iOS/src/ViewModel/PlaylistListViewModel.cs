@@ -27,7 +27,7 @@ namespace WaveBox.Client.ViewModel
 
 		public void PerformSearch(string searchTerm)
 		{
-			FilteredPlaylists = Playlists.Where(x => x.PlaylistName.Contains(searchTerm)).ToList();
+			FilteredPlaylists = Playlists.Where(x => x.PlaylistName.ToLower().Contains(searchTerm.ToLower())).ToList();
 		}
 
 		public void ReloadData()

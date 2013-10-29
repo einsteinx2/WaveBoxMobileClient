@@ -11,6 +11,9 @@ namespace WaveBox.Client.AudioEngine
 		event PlayerEventHandler SeekToPositionSuccess;
 		event PlayerEventHandler Stopped;
 		event PlayerEventHandler FirstStreamStarted;
+		event PlayerEventHandler SongPlaybackStarted;
+		event PlayerEventHandler SongPlaybackEnded;
+		event PlayerEventHandler SongPlaybackPaused;
 		event PlayerEventHandler SongEndedCalled;
 		event PlayerEventHandler SongEndedPlaylistIncremented;
 		event PlayerEventHandler SongEndedFinishedIsPlaying;

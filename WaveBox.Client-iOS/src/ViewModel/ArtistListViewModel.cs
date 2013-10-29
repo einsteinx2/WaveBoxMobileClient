@@ -28,7 +28,7 @@ namespace WaveBox.Client.ViewModel
 
 		public void PerformSearch(string searchTerm)
 		{
-			FilteredArtists = Artists.Where(x => x.ArtistName.Contains(searchTerm)).ToList();
+			FilteredArtists = Artists.Where(x => x.ArtistName.ToLower().Contains(searchTerm.ToLower())).ToList();
 		}
 
 		public void ReloadData()

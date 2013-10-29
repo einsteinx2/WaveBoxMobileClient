@@ -71,6 +71,8 @@ namespace Wave.iOS.ViewController
 				if (cell == null)
 				{
 					cell = new BrowsableTableCell(cellIdentifier);
+					cell.Layer.Opaque = true;
+					cell.BackgroundColor = UIColor.FromRGB(233, 233, 233);
 					cell.TextLabel.TextColor = UIColor.FromRGB(102, 102, 102);
 					cell.TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 14.5f);
 					cell.TextLabel.BackgroundColor = UIColor.Clear;
@@ -84,7 +86,6 @@ namespace Wave.iOS.ViewController
 				AlbumArtist albumArtist = albumArtistListViewModel.FilteredAlbumArtists[indexPath.Row];
 				cell.TextLabel.Text = albumArtist.AlbumArtistName;
 
-				cell.ImageView.Frame = new RectangleF(0f, 0f, 44f, 44f); 
 
 				if (albumArtist.MusicBrainzId != null)
 				{
